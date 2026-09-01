@@ -1,0 +1,5 @@
+Experiment,Accuracy,F1
+HR-only LOSO,77.08,64.34
+4-feature LOSO,80.9,70.59
+13-feature LOSO,81.57,73.03
+Personalized binary LOSO,92.36,89.03
