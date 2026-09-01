@@ -97,6 +97,13 @@ The main finding was that \*\*personalization was substantially more useful than
 ![ECG Stress Detection Pipeline](docs/figures/ecg_stress_detection_pipeline.png)
 
 
+\## Final Project Dashboard
+
+The dashboard below brings together the main evidence from the project in one view: model development, personalized feature experiments, subject-wise detection, the final confusion matrix, ROC performance, and the final evaluation metrics.
+
+![Final Project Dashboard](results/figures/FINAL_Project_Dashboard.png)
+
+
 
 \### Processing flow
 
