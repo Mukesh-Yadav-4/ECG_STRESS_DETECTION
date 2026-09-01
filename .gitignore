@@ -31,3 +31,16 @@ Thumbs.db
 # =========================================================
 
 .mltx_cache/
+# Intermediate experiment CSV files
+results/Calibrated_Stress_Detection.csv
+results/Expanded_Classifier_Predictions.csv
+results/Feature_Group_Comparison.csv
+results/Feature_Set_Comparison.csv
+results/Personalized_Classifier_Predictions.csv
+results/Personalized_Feature_Ablation.csv
+results/Personalized_ROC.csv
+results/Stress_Classifier_Predictions.csv
+results/Subject_Level_Statistics.csv
+results/Threshold_Analysis.csv
+results/WESAD_HRV_features.csv
+results/WESAD_HRV_features_expanded.csv
