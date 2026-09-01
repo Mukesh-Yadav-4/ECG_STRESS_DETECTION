@@ -104,72 +104,38 @@ The dashboard below brings together the main evidence from the project in one vi
 ![Final Project Dashboard](results/figures/FINAL_Project_Dashboard.png)
 
 
-
-\### Processing flow
-
-
+### Processing flow
 
 ```text
-
 WESAD ECG
-
-&#x20;   │
-
-&#x20;   ▼
-
+   │
+   ▼
 ECG preprocessing
-
-&#x20;   │
-
-&#x20;   ▼
-
+   │
+   ▼
 R-peak detection
-
-&#x20;   │
-
-&#x20;   ▼
-
+   │
+   ▼
 RR intervals
-
-&#x20;   │
-
-&#x20;   ▼
-
+   │
+   ▼
 HR / HRV feature extraction
-
-&#x20;   │
-
-&#x20;   ▼
-
+   │
+   ▼
 Subject-specific baseline normalization
-
-&#x20;   │
-
-&#x20;   ▼
-
+   │
+   ▼
 Logistic regression
-
-&#x20;   │
-
-&#x20;   ▼
-
+   │
+   ▼
 Leave-One-Subject-Out validation
-
-&#x20;   │
-
-&#x20;   ▼
-
+   │
+   ▼
 Stress probability
-
-&#x20;   │
-
-&#x20;   ▼
-
+   │
+   ▼
 Locked threshold = 0.35
-
-&#x20;   │
-
-&#x20;   ▼
-
+   │
+   ▼
 Baseline / Stress classification
-
+```
