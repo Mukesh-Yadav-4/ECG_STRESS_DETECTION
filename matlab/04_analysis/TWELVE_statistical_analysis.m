@@ -8,7 +8,7 @@ close all;
 
 %% Project paths
 
-project_root = fileparts(fileparts(mfilename('fullpath')));
+project_root = fileparts(fileparts(fileparts(mfilename('fullpath'))));
 results_folder = fullfile(project_root, 'results');
 
 %% Load feature dataset

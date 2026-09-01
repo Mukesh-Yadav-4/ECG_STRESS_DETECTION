@@ -3,7 +3,7 @@ clc;
 close all;
 
 %% Project root
-project_root = fileparts(fileparts(mfilename('fullpath')));
+project_root = fileparts(fileparts(fileparts(mfilename('fullpath'))));
 
 data_folder = fullfile(project_root, 'data', 'processed');
 
