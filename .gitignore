@@ -3,7 +3,14 @@
 # =========================================================
 
 data/raw/
+data/raw/**
 data/processed/
+data/processed/**
+*.pkl
+*.pkl.gz
+*.zip
+*.tar.gz
+*.7z
 
 # =========================================================
 # MATLAB TEMPORARY FILES
