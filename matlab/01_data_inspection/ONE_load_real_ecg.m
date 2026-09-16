@@ -1,195 +1,85 @@
+% ONE_load_real_ecg.m
+% Loads and visualizes the first 30 seconds of raw WESAD chest ECG for Subject S2.
+% Demonstrates baseline centering, 0.5-40 Hz bandpass filtering, and initial peak detection.
+
 clear;
 clc;
 close all;
 
-%% File location
+%% 1. Configuration & Paths
 project_root = fileparts(fileparts(fileparts(mfilename('fullpath'))));
+filename = fullfile(project_root, 'data', 'raw', 'WESAD', 'S2', 'S2_respiban.txt');
 
-filename = fullfile( ...
-    project_root, ...
-    'data', ...
-    'raw', ...
-    'WESAD', ...
-    'S2', ...
-    'S2_respiban.txt');
-
-%% ECG settings
-Fs = 700;              % Sampling frequency
+Fs = 700;              % RespiBAN sampling frequency (Hz)
 duration = 30;         % Seconds to load
-N = Fs * duration;     % Number of samples
+N = Fs * duration;     % Total samples
 
-%% Open file
-fid = fopen(filename, 'r');
-
-if fid == -1
-    error('Could not open the file.');
+%% 2. Load Raw RespiBAN Text Stream
+if ~isfile(filename)
+    error('Raw file not found: %s\nPlease ensure WESAD S2 is extracted under data/raw/WESAD/S2/', filename);
 end
 
-%% Skip the three header lines
-fgetl(fid);
-fgetl(fid);
-fgetl(fid);
+fid = fopen(filename, 'r');
+if fid == -1
+    error('Could not open file: %s', filename);
+end
 
-%% Read first N rows
-data = textscan(fid, ...
-    '%f %f %f %f %f %f %f %f %f %f', ...
-    N, ...
-    'Delimiter', {' ', '\t'}, ...
-    'MultipleDelimsAsOne', true);
+% Skip 3 header metadata lines
+fgetl(fid); fgetl(fid); fgetl(fid);
 
+% Read first N samples across 10 channels
+data = textscan(fid, '%f %f %f %f %f %f %f %f %f %f', N, ...
+    'Delimiter', {' ', '\t'}, 'MultipleDelimsAsOne', true);
 fclose(fid);
 
-%% Extract ECG
-ecg = data{3};         % CH1 = ECG
+ecg_raw = data{3}; % Channel 1 = ECG (Lead II)
+t = (0:length(ecg_raw)-1) / Fs;
 
-%% Create time vector
-t = (0:length(ecg)-1) / Fs;
+fprintf('Loaded %d samples (%.2f s) at %d Hz from S2.\n', length(ecg_raw), duration, Fs);
 
-%% Display basic information
-fprintf('Sampling frequency: %d Hz\n', Fs);
-fprintf('Samples loaded: %d\n', length(ecg));
-fprintf('Duration: %.2f seconds\n', length(ecg)/Fs);
+%% 3. Preprocessing (DC Removal & Bandpass Filter)
+ecg_centered = ecg_raw - mean(ecg_raw);
 
-%% Plot raw ECG
-figure;
-
-plot(t, ecg);
-
-xlabel('Time (seconds)');
-ylabel('ECG amplitude');
-
-title('WESAD S2 - Raw ECG (First 30 Seconds)');
-
-grid on;
-
-
-%% Remove DC offset
-
-ecg_centered = ecg - mean(ecg);
-
-%% Plot centered ECG
-
-figure;
-
-plot(t, ecg_centered);
-
-xlabel('Time (seconds)');
-ylabel('Amplitude');
-
-title('WESAD S2 - ECG After DC Offset Removal');
-
-grid on;
-
-%% Band-pass filter
-
-low_cutoff = 0.5;
-high_cutoff = 40;
-
-[b, a] = butter(4, ...
-    [low_cutoff high_cutoff] / (Fs/2), ...
-    'bandpass');
-
+% 4th-order Butterworth bandpass (0.5 - 40 Hz)
+[b, a] = butter(4, [0.5, 40] / (Fs / 2), 'bandpass');
 ecg_filtered = filtfilt(b, a, ecg_centered);
 
-%% Plot filtered ECG
+%% 4. R-Peak & RR Interval Detection
+min_distance = round(0.35 * Fs); % Min 350 ms between beats (~170 BPM max)
+noise_level = 1.4826 * median(abs(ecg_filtered - median(ecg_filtered)));
+min_prominence = 3.0 * noise_level;
 
-figure;
+[peak_vals, peak_locs] = findpeaks(ecg_filtered, ...
+    'MinPeakDistance', min_distance, ...
+    'MinPeakProminence', min_prominence);
 
-plot(t, ecg_filtered);
+peak_times = (peak_locs - 1) / Fs;
+RR = diff(peak_times); % Seconds
+HR = 60 ./ RR;         % Instantaneous BPM
 
-xlabel('Time (seconds)');
-ylabel('Amplitude');
+fprintf('Detected %d R-peaks. Mean HR: %.1f BPM, Mean RR: %.3f s.\n', ...
+    length(peak_locs), mean(HR), mean(RR));
 
-title('WESAD S2 - Filtered ECG');
+%% 5. Visualization (Multi-Panel Figure)
+figure('Name', 'WESAD S2 ECG Inspection', 'Position', [100 100 1100 700], 'Color', 'white');
 
+subplot(3, 1, 1);
+plot(t, ecg_raw, 'Color', [0.4 0.4 0.4]);
+xlabel('Time (s)'); ylabel('Raw ADC');
+title('Raw WESAD Chest ECG (Lead II) - S2');
 grid on;
 
-%% Compare raw and filtered ECG
-
-figure;
-
-subplot(2,1,1);
-plot(t, ecg);
-xlabel('Time (seconds)');
-ylabel('Amplitude');
-title('Raw ECG');
-grid on;
-
-subplot(2,1,2);
-plot(t, ecg_filtered);
-xlabel('Time (seconds)');
-ylabel('Amplitude');
-title('Filtered ECG');
-grid on;
-
-%% R-peak detection
-
-% Minimum distance between heartbeats
-minPeakDistance = round(0.4 * Fs);
-
-% Detect positive ECG peaks
-[peakValues, peakLocations] = findpeaks( ...
-    ecg_filtered, ...
-    'MinPeakDistance', minPeakDistance, ...
-    'MinPeakProminence', 3000);
-
-% Convert sample locations to time
-peakTimes = peakLocations / Fs;
-
-%% Plot ECG with detected R-peaks
-
-figure;
-
-plot(t, ecg_filtered);
+subplot(3, 1, 2);
+plot(t, ecg_filtered, 'b', 'LineWidth', 0.8);
 hold on;
-
-plot(peakTimes, peakValues, 'ro');
-
-xlabel('Time (seconds)');
-ylabel('Amplitude');
-
-title('WESAD S2 - R-Peak Detection');
-
-legend('Filtered ECG', 'Detected R-peaks');
-
+plot(peak_times, peak_vals, 'rv', 'MarkerFaceColor', 'r', 'MarkerSize', 5);
+xlabel('Time (s)'); ylabel('Amplitude');
+title('Filtered ECG (0.5 - 40 Hz) with Detected R-Peaks');
+legend('Filtered Signal', 'R-Peaks', 'Location', 'northeast');
 grid on;
 
-
-%% Calculate RR intervals
-
-RR = diff(peakTimes);          % seconds between consecutive R-peaks
-
-% Heart rate from each RR interval
-HR = 60 ./ RR;
-
-%% Display results
-
-fprintf('\nNumber of detected R-peaks: %d\n', length(peakTimes));
-fprintf('Mean RR interval: %.4f seconds\n', mean(RR));
-fprintf('Mean heart rate: %.2f BPM\n', mean(HR));
-
-%% Plot RR intervals
-
-figure;
-
-plot(peakTimes(2:end), RR, 'o-');
-
-xlabel('Time (seconds)');
-ylabel('RR interval (seconds)');
-
-title('WESAD S2 - RR Intervals');
-
-grid on;
-
-%% Plot instantaneous heart rate
-
-figure;
-
-plot(peakTimes(2:end), HR, 'o-');
-
-xlabel('Time (seconds)');
-ylabel('Heart Rate (BPM)');
-
-title('WESAD S2 - Instantaneous Heart Rate');
-
+subplot(3, 1, 3);
+plot(peak_times(2:end), HR, 'k-o', 'LineWidth', 1.0, 'MarkerFaceColor', [0.2 0.7 0.3], 'MarkerSize', 4);
+xlabel('Time (s)'); ylabel('Heart Rate (BPM)');
+title('Instantaneous Heart Rate Trajectory');
 grid on;

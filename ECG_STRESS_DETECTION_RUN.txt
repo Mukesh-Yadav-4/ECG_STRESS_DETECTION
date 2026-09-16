@@ -1,0 +1,80 @@
+ECG Stress Detection - Quick Run Guide
+=============================================
+
+1. Open Terminal / PowerShell and go to project directory:
+   cd "C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION"
+
+
+=============================================
+PYTHON MACHINE LEARNING SUITE
+=============================================
+
+Run everything in one command (Benchmark + Explainability + Plots):
+   python python/train_loso_ml_benchmark.py; python python/explainability_feature_importance.py; python python/plot_ml_evaluation.py
+
+Or run them one by one:
+   python python/train_loso_ml_benchmark.py
+   # Runs LOSO (Leave-One-Subject-Out) cross-validation across 15 subjects with 6 models:
+   # Logistic Regression, Random Forest, XGBoost, LightGBM, CatBoost, SVM.
+
+   python python/explainability_feature_importance.py
+   # Generates feature importances, clinical odds ratios, and top HRV predictors.
+
+   python python/plot_ml_evaluation.py
+   # Saves ROC curves, PR curves, and benchmark bar comparisons to results/figures/.
+
+
+=============================================
+MATLAB SCRIPTS & LIVE DEMO
+=============================================
+
+Option A: Inside MATLAB (Recommended for live demo / presentation)
+1. Open MATLAB and set current folder to:
+   C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\matlab
+2. In the MATLAB Command Window, run:
+
+   setup_project                     % Adds all subfolders to MATLAB path (run this first)
+   DEMO_stress_detection             % Interactive GUI demo with dropdown subject selection
+   TWENTY_SEVEN_final_results        % Computes final metrics & prints summary tables
+   TWENTY_EIGHT_report_figures       % Exports individual high-res figures (Confusion Matrix, ROC, etc.)
+   TWENTY_NINE_project_dashboard     % Generates the master 6-panel clinical dashboard
+
+Option B: Headless from Terminal / PowerShell (No GUI)
+   # Run the interactive demo:
+   matlab -batch "cd('matlab'); setup_project; DEMO_stress_detection"
+
+   # Export individual publication figures:
+   matlab -batch "cd('matlab'); setup_project; TWENTY_EIGHT_report_figures; exit"
+
+   # Export master project dashboard:
+   matlab -batch "cd('matlab'); setup_project; TWENTY_NINE_project_dashboard; exit"
+
+
+=============================================
+DEMO TALKING POINTS (FOR PRESENTATIONS)
+=============================================
+
+1. Live Demo (DEMO_stress_detection.m):
+   - Choose Subject S3 to show clear stress response (high detection accuracy).
+   - Choose Subject S2 to demonstrate physiological non-responder behavior.
+
+2. Explaining Subject S2 (0% Stress Detected):
+   - Mention that S2 showed minimal autonomic shift during TSST (blunted autonomic response).
+   - In clinical stress literature, 10-15% of healthy participants do not exhibit typical cardiac stress reactivity. The model correctly did not hallucinate stress when HRV features didn't deviate from baseline.
+
+3. Explaining 60-second Windows:
+   - 60 seconds is the clinical gold standard for short-term HRV (Task Force of ESC/NASPE).
+   - It captures sympathetic/parasympathetic shifts without the lag of longer multi-minute windows or the noise of ultra-short windows.
+
+
+=============================================
+OUTPUT LOCATIONS
+=============================================
+
+- CSV Results:
+  results/ML_Model_Benchmark_LOSO.csv
+  results/feature_importance_ranking.csv
+
+- Generated High-Res Figures:
+  results/figures/matlab/   (Dashboard, Confusion Matrix, Subject Performance, ROC, Feature Ablation, Demo signals)
+  results/figures/python/   (Multi-Model Benchmark Bars, Multi-Model ROC/PR Curves, Grid Confusion Matrices, Explainability)

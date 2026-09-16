@@ -5,5 +5,5 @@ Baseline Windows,285
 Stress Windows,160
 Detected Stress Windows,138
 Missed Stress Windows,22
-Stress Recall,86.25
-Locked Threshold,0.35
+Stress Recall (%),86.25
+Locked Decision Threshold,0.35

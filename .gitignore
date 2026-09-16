@@ -51,3 +51,7 @@ results/Subject_Level_Statistics.csv
 results/Threshold_Analysis.csv
 results/WESAD_HRV_features.csv
 results/WESAD_HRV_features_expanded.csv
+
+# Figure archives & theme staging
+results/figures/archive/
+results/figures/default_theme/
