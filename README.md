@@ -8,6 +8,7 @@
 [![Sensitivity](https://img.shields.io/badge/Sensitivity-86.25%25-2ea44f.svg?style=flat-square)]()
 [![Specificity](https://img.shields.io/badge/Specificity-95.79%25-success.svg?style=flat-square)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat-square)](LICENSE)
+[![Research Paper: PDF](https://img.shields.io/badge/Research%20Paper-PDF%20Download-b31b1b.svg?style=flat-square&logo=adobeacrobatreader)](paper/ECG_Stress_Detection_WESAD_Benchmark_Paper.pdf)
 
 ---
 
@@ -420,6 +421,8 @@ To maintain rigorous scientific standards, several experimental boundaries and d
 ```plaintext
 ECG_STRESS_DETECTION/
 ├── README.md                                  # Comprehensive research documentation & benchmark report
+├── paper/                                     # Research manuscript
+│   └── ECG_Stress_Detection_WESAD_Benchmark_Paper.pdf # Full 5-page IEEE publication manuscript
 ├── LICENSE                                    # MIT Open Source License
 ├── requirements.txt                           # Python dependencies for ML benchmark suite
 ├── ECG_STRESS_DETECTION_RUN.txt               # Quick reference guide for execution
