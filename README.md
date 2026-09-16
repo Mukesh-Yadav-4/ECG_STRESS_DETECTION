@@ -137,14 +137,14 @@ Standardized **60-second sliding analysis windows** with **50% overlap (30-secon
 | **7** | **Median RR Interval** | `MedianRR` | $\text{median}(RR)$ (Seconds / Milliseconds) |
 | **8** | **SDNN** | `SDNN` | Standard deviation of clean NN intervals: $\sqrt{\frac{1}{N-1}\sum (RR_i - \overline{RR})^2}$ |
 | **9** | **RMSSD** | `RMSSD` | Root mean square of successive differences: $\sqrt{\frac{1}{N-1}\sum (RR_{i+1} - RR_i)^2}$ |
-| **10** | **pNN50** | `pNN50` | Percentage of successive RR differences $> 50\text{ ms}$: $\frac{\sum \mathbb{I}(|RR_{i+1} - RR_i| > 0.05)}{N-1} \times 100\%$ |
+| **10** | **pNN50** | `pNN50` | Percentage of successive RR differences $> 50\text{ ms}$: $\frac{\sum \mathbb{I}(\lvert RR_{i+1} - RR_i \rvert > 0.05)}{N-1} \times 100\%$ |
 | **11** | **RR Coefficient of Variation** | `RR_CV` | Ratio of SDNN to Mean RR: $\frac{\text{SDNN}}{\text{MeanRR}}$ |
 | **12** | **RR Interquartile Range** | `RR_IQR` | Spread of RR intervals: $Q_3(RR) - Q_1(RR)$ |
 | **13** | **HR Interquartile Range** | `HR_IQR` | Spread of instantaneous heart rate: $Q_3(\text{HR}) - Q_1(\text{HR})$ |
 
 ### Model Feature Selection
 In the finalized classifier (`matlab/05_modeling/TWENTY_personalized_classifier.m`), an 8-feature subset focusing on primary rate, variability, and robust spread metrics was used:
-$$\mathbf{X} = \left[ \text{MeanHR},\; \text{SDNN},\; \text{RMSSD},\; \text{pNN50},\; \text{MeanRR},\; \text{RR\_CV},\; \text{RR\_IQR},\; \text{HR\_IQR} \right]$$
+$$\mathbf{X} = \left[ \text{MeanHR},\; \text{SDNN},\; \text{RMSSD},\; \text{pNN50},\; \text{MeanRR},\; \text{RR}_{\text{CV}},\; \text{RR}_{\text{IQR}},\; \text{HR}_{\text{IQR}} \right]$$
 
 ---
 
