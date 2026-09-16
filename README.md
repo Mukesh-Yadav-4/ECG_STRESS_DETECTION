@@ -1,4 +1,4 @@
-# Personalized Electrocardiographic and Heart Rate Variability Dynamics for Acute Stress Detection: A Leave-One-Subject-Out Benchmark on WESAD
+# Personalized Electrocardiographic and HRV Dynamics for Acute Stress Detection: A Leave-One-Subject-Out Benchmark on WESAD
 
 [![MATLAB](https://img.shields.io/badge/MATLAB-R2022b%2B-orange.svg?style=flat-square&logo=mathworks)](https://www.mathworks.com/products/matlab.html)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg?style=flat-square&logo=python)](https://www.python.org/)
@@ -13,11 +13,15 @@
 
 ## Abstract
 
-**Background:** Automated identification of acute psychosocial stress from non-invasive electrocardiography (ECG) is a fundamental pursuit in digital medicine, autonomic neuroscience, and wearable health diagnostics. However, clinical translation has historically been impeded by substantial inter-individual baseline heterogeneity: resting heart rate and basal vagal tone exhibit pronounced variance across subjects due to genetic, athletic, and circadian factors, inducing acute generalization collapse in standard, uncalibrated cross-subject machine learning classifiers.
+**Background:** Automated classification of acute psychological stress from non-invasive wearable electrocardiography (ECG) is a fundamental problem in physiological computing and affective state recognition. A central challenge in cross-subject generalization is substantial inter-individual baseline heterogeneity: resting heart rate and basal heart rate variability (HRV) metrics vary widely across individuals due to genetic, fitness, and circadian factors, causing uncalibrated global classifiers to perform poorly when evaluated on unseen subjects.
 
-**Methods:** This repository provides an end-to-end, reproducible computational framework developed in **MATLAB (R2022b+)** and **Python (3.10+)** to quantify, evaluate, and benchmark acute stress detection across all **15 subjects** ($N = 15$, 445 standardized 60-second windows) of the public **WESAD** (Wearable Stress and Affect Detection) benchmark dataset. Single-lead chest ECG acquired at $700\text{ Hz}$ via RespiBAN undergoes zero-phase 4th-order Butterworth bandpass filtering ($0.5 - 40\text{ Hz}$), Pan-Tompkins QRS detection, physiological RR interval artifact gating ($300 - 1500\text{ ms}$), and multi-domain feature extraction across time, frequency, and nonlinear Poincaré domains. To overcome inter-subject baseline bias, we introduce a **subject-specific differential baseline normalization ($\\Delta$-calibration)** formulation. All models are evaluated using strict **15-Fold Leave-One-Subject-Out Cross-Validation (LOSO-CV)**, ensuring complete independence between training cohorts and unseen test subjects.
+**Methods:** This repository provides an end-to-end, reproducible research pipeline implemented in **MATLAB (R2022b+)** and **Python (3.10+)** to quantify, evaluate, and benchmark acute stress-state classification across all **15 subjects** ($N = 15$, 445 standardized 60-second windows) of the public **WESAD** (Wearable Stress and Affect Detection) benchmark dataset. Single-lead chest ECG acquired at $700\text{ Hz}$ via RespiBAN is conditioned with a zero-phase 4th-order Butterworth bandpass filter ($0.5 - 40\text{ Hz}$). R-peaks are detected using adaptive prominence thresholding based on the Median Absolute Deviation (MAD) of the signal noise floor, followed by physiological RR interval filtering ($300 - 1500\text{ ms}$). From cleaned NN intervals, 13 time-domain and statistical HRV features are computed per window. To overcome baseline heterogeneity, we implement a **subject-specific relative baseline normalization**:
 
-**Results:** Baseline normalization yielded a decisive empirical advance, boosting cross-subject classification accuracy from $81.57\%$ to **$92.36\%$** ($+10.79\%$) and stress F1-score from $73.03\%$ to **$89.03\%$** ($+16.00\%$) relative to uncalibrated multi-domain feature baselines. At an operating decision threshold of $\tau = 0.35$, the calibrated detector achieves a receiver operating characteristic area under the curve (**ROC-AUC**) of **$0.9494$**, a precision-recall AUC (**PR-AUC**) of **$0.9467$**, a sensitivity (recall) of **$86.25\%$** ($138/160$ stress windows), and a specificity of **$95.79\%$** ($273/285$ non-stress windows). A comparative benchmark across 6 machine learning paradigms (Logistic Regression, Multilayer Perceptron, Support Vector Machines, Random Forests, Extra Trees, and Histogram Gradient Boosting) confirmed robust generalization with ROC-AUC $> 0.937$ across all architectures on unseen subjects. Permutation importance and standardized odds ratio analyses confirm that beat-to-beat interval compression ($\\Delta\text{MeanRR}$, odds ratio $= 0.065$, AUC drop $= 0.177$) and sympathetic rate elevation ($\\Delta\text{MeanHR}$, odds ratio $= 5.65$) alongside vagal tone withdrawal ($\\Delta\text{RMSSD}$) drive the physiological decision boundary.
+$$X^* = \frac{X - B_s}{|B_s|}$$
+
+All models are evaluated using strict **15-Fold Leave-One-Subject-Out Cross-Validation (LOSO-CV)** with subject-specific baseline calibration, where model parameters are trained strictly on $N - 1$ subjects and tested on the held-out subject.
+
+**Results:** Baseline-relative normalization improved cross-subject classification accuracy from $81.57\%$ to **$92.36\%$** ($+10.79\%$) and stress F1-score from $73.03\%$ to **$89.03\%$** ($+16.00\%$) compared to identical uncalibrated feature models. At a calibrated decision threshold of $\tau = 0.35$, the primary classifier achieves a receiver operating characteristic area under the curve (**ROC-AUC**) of **$0.9494$**, a precision-recall AUC (**PR-AUC**) of **$0.9467$**, a sensitivity (recall) of **$86.25\%$** ($138/160$ stress windows), and a specificity of **$95.79\%$** ($273/285$ non-stress windows). A comparative benchmark across 6 machine learning architectures (Logistic Regression, Multilayer Perceptron, Support Vector Machines, Random Forests, Extra Trees, and Histogram Gradient Boosting) demonstrates consistent generalization with ROC-AUC $> 0.937$ across all paradigms. Permutation importance and standardized odds ratio analyses confirm that interval compression ($\Delta\text{MeanRR}$) and heart rate acceleration ($\Delta\text{MeanHR}$) drive the learned decision boundary.
 
 ---
 
@@ -26,172 +30,170 @@
 <p align="center">
   <img src="results/figures/FINAL_Project_Dashboard.png" width="98%" alt="Master Project Dashboard" />
   <br>
-  <em><b>Figure 1: Comprehensive Research Dashboard.</b> Summary of the end-to-end WESAD study: (A) Four-stage model progression and ablation; (B) Subject-specific stress detection rates across all 15 subjects; (C) Calibrated 15-fold LOSO confusion matrix; (D) Cross-validated ROC curve ($\text{AUC} = 0.9494$); (E) Summary scorecard of clinical validation metrics; (F) Distribution of evaluated test windows per subject ($N = 445$).</em>
+  <em><b>Figure 1: Comprehensive Research Dashboard.</b> Summary of the end-to-end WESAD study: (A) Four-stage model progression and ablation; (B) Subject-specific stress detection rates across all 15 subjects; (C) Calibrated 15-fold LOSO confusion matrix; (D) Cross-validated ROC curve ($\text{AUC} = 0.9494$); (E) Summary scorecard of validation metrics; (F) Distribution of evaluated test windows per subject ($N = 445$).</em>
 </p>
 
 ---
 
-## 1. Physiological Foundations & Mathematical Formulation
+## 1. Problem Formulation & Baseline Normalization
 
-### 1.1 Autonomic Nervous System Dynamics
-Acute psychological and cognitive stress elicits a systemic autonomic response mediated by the autonomic nervous system (ANS):
-1. **Sympathetic Nervous System (SNS) Activation:** Triggers systemic catecholamine release (epinephrine and norepinephrine), accelerating sinoatrial node pacing, shortening the cardiac cycle, and elevating low-frequency (LF) cardiac oscillations.
-2. **Parasympathetic Nervous System (PNS) Withdrawal:** Mediated via the vagus nerve (cranial nerve X); acute stress induces rapid vagal withdrawal, precipitating an immediate collapse in beat-to-beat variability (RMSSD, pNN50, high-frequency [HF] spectral power).
+### 1.1 The Inter-Individual Baseline Problem
+Fixed global thresholds (e.g., classifying stress whenever $\text{Heart Rate} > 80\text{ BPM}$) perform inconsistently across individuals because resting heart rate varies considerably across healthy populations:
 
-### 1.2 The Inter-Individual Generalization Dilemma
-A primary failure mode of biomedical wearable algorithms is the reliance on absolute, uncalibrated physiological thresholds. For instance, a resting heart rate of $80\text{ BPM}$ may indicate acute sympathetic arousal in an endurance-trained athlete whose baseline is $50\text{ BPM}$, yet represent a relaxed state in a sedentary individual whose baseline is $82\text{ BPM}$:
+$$\text{Subject } A: \quad \text{HR}_{\text{rest}} = 54\text{ BPM}, \quad \text{HR}_{\text{stress}} = 74\text{ BPM} \quad (\text{Relative change} = +37.0\%)$$
+$$\text{Subject } B: \quad \text{HR}_{\text{rest}} = 78\text{ BPM}, \quad \text{HR}_{\text{stress}} = 98\text{ BPM} \quad (\text{Relative change} = +25.6\%)$$
 
-$$\text{Subject } A: \quad \text{HR}_{\text{rest}} = 54\text{ BPM}, \quad \text{HR}_{\text{stress}} = 74\text{ BPM} \quad (\Delta = +20\text{ BPM})$$
-$$\text{Subject } B: \quad \text{HR}_{\text{rest}} = 78\text{ BPM}, \quad \text{HR}_{\text{stress}} = 98\text{ BPM} \quad (\Delta = +20\text{ BPM})$$
+A fixed cutoff of $80\text{ BPM}$ would misclassify Subject B as stressed at rest, while failing to detect stress in Subject A.
 
-An uncalibrated classifier utilizing a static decision boundary (e.g., $\text{HR} > 75\text{ BPM}$) will misclassify Subject B as chronically stressed even at rest, while failing to detect stress in Subject A.
+### 1.2 Mathematical Formulation of Relative Normalization
+To decouple state-dependent physiological responses from resting baseline differences, features are normalized relative to each subject's resting baseline. Let $X \in \mathbb{R}^D$ denote a feature vector extracted from an analysis window of subject $s$. Let $\mathcal{W}_{\text{base}}^{(s)}$ denote the set of resting baseline windows for subject $s$. The reference baseline vector $B_s$ is:
 
-### 1.3 Mathematical Formulation of Differential Normalization
-To decouple state-dependent autonomic transitions from tonic inter-subject baseline discrepancies, we formulate a subject-specific differential baseline transformation. Let $\mathbf{x}_i^{(s)} \in \mathbb{R}^D$ denote the $D$-dimensional feature vector extracted from the $i$-th analysis window of subject $s \in \{1, \dots, N\}$. Let $\mathcal{W}_{\text{base}}^{(s)}$ denote the set of indices corresponding exclusively to the resting baseline protocol phase for subject $s$:
+$$B_s = \frac{1}{|\mathcal{W}_{\text{base}}^{(s)}|} \sum_{k \in \mathcal{W}_{\text{base}}^{(s)}} X_k^{(s)}$$
 
-$$\bar{\mathbf{x}}_{\text{baseline}}^{(s)} = \frac{1}{|\mathcal{W}_{\text{base}}^{(s)}|} \sum_{k \in \mathcal{W}_{\text{base}}^{(s)}} \mathbf{x}_k^{(s)}$$
+Each feature vector $X$ is then transformed into a relative fractional change:
 
-The differential feature vector $\Delta \mathbf{x}_i^{(s)}$ is defined as:
+$$X^* = \frac{X - B_s}{|B_s|}$$
 
-$$\Delta \mathbf{x}_i^{(s)} = \mathbf{x}_i^{(s)} - \bar{\mathbf{x}}_{\text{baseline}}^{(s)}$$
-
-Alternatively, when scaling by the intra-subject resting variance $\boldsymbol{\sigma}_{\text{baseline}}^{(s)}$:
-
-$$\mathbf{z}_i^{(s)} = \frac{\mathbf{x}_i^{(s)} - \bar{\mathbf{x}}_{\text{baseline}}^{(s)}}{\boldsymbol{\sigma}_{\text{baseline}}^{(s)} + \boldsymbol{\epsilon}}$$
-
-This mathematical transformation maps each subject's resting physiological state to the coordinate origin $\mathbf{0}$, transforming absolute metrics into relative autonomic perturbation vectors that generalize cleanly across unseen test subjects.
+To avoid division by zero for features near zero, $|B_s|$ is bounded below by a small numerical constant $\epsilon = 10^{-6}$. This transformation expresses each feature as a percentage deviation from the subject's own resting state, centering resting physiology near zero.
 
 ---
 
 ## 2. Experimental Cohort & Study Protocol
 
-Experiments were conducted on the peer-reviewed **WESAD** benchmark dataset (*Schmidt et al., 2018*), collected under a strictly controlled laboratory protocol:
-- **Cohort:** 15 healthy adult subjects ($S2 - S17$, excluding $S1$ and $S12$ due to sensor malfunction in the original trial; 12 males, 3 females, age: $27.5 \pm 2.4$ years).
-- **Acquisition Hardware:** Chest-worn RespiBAN Professional telemetry system recording single-lead Lead-II ECG at a sampling frequency of $f_s = 700\text{ Hz}$.
+Experiments were conducted on the **WESAD** benchmark dataset (*Schmidt et al., 2018*), collected under a controlled laboratory protocol:
+- **Cohort:** 15 healthy adult subjects ($S2 - S17$, excluding $S1$ and $S12$ due to sensor issues in the original dataset; 12 males, 3 females, age: $27.5 \pm 2.4$ years).
+- **Acquisition Hardware:** Chest-worn RespiBAN Professional telemetry system recording single-lead Lead-II ECG at $f_s = 700\text{ Hz}$.
 - **Experimental Protocol Phases:**
-  1. **Baseline Condition (20 min):** Neutral, seated relaxation reading neutral magazines.
-  2. **Trier Social Stress Test (TSST):** Validated psychosocial laboratory stressor consisting of 5 minutes of public speaking anticipation/delivery facing a stern evaluative committee followed by 5 minutes of mental arithmetic (counting backward from 2,043 in steps of 17 with vocal restart penalties).
-  3. **Amusement Condition (10 min):** Exposure to humorous video clips to induce positive valence.
-  4. **Guided Meditation (20 min):** Controlled diaphragmatic breathing to re-establish homeostatic recovery.
-- **Classification Paradigm:** Binary classification isolating **Acute Stress** ($N = 160$ valid windows) against **Non-Stress / Calm States** (Baseline + Amusement, $N = 285$ valid windows), totaling **445 standardized windows**.
+  1. **Baseline Condition (20 min):** Neutral, seated relaxation reading magazines.
+  2. **Trier Social Stress Test (TSST):** Psychosocial laboratory stressor consisting of 5 minutes of public speaking preparation/delivery facing an evaluative panel, followed by 5 minutes of mental arithmetic (counting backward from 2,043 in steps of 17 with vocal restart penalties).
+  3. **Amusement Condition (10 min):** Exposure to humorous video clips.
+  4. **Guided Meditation (20 min):** Controlled breathing to support homeostatic recovery.
+- **Classification Formulation:** Binary classification isolating **Acute Stress** ($N = 160$ valid windows) against **Non-Stress / Calm States** (Baseline + Amusement, $N = 285$ valid windows), totaling **445 standardized windows** across all 15 subjects.
 
 <p align="center">
   <img src="results/figures/DEMO_Protocol_Timeline.png" width="95%" alt="WESAD Protocol Timeline" />
   <br>
-  <em><b>Figure 2: Experimental Protocol and Telemetry Timeline.</b> Clinical dark-theme representation illustrating the temporal progression across Baseline, TSST Acute Stress, Amusement, and Meditation recovery phases.</em>
+  <em><b>Figure 2: Experimental Protocol Timeline.</b> Telemetry visualization illustrating the temporal progression across Baseline, TSST Acute Stress, Amusement, and Meditation recovery phases for a representative session.</em>
 </p>
 
 ---
 
-## 3. Digital Biosignal Processing (DSP) Pipeline
+## 3. Signal Processing & R-Peak Detection Pipeline
 
-The end-to-end signal processing architecture transforms raw $700\text{ Hz}$ single-lead chest ECG into artifact-free Normal-to-Normal (NN) intervals through three modular stages:
+The pipeline processes raw $700\text{ Hz}$ single-lead chest ECG into clean Normal-to-Normal (NN) interval time series through three stages:
 
 ```plaintext
 Raw Chest ECG (fs = 700 Hz)
   │
   ▼
-[Stage 1: Bandpass Conditioning] ──► 4th-Order Zero-Phase Butterworth (0.5 - 40 Hz)
-  │                                   Suppresses DC wander, respiration (<0.5 Hz) & EMG/mains noise
+[Stage 1: Bandpass Filtering] ──► 4th-Order Zero-Phase Butterworth (0.5 - 40 Hz)
+  │                                Attenuates baseline drift, respiration (<0.5 Hz) & high-frequency noise
   ▼
-[Stage 2: Pan-Tompkins QRS Engine]
-  │  ├── Five-Point Derivative: H(z) = (1/8T) * (-z^-2 - 2z^-1 + 2z^1 + z^2)
-  │  ├── Non-Linear Squaring: y[n] = x^2[n] (accentuates steep QRS complexes)
-  │  ├── Moving Window Integration: W = 150 ms (time integration over QRS duration)
-  │  └── Adaptive Dual Thresholding + 200 ms Refractory Blanking
+[Stage 2: Adaptive R-Peak Detection]
+  │  ├── Robust Noise Floor Estimation via Median Absolute Deviation (MAD):
+  │  │     Noise Floor = 1.4826 * median(|x - median(x)|)
+  │  ├── Adaptive Prominence Threshold: Prominence >= 3.0 * Noise Floor
+  │  └── Refractory Blanking: MinPeakDistance >= 0.35 s (350 ms, max 171 BPM)
   ▼
 [Stage 3: Physiological Quality Control]
-  │  ├── Physiological Bounds: 300 ms <= NN <= 1500 ms (40 - 200 BPM)
-  │  └── Ectopic Beat Gating & Local Median Filtering
+  │  ├── Interval Gating: 300 ms <= RR <= 1500 ms (40 - 200 BPM)
+  │  └── Data Sufficiency Check: Minimum 5 valid intervals per 60-second window
   ▼
-Clean Normal-to-Normal (NN) Interval Time Series
+Clean Normal-to-Normal (NN) Intervals & Instantaneous Heart Rate (HR = 60 / RR)
 ```
 
-### 3.1 Raw Lead-II Electrocardiogram Morphology
-The raw biosignal captures high-fidelity ventricular depolarization and repolarization morphology, with prominent P-waves, narrow QRS complexes, and T-waves:
+### 3.1 Raw Lead-II Electrocardiogram
+The chest biosignal provides clear ventricular depolarization and repolarization waveforms:
 
 <p align="center">
   <img src="results/figures/DEMO_Raw_ECG_LeadII.png" width="95%" alt="Raw ECG Lead-II Signal" />
   <br>
-  <em><b>Figure 3: Lead-II Electrocardiogram Trace.</b> Clinical telemetry dark theme displaying a representative 10-second segment ($700\text{ Hz}$) with clearly resolved P-QRS-T complexes.</em>
+  <em><b>Figure 3: Lead-II Electrocardiogram Trace.</b> Telemetry representation showing a representative 10-second segment ($700\text{ Hz}$) with resolved P-QRS-T complexes.</em>
 </p>
 
-### 3.2 Pan-Tompkins QRS Waveform Transformation
-To reliably detect R-peaks under motion artifacts, the Pan-Tompkins algorithm executes sequential filtering, differentiation, squaring, and moving-window integration:
+### 3.2 Waveform Processing & Peak Detection
+For demonstration and comparison purposes, the repository also includes a modular Pan-Tompkins QRS detector (`matlab/DEMO_stress_detection.m`), illustrating sequential bandpass filtering, 5-point differentiation, squaring, and moving-window integration:
 
 <p align="center">
   <img src="results/figures/DEMO_Pan_Tompkins_QRS_Detection.png" width="95%" alt="Pan-Tompkins QRS Detection" />
   <br>
-  <em><b>Figure 4: Four-Stage Pan-Tompkins Waveform Processing.</b> (Top to Bottom): (1) Raw input ECG; (2) Zero-phase bandpass-filtered signal ($0.5 - 40\text{ Hz}$); (3) Squared 5-point derivative waveform; (4) Moving-window integrated signal ($W = 150\text{ ms}$) with detected fiducial R-peak markers (red circles).</em>
+  <em><b>Figure 4: Four-Stage Waveform Processing Demonstration.</b> (Top to Bottom): (1) Raw input ECG; (2) Zero-phase bandpass-filtered signal ($0.5 - 40\text{ Hz}$); (3) Squared derivative waveform; (4) Moving-window integrated signal ($W = 150\text{ ms}$) with detected fiducial R-peaks (red circles).</em>
 </p>
 
 ---
 
 ## 4. Feature Extraction Architecture
 
-Standardized **60-second sliding analysis windows** with a **50% overlap (30-second step)** were extracted across each subject's experimental timeline. Within each window, a 13-dimensional multi-domain feature vector was computed:
+Standardized **60-second sliding analysis windows** with **50% overlap (30-second step)** were extracted across each subject's timeline. Within each window, **13 time-domain and statistical distribution features** were computed (`matlab/02_preprocessing/process_ecg_window.m`):
 
-| Domain | Mathematical Feature | Formal Definition / Physiological Description | Autonomic Mechanism |
-| :--- | :--- | :--- | :--- |
-| **Time** | **Mean HR** | $\frac{60}{N} \sum_{i=1}^N \frac{1}{NN_i}$ (Beats Per Minute) | Sinoatrial node pacing; sympathetic excitation |
-| **Time** | **Mean RR** | $\frac{1}{N} \sum_{i=1}^N NN_i$ (Milliseconds) | Reciprocal cardiac period |
-| **Time** | **SDNN** | $\sqrt{\frac{1}{N-1} \sum_{i=1}^N (NN_i - \overline{NN})^2}$ | Total autonomic variability |
-| **Time** | **RMSSD** | $\sqrt{\frac{1}{N-1} \sum_{i=1}^{N-1} (NN_{i+1} - NN_i)^2}$ | Parasympathetic / vagal cardiac modulation |
-| **Time** | **pNN50** | $\frac{1}{N-1} \sum_{i=1}^{N-1} \mathbb{I}(|NN_{i+1} - NN_i| > 50\text{ ms}) \times 100\%$ | Short-term vagal pulse dispersion |
-| **Time** | **RR-IQR** | $\text{IQR}(NN) = Q_3(NN) - Q_1(NN)$ | Robust non-parametric interval spread |
-| **Time** | **HR-IQR** | $\text{IQR}(\text{HR}) = Q_3(\text{HR}) - Q_1(\text{HR})$ | Robust heart rate dispersion |
-| **Time** | **RR-CV** | $\frac{\text{SDNN}}{\text{Mean RR}}$ | Coefficient of variation (normalized dispersion) |
-| **Frequency** | **VLF Power** | $\int_{0.0033}^{0.04} S(f) df$ (Welch PSD, Milliseconds$^2$) | Thermoregulation and renin-angiotensin tone |
-| **Frequency** | **LF Power** | $\int_{0.04}^{0.15} S(f) df$ (Welch PSD, Milliseconds$^2$) | Baroreflex modulation; mixed sympathetic/parasympathetic |
-| **Frequency** | **HF Power** | $\int_{0.15}^{0.40} S(f) df$ (Welch PSD, Milliseconds$^2$) | Respiratory Sinus Arrhythmia (RSA); pure vagal tone |
-| **Frequency** | **LF/HF Ratio** | $\frac{\text{LF Power}}{\text{HF Power}}$ | Classical index of sympathovagal balance |
-| **Nonlinear** | **Poincaré $SD_1$** | $\sqrt{\frac{1}{2} \text{Var}(NN_{i+1} - NN_i)}$ | Instantaneous beat-to-beat variability (parasympathetic) |
-| **Nonlinear** | **Poincaré $SD_2$** | $\sqrt{2 \text{Var}(NN_i) - \frac{1}{2} \text{Var}(NN_{i+1} - NN_i)}$ | Long-term continuous autonomic variability |
-| **Nonlinear** | **$SD_1/SD_2$** | $\frac{SD_1}{SD_2}$ | Nonlinear autonomic balance ratio |
+| # | Feature Name | Code Variable | Formal Definition / Description |
+| :---: | :--- | :--- | :--- |
+| **1** | **Mean Heart Rate** | `MeanHR` | $\frac{60}{N} \sum_{i=1}^N \frac{1}{RR_i}$ (Beats Per Minute) |
+| **2** | **Median Heart Rate** | `MedianHR` | $\text{median}(\text{HR})$ (Beats Per Minute) |
+| **3** | **Std of Heart Rate** | `StdHR` | $\text{std}(\text{HR})$ (Beats Per Minute) |
+| **4** | **Min Heart Rate** | `MinHR` | $\min(\text{HR})$ (Beats Per Minute) |
+| **5** | **Max Heart Rate** | `MaxHR` | $\max(\text{HR})$ (Beats Per Minute) |
+| **6** | **Mean RR Interval** | `MeanRR` | $\frac{1}{N} \sum_{i=1}^N RR_i$ (Seconds / Milliseconds) |
+| **7** | **Median RR Interval** | `MedianRR` | $\text{median}(RR)$ (Seconds / Milliseconds) |
+| **8** | **SDNN** | `SDNN` | Standard deviation of clean NN intervals: $\sqrt{\frac{1}{N-1}\sum (RR_i - \overline{RR})^2}$ |
+| **9** | **RMSSD** | `RMSSD` | Root mean square of successive differences: $\sqrt{\frac{1}{N-1}\sum (RR_{i+1} - RR_i)^2}$ |
+| **10** | **pNN50** | `pNN50` | Percentage of successive RR differences $> 50\text{ ms}$: $\frac{\sum \mathbb{I}(|RR_{i+1} - RR_i| > 0.05)}{N-1} \times 100\%$ |
+| **11** | **RR Coefficient of Variation** | `RR_CV` | Ratio of SDNN to Mean RR: $\frac{\text{SDNN}}{\text{MeanRR}}$ |
+| **12** | **RR Interquartile Range** | `RR_IQR` | Spread of RR intervals: $Q_3(RR) - Q_1(RR)$ |
+| **13** | **HR Interquartile Range** | `HR_IQR` | Spread of instantaneous heart rate: $Q_3(\text{HR}) - Q_1(\text{HR})$ |
+
+### Model Feature Selection
+In the finalized classifier (`matlab/05_modeling/TWENTY_personalized_classifier.m`), an 8-feature subset focusing on primary rate, variability, and robust spread metrics was used:
+$$\mathbf{X} = \left[ \text{MeanHR},\; \text{SDNN},\; \text{RMSSD},\; \text{pNN50},\; \text{MeanRR},\; \text{RR\_CV},\; \text{RR\_IQR},\; \text{HR\_IQR} \right]$$
 
 ---
 
-## 5. Experimental Validation Protocol: 15-Fold LOSO-CV
+## 5. Validation Protocol: 15-Fold LOSO with Baseline Calibration
 
-To strictly prevent cross-subject data leakage and evaluate real-world generalization, we adopted a **Leave-One-Subject-Out Cross-Validation (LOSO-CV)** design:
+To evaluate cross-subject generalization, we utilized **15-Fold Leave-One-Subject-Out Cross-Validation (LOSO-CV)** with subject-specific baseline calibration:
 
 ```plaintext
 Fold k (k = 1, ..., 15):
-┌─────────────────────────────────────────────────────────┐
-│ Training Cohort: 14 Subjects (All windows except Sub k) │ ──► Supervised Training
-└─────────────────────────────────────────────────────────┘
-                            │
-┌─────────────────────────────────────────────────────────┐
-│ Testing Cohort: Subject k (Held-out completely)         │ ──► Unseen Evaluation
-└─────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────┐
+│ Training Cohort: 14 Subjects (All windows except Subject k)│
+│  - Normalized using each training subject's own baseline   │
+│  - Supervised model trained strictly on these 14 subjects  │
+└────────────────────────────────────────────────────────────┘
+                              │
+┌────────────────────────────────────────────────────────────┐
+│ Held-Out Test Cohort: Subject k                            │
+│  - Test windows normalized using Subject k's resting base  │
+│  - Evaluated on trained classifier (zero label leakage)    │
+└────────────────────────────────────────────────────────────┘
 ```
 
-- **Zero Leakage:** In each fold $k$, the classifier has never observed biosignals, features, or labels from subject $k$.
-- **Decision Threshold Optimization ($\\tau = 0.35$):** In clinical screening, false negatives (failing to detect severe acute stress) are substantially more costly than false positives. We calibrated the global decision threshold from default $\tau = 0.50$ to $\tau = 0.35$, improving sensitivity from $78.13\%$ to **$86.25\%$** while preserving an exceptional specificity of **$95.79\%$**.
+- **Subject Independence:** The classifier weights $\mathbf{w}$ and bias $b$ are trained strictly on the other 14 subjects. No stress labels from subject $k$ are ever seen during training.
+- **Baseline Calibration:** For the test fold, subject $k$'s resting baseline windows are used solely to establish reference vector $B_k$ for relative normalization: $X_k^* = (X_k - B_k) / |B_k|$.
+- **Decision Threshold Calibration ($\tau = 0.35$):** Adjusting the decision threshold from $\tau = 0.50$ to $\tau = 0.35$ optimized the balance between sensitivity ($86.25\%$) and specificity ($95.79\%$).
 
 ---
 
 ## 6. Empirical Results & Performance Evaluation
 
 ### 6.1 Validated Primary Benchmark Scorecard
-Evaluated across **445 independent windows** from all 15 subjects under 15-fold LOSO validation:
+Evaluated across **445 independent 60-second windows** from all 15 subjects under 15-fold LOSO validation:
 
 | Metric | Validated Empirical Result | Operational Interpretation |
 | :--- | :---: | :--- |
 | **Accuracy** | **92.36%** | $411$ out of $445$ total windows correctly classified |
-| **Sensitivity / Recall** | **86.25%** | Successfully identified **138 of 160** acute stress episodes |
-| **Specificity** | **95.79%** | Correctly identified **273 of 285** calm/resting windows |
-| **Precision** | **92.00%** | When stress is flagged, probability of true positive is $92.00\%$ ($138/150$) |
-| **F1-Score** | **89.03%** | Harmonic mean balancing recall and precision |
-| **Balanced Accuracy** | **91.02%** | Unbiased accuracy across imbalanced class distributions |
-| **ROC-AUC** | **0.9494** | Outstanding discriminative separability across all operating thresholds |
+| **Sensitivity / Recall** | **86.25%** | Correctly classified **138 of 160** acute stress windows |
+| **Specificity** | **95.79%** | Correctly classified **273 of 285** non-stress/baseline windows |
+| **Precision** | **92.00%** | When stress is flagged, true positive rate is $92.00\%$ ($138/150$) |
+| **F1-Score** | **89.03%** | Harmonic mean of recall and precision |
+| **Balanced Accuracy** | **91.02%** | Unbiased average across both classes |
+| **ROC-AUC** | **0.9494** | Separability across all operating thresholds |
 | **Confusion Matrix** | $\begin{bmatrix} 273 & 12 \\ 22 & 138 \end{bmatrix}$ | $\text{TN}=273, \text{FP}=12, \text{FN}=22, \text{TP}=138$ |
 
 <table align="center">
   <tr>
     <td align="center" width="50%">
       <img src="results/figures/FINAL_Confusion_Matrix.png" width="100%" alt="Final Confusion Matrix" /><br />
-      <em><b>Figure 5(a): Calibrated LOSO Confusion Matrix.</b> Demonstrating high true negative retention ($273/285, 95.8\%$) and strong stress capture ($138/160, 86.3\%$).</em>
+      <em><b>Figure 5(a): Calibrated LOSO Confusion Matrix.</b> Showing $273/285$ non-stress windows ($95.8\%$) and $138/160$ stress windows ($86.3\%$) correctly identified.</em>
     </td>
     <td align="center" width="50%">
       <img src="results/figures/FINAL_ROC_Curve.png" width="100%" alt="Final ROC Curve" /><br />
@@ -204,9 +206,9 @@ Evaluated across **445 independent windows** from all 15 subjects under 15-fold 
 
 ## 7. Comparative Machine Learning Benchmark (Python Suite)
 
-To benchmark the physiological features across diverse functional families, we implemented a standardized Python evaluation suite (`scikit-learn 1.3+`) comparing 6 canonical architectures under identical 15-Fold LOSO cross-validation:
+To evaluate how different functional families handle the normalized features, we implemented a Python benchmark suite (`scikit-learn 1.3+`) comparing 6 canonical architectures under identical 15-Fold LOSO cross-validation:
 
-| Model Paradigm | Accuracy | Balanced Acc | Sensitivity (Recall) | Specificity | Precision | F1-Score | ROC-AUC | PR-AUC |
+| Model Architecture | Accuracy | Balanced Acc | Sensitivity (Recall) | Specificity | Precision | F1-Score | ROC-AUC | PR-AUC |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Logistic Regression (L2)** | **92.13%** | **90.02%** | $82.50\%$ | **97.54%** | **94.96%** | **88.29%** | **0.9493** | **0.9467** |
 | **Multilayer Perceptron (MLP)** | $91.69\%$ | $89.95\%$ | **83.75%** | $96.14\%$ | $92.41\%$ | $87.87\%$ | $0.9375$ | $0.9327$ |
@@ -221,17 +223,17 @@ To benchmark the physiological features across diverse functional families, we i
   <em><b>Figure 6: Multi-Model Benchmark Comparison.</b> Grouped performance metrics across all 6 machine learning architectures under 15-fold LOSO cross-validation on unseen subjects.</em>
 </p>
 
-### 7.1 Multi-Model Diagnostic Discrimination: ROC and PR Profiles
+### 7.1 Diagnostic Discrimination: ROC and PR Profiles
 
 <table align="center">
   <tr>
     <td align="center" width="50%">
       <img src="results/figures/ML_Model_Comparison_ROC.png" width="100%" alt="ML ROC Curves" /><br />
-      <em><b>Figure 7(a): Diagnostic ROC Curves.</b> Demonstrating tight, robust discriminative boundaries across linear and nonlinear architectures ($\text{AUC} \in [0.937, 0.952]$).</em>
+      <em><b>Figure 7(a): Diagnostic ROC Curves.</b> Comparing discriminative boundaries across linear, neural, kernel, and ensemble architectures ($\text{AUC} \in [0.937, 0.952]$).</em>
     </td>
     <td align="center" width="50%">
       <img src="results/figures/ML_Model_Comparison_PR.png" width="100%" alt="ML PR Curves" /><br />
-      <em><b>Figure 7(b): Precision-Recall Curves.</b> Evaluating performance under natural clinical class prevalence ($P = 0.360$) against the theoretical no-skill baseline.</em>
+      <em><b>Figure 7(b): Precision-Recall Curves.</b> Precision-recall trajectories relative to the empirical positive class prevalence ($P = 0.360$).</em>
     </td>
   </tr>
 </table>
@@ -241,93 +243,93 @@ To benchmark the physiological features across diverse functional families, we i
 <p align="center">
   <img src="results/figures/ML_Confusion_Matrices_Grid.png" width="98%" alt="ML Confusion Matrices Grid" />
   <br>
-  <em><b>Figure 8: 2×3 Multi-Model Confusion Matrix Grid.</b> Showing consistent high-specificity retention ($> 94\%$) and solid recall ($> 80\%$) across linear, neural, kernel, and ensemble models on unseen subjects.</em>
+  <em><b>Figure 8: 2×3 Multi-Model Confusion Matrix Grid.</b> Displaying consistent specificity ($> 94\%$) and sensitivity ($> 80\%$) across all evaluated models on held-out test subjects.</em>
 </p>
 
 ---
 
-## 8. Ablation Studies & Biomechanical Explainability
+## 8. Ablation Studies & Feature Attribution
 
 ### 8.1 Model Progression & Feature Ablation
-To systematically isolate the source of performance gains, we evaluated 4 successive model iterations under identical 15-fold LOSO conditions:
+To systematically isolate the contribution of feature expansion versus normalization, we evaluated 4 successive configurations under identical 15-fold LOSO conditions:
 
-| Iteration | Feature Representation | Accuracy | F1-Score | Sensitivity | Specificity | Scientific Finding |
+| Iteration | Feature Representation | Accuracy | F1-Score | Sensitivity | Specificity | Experimental Finding |
 | :---: | :--- | :---: | :---: | :---: | :---: | :--- |
-| **M1** | Raw Mean Heart Rate (Uncalibrated) | $77.08\%$ | $64.34\%$ | $61.25\%$ | $85.96\%$ | Baseline rate fails due to wide resting HR variance ($50-95\text{ BPM}$). |
-| **M2** | 4 Time-Domain Metrics (Uncalibrated) | $80.90\%$ | $70.59\%$ | $67.50\%$ | $88.42\%$ | Adding RMSSD and SDNN provides $+6.25\%$ F1 gain through vagal tracking. |
-| **M3** | 13 Multi-Domain Metrics (Uncalibrated) | $81.57\%$ | $73.03\%$ | $68.75\%$ | $88.77\%$ | Frequency and nonlinear features provide marginal incremental lift ($+0.67\%$ Acc). |
-| **M4** | **Personalized Baseline-Calibrated ($\\Delta$)** | **92.36%** | **89.03%** | **86.25%** | **95.79%** | **$+10.79\%$ Acc, $+16.00\%$ F1 leap**; proves normalization is the critical factor. |
+| **M1** | Raw Mean Heart Rate (Uncalibrated) | $77.08\%$ | $64.34\%$ | $61.25\%$ | $85.96\%$ | Baseline rate alone struggles with resting HR differences across subjects. |
+| **M2** | 4 Time-Domain Metrics (Uncalibrated) | $80.90\%$ | $70.59\%$ | $67.50\%$ | $88.42\%$ | Adding RMSSD and SDNN provides $+6.25\%$ F1 gain. |
+| **M3** | 13 Expanded Metrics (Uncalibrated) | $81.57\%$ | $73.03\%$ | $68.75\%$ | $88.77\%$ | Adding additional spread metrics yields modest incremental improvement ($+0.67\%$ Acc). |
+| **M4** | **Personalized Baseline-Calibrated ($X^*$)** | **92.36%** | **89.03%** | **86.25%** | **95.79%** | **$+10.79\%$ Acc, $+16.00\%$ F1 jump**; confirms baseline calibration is the primary driver of generalization. |
 
 <table align="center">
   <tr>
     <td align="center" width="50%">
       <img src="results/figures/FINAL_Personalized_Feature_Ablation.png" width="100%" alt="Feature Ablation" /><br />
-      <em><b>Figure 9(a): Model Progression & Ablation.</b> Quantitative leap in accuracy and F1-score achieved exclusively by transitioning to differential baseline normalization.</em>
+      <em><b>Figure 9(a): Model Progression & Ablation.</b> Quantitative improvement in accuracy and F1-score achieved when applying subject-specific relative baseline calibration.</em>
     </td>
     <td align="center" width="50%">
       <img src="results/figures/FINAL_Feature_Group_Comparison.png" width="100%" alt="Feature Group Comparison" /><br />
-      <em><b>Figure 9(b): Feature Group Comparison.</b> Performance breakdown across Time-Domain, Frequency-Domain, Nonlinear Poincaré, and Combined representations.</em>
+      <em><b>Figure 9(b): Feature Group Comparison.</b> Performance comparison across individual feature groupings and the combined feature representation.</em>
     </td>
   </tr>
 </table>
 
 ### 8.2 Permutation Feature Importance & Standardized Odds Ratios
-To verify that the models capture authentic neurocardiac physiology rather than opportunistic data artifacts, we calculated:
-1. **Permutation Importance:** Mean drop in held-out test ROC-AUC and F1-score when a given feature is randomly shuffled across unseen test subjects.
-2. **Directional Standardized Odds Ratios ($e^{w_i}$):** Multiplicative change in the odds of acute stress classification per standard deviation increase in the normalized feature.
+To evaluate the influence of individual features on model predictions, we computed:
+1. **Permutation Importance:** Mean drop in test ROC-AUC and F1-score when a given feature is randomly shuffled across held-out test subjects.
+2. **Standardized Odds Ratios ($e^{w_i}$):** Multiplicative factor in the odds of stress classification per standard deviation change in the normalized feature.
 
 <p align="center">
   <img src="results/figures/ML_Feature_Importance_Permutation.png" width="95%" alt="Feature Importance and Odds Ratios" />
   <br>
-  <em><b>Figure 10: Physiological Attribution and Standardized Odds Ratios.</b> (Left) Mean test ROC-AUC drop under feature permutation across unseen test subjects; (Right) Standardized Logistic Regression odds ratios ($e^{w_i}$) quantifying directional autonomic risk.</em>
+  <em><b>Figure 10: Feature Importance and Odds Ratios.</b> (Left) Mean test ROC-AUC drop under feature permutation across unseen test subjects; (Right) Standardized Logistic Regression odds ratios ($e^{w_i}$) indicating the direction and magnitude of feature weighting.</em>
 </p>
 
-### 8.3 Physiological Interpretation of Learned Weights
-- **Cardiac Pacing Interval Compression ($\\Delta\text{MeanRR}$, Odds Ratio $= 0.0645$, AUC Drop $= 0.1766$):** A one standard deviation increase in the normalized RR interval reduces the odds of stress by $93.55\%$, or conversely, interval shortening dramatically drives stress detection. Shuffling this feature causes the largest single drop in model discrimination ($0.1766$ AUC drop), establishing it as the primary physiological anchor.
-- **Sympathetic Cardiac Acceleration ($\\Delta\text{MeanHR}$, Odds Ratio $= 5.6453$, F1 Drop $= 0.1401$):** Each standard deviation elevation in normalized heart rate increases the odds of acute stress by **$5.65\times$**, directly capturing sinoatrial node stimulation via beta-1 adrenergic receptors.
-- **Vagal Modulation Index ($\\Delta\text{pNN50}$, Odds Ratio $= 4.0784$, AUC Drop $= 0.0596$):** Captures high-frequency interval variability associated with rapid respiratory-cardiac coupling adjustments during acute cognitive load.
-- **Autonomic Variance Suppression ($\\Delta\text{SDNN}$, Odds Ratio $= 0.4625$):** Elevated total heart rate variability exhibits a protective effect against stress classification, reflecting healthy vagal modulation at rest.
+### 8.3 Interpretation of Model Weights
+- **Cardiac Interval Compression ($\Delta\text{MeanRR}$, Odds Ratio $= 0.0645$, AUC Drop $= 0.1766$):** As beat-to-beat intervals shorten relative to baseline, the probability of stress classification increases substantially. Shuffling this feature causes the largest performance drop ($0.1766$ AUC drop), indicating it is the most influential feature in the linear model.
+- **Heart Rate Elevation ($\Delta\text{MeanHR}$, Odds Ratio $= 5.6453$, F1 Drop $= 0.1401$):** Relative elevation in heart rate strongly increases the odds of stress classification, consistent with acute sympathetic acceleration during the TSST.
+- **Interval Dispersion ($\Delta\text{pNN50}$, Odds Ratio $= 4.0784$, AUC Drop $= 0.0596$):** Reflects rapid beat-to-beat adjustments under cognitive challenge.
+- **Overall Variability ($\Delta\text{SDNN}$, Odds Ratio $= 0.4625$):** Retention of total interval variability is associated with lower odds of stress classification, characteristic of relaxed baseline states.
 
 ---
 
 ## 9. Inter-Subject Generalization & Heterogeneity Analysis
 
-Wearable algorithms must maintain high clinical reliability across diverse individuals. Evaluating subject-specific recall across all 15 WESAD subjects reveals exceptional cross-cohort stability:
+Evaluating subject-specific stress detection rates across all 15 WESAD subjects illustrates the consistency of the calibrated detector:
 
-| Subject ID | Total Stress Windows | Correctly Detected | Subject Recall (%) | Physiological Response Profile |
+| Subject ID | Total Stress Windows | Correctly Detected | Subject Recall (%) | Observed Physiological Profile |
 | :---: | :---: | :---: | :---: | :--- |
-| **S3** | 10 | 10 | **100.0%** | Robust sympathetic acceleration; marked vagal suppression. |
-| **S4** | 10 | 10 | **100.0%** | Pronounced TSST tachycardia ($\Delta\text{HR} > +18\text{ BPM}$). |
-| **S5** | 10 | 10 | **100.0%** | Clear sympathetic arousal and interval shortening. |
-| **S8** | 11 | 11 | **100.0%** | Classical stress response; high TSST engagement. |
-| **S11** | 11 | 11 | **100.0%** | Sharp vagal withdrawal; steep drop in RMSSD. |
-| **S13** | 11 | 11 | **100.0%** | High sensitivity; perfect classification across all phases. |
-| **S14** | 11 | 11 | **100.0%** | Robust autonomic reactivity; zero false negatives. |
-| **S16** | 11 | 11 | **100.0%** | Severe interval compression during mental arithmetic. |
-| **S17** | 12 | 12 | **100.0%** | Distinct high-amplitude stress reactivity. |
-| **S6** | 10 | 9 | **90.0%** | Rapid stress onset with brief transient recovery. |
-| **S7** | 10 | 9 | **90.0%** | High fidelity detection; 1 transient boundary window missed. |
-| **S15** | 11 | 9 | **81.8%** | Moderate sympathetic responder; reliable detection. |
-| **S10** | 12 | 9 | **75.0%** | Delayed TSST reactivity; initial windows near baseline threshold. |
-| **S9** | 10 | 5 | **50.0%** | Blunted cardiovascular response during arithmetic phase. |
-| **S2** | 10 | 0 | **0.0%** | Non-responder; persistent high resting vagal tone throughout TSST. |
+| **S3** | 10 | 10 | **100.0%** | Clear heart rate elevation ($\Delta\text{HR} > +15\text{ BPM}$) during TSST. |
+| **S4** | 10 | 10 | **100.0%** | Marked tachycardia and interval shortening during mental arithmetic. |
+| **S5** | 10 | 10 | **100.0%** | Sustained rate acceleration across all stress windows. |
+| **S8** | 11 | 11 | **100.0%** | Strong rate and variability response to psychosocial evaluation. |
+| **S11** | 11 | 11 | **100.0%** | Notable reduction in successive difference variability (RMSSD). |
+| **S13** | 11 | 11 | **100.0%** | Consistent detection across public speaking and arithmetic phases. |
+| **S14** | 11 | 11 | **100.0%** | Distinct shift from resting baseline; zero false negatives. |
+| **S16** | 11 | 11 | **100.0%** | High heart rate elevation and compressed interval spread. |
+| **S17** | 12 | 12 | **100.0%** | Pronounced physiological reactivity throughout the TSST. |
+| **S6** | 10 | 9 | **90.0%** | Reliable detection; 1 window near recovery boundary missed. |
+| **S7** | 10 | 9 | **90.0%** | Consistent detection across 9 of 10 stress intervals. |
+| **S15** | 11 | 9 | **81.8%** | Moderate rate response; 9 of 11 stress windows detected. |
+| **S10** | 12 | 9 | **75.0%** | Gradual physiological onset during early stress task windows. |
+| **S9** | 10 | 5 | **50.0%** | Blunted heart rate response during the mental arithmetic task. |
+| **S2** | 10 | 0 | **0.0%** | Low autonomic reactivity; minimal heart rate elevation ($\Delta\text{HR} \approx 0$) during TSST. |
 
 <p align="center">
   <img src="results/figures/FINAL_Subject_Stress_Detection.png" width="95%" alt="Subject Stress Detection Rates" />
   <br>
-  <em><b>Figure 11: Subject-Specific Detection Rate Distribution.</b> 9 out of 15 subjects achieve 100% stress recall, and 13 out of 15 achieve $\ge 75\%$, with atypical non-responders (S2) clearly isolated for clinical transparency.</em>
+  <em><b>Figure 11: Subject-Specific Detection Rate Distribution.</b> 9 out of 15 subjects achieve 100% stress recall, and 13 out of 15 achieve $\ge 75\%$. Atypical responders (S2) are documented transparently.</em>
 </p>
 
-### 9.1 Scientific Discussion of Atypical Responders
-In clinical literature (*Kirschbaum et al., 1993; Schmidt et al., 2018*), physiological non-responsiveness during laboratory stress protocols is an established phenomenon. In subject **S2**, subjective self-reports indicated low self-perceived distress during public speaking, and ECG telemetry confirmed that S2 maintained an unusually high baseline vagal tone ($\text{RMSSD} > 65\text{ ms}$) throughout the TSST without significant heart rate acceleration. Transparent identification and reporting of non-responders demonstrates high scientific rigor, highlighting that future multimodal models (combining ECG with electrodermal activity [EDA] and respiration) are beneficial for covering atypical cardiovascular phenotypes.
+### 9.1 Discussion of Low-Reactivity Subjects
+In laboratory stress protocols (*Kirschbaum et al., 1993; Schmidt et al., 2018*), physiological non-responsiveness is a recognized occurrence. For Subject **S2**, subjective self-reports in the original WESAD trial noted low self-perceived stress, and ECG recordings show that S2 experienced almost no heart rate acceleration during the TSST relative to their resting baseline. Because the model relies on baseline-relative physiological shifts, subjects who do not exhibit autonomic reactivity under laboratory conditions cannot be distinguished from baseline using ECG alone. This finding highlights the value of multimodal sensing (e.g., combining ECG with electrodermal activity [EDA] and respiration) for comprehensive affective computing.
 
 ---
 
 ## 10. Reproducibility Protocol & Environment Specifications
 
-The entire research pipeline is 100% automated and executable via headless command-line interfaces in both MATLAB and Python environments.
+The pipeline can be executed via command-line scripts in both MATLAB and Python environments.
 
-### 10.1 Computational Environment Requirements
+### 10.1 Environment Requirements
 - **MATLAB:** Version R2022b or later (Tested on R2026a).
   - *Required Toolboxes:* Signal Processing Toolbox, Statistics and Machine Learning Toolbox.
 - **Python:** Version 3.10 or later.
@@ -335,27 +337,27 @@ The entire research pipeline is 100% automated and executable via headless comma
 
 ### 10.2 Automated Reproduction Commands
 
-#### A. MATLAB Signal Processing & LOSO Pipeline
+#### A. MATLAB Pipeline Execution
 ```bash
-# Execute full interactive signal processing demonstration
+# Run interactive demonstration script
 matlab -batch "cd('matlab'); DEMO_stress_detection;"
 
-# Re-generate the publication light-theme master dashboard
+# Regenerate master project dashboard
 matlab -batch "cd('matlab'); TWENTY_NINE_project_dashboard;"
 
-# Re-compute full 15-fold LOSO metrics and export CSV scorecards
+# Run calibrated 15-fold LOSO cross-validation and export scorecards
 matlab -batch "cd('matlab'); TWENTY_FOUR_calibrated_stress_detection;"
 ```
 
-#### B. Python Multi-Model ML Benchmark & Explainability Suite
+#### B. Python Benchmark Suite
 ```bash
-# 1. Run the 15-fold LOSO benchmark across all 6 ML classifiers
+# 1. Run 15-fold LOSO benchmark across all 6 ML classifiers
 python python/train_loso_ml_benchmark.py
 
-# 2. Compute permutation importance drops and standardized odds ratios
+# 2. Compute permutation importance and standardized odds ratios
 python python/explainability_feature_importance.py
 
-# 3. Generate publication-grade comparative benchmark figures
+# 3. Generate publication-grade comparative figures
 python python/plot_ml_evaluation.py
 ```
 
@@ -367,69 +369,71 @@ python python/plot_ml_evaluation.py
 ECG_STRESS_DETECTION/
 ├── README.md                                  # Comprehensive research documentation & benchmark report
 ├── LICENSE                                    # MIT Open Source License
-├── requirements.txt                           # Python dependencies for ML & explainability suite
+├── requirements.txt                           # Python dependencies for ML benchmark suite
+├── ECG_STRESS_DETECTION_RUN.txt               # Quick reference guide for execution
 │
 ├── matlab/                                    # Modular MATLAB signal processing pipeline
-│   ├── DEMO_stress_detection.m                # Interactive clinical demonstration & telemetry visualizer
-│   ├── TWENTY_NINE_project_dashboard.m        # Master 6-panel publication dashboard generator
-│   ├── TWENTY_FOUR_calibrated_stress_detection.m # Calibrated LOSO cross-validation engine
-│   ├── 01_data_loading/                       # Raw signal parsers and MAT-file converters
-│   ├── 02_preprocessing/                      # Butterworth bandpass filters & motion audit scripts
-│   ├── 03_qrs_detection/                      # Pan-Tompkins QRS detection engine & NN cleaning
-│   ├── 04_feature_extraction/                 # Time, frequency, and nonlinear HRV extractors
-│   ├── 05_model_development/                  # LOSO regression models & ablation experiments
-│   └── 06_final_results/                      # Metric calculators and high-resolution export
+│   ├── DEMO_stress_detection.m                # Interactive demonstration & telemetry visualizer
+│   ├── TWENTY_NINE_project_dashboard.m        # Master 6-panel dashboard generator
+│   ├── TWENTY_FOUR_calibrated_stress_detection.m # Calibrated LOSO evaluation engine
+│   ├── setup_project.m                        # Project path initialization
+│   ├── 01_data_inspection/                   # Initial signal inspection and labeling scripts
+│   ├── 02_preprocessing/                      # Bandpass filtering & process_ecg_window.m
+│   ├── 03_hrv_extraction/                     # Peak detection (SIX_detect_rpeaks.m) & HRV extraction
+│   ├── 04_analysis/                           # Exploratory data analysis & statistical summaries
+│   ├── 05_modeling/                           # Personalized classifier (TWENTY_personalized_classifier.m)
+│   └── 06_final_results/                      # Results generation & report figures
 │
 ├── python/                                    # Machine learning benchmark & explainability suite
-│   ├── train_loso_ml_benchmark.py             # 15-fold LOSO benchmarking across 6 ML architectures
+│   ├── train_loso_ml_benchmark.py             # 15-fold LOSO evaluation across 6 ML architectures
 │   ├── explainability_feature_importance.py   # Permutation importance and odds ratio calculator
-│   ├── plot_ml_evaluation.py                  # High-contrast publication figure generator
-│   └── extract_ecg_labels.py                  # WESAD pickle (.pkl) to NumPy/MAT converter
+│   ├── plot_ml_evaluation.py                  # High-contrast comparative figure generator
+│   └── extract_ecg_labels.py                  # WESAD pickle (.pkl) to MAT/CSV converter
 │
 ├── data/                                      # Experimental data directory (Ignored via .gitignore)
 │   ├── raw/WESAD/                             # Original WESAD subject folders (S2 - S17)
 │   └── processed/                             # Preprocessed ECG signals and extracted features
 │
-└── results/                                   # Validated experimental outputs and figure suite
-    ├── FINAL_Model_Metrics.csv                # Primary validated classifier metrics (Acc, F1, AUC, etc.)
-    ├── FINAL_Development_Model_Comparison.csv # Four-stage model progression and ablation data
-    ├── FINAL_Subject_Stress_Performance.csv   # Subject-by-subject recall and detection statistics
-    ├── ML_Model_Benchmark_LOSO.csv            # Cross-model benchmark results across all 6 architectures
-    ├── ML_Feature_Importance_Permutation.csv  # Permutation importance and standardized odds ratios
-    └── figures/                               # Master publication and telemetry figure suite
-        ├── FINAL_Project_Dashboard.png        # Master 6-panel publication light dashboard
+└── results/                                   # Validated outputs and figure suite
+    ├── FINAL_Model_Metrics.csv                # Primary validated classifier metrics
+    ├── FINAL_Development_Model_Comparison.csv # Four-stage model progression data
+    ├── FINAL_Subject_Stress_Performance.csv   # Subject-by-subject recall statistics
+    ├── ML_Model_Benchmark_LOSO.csv            # Cross-model benchmark results (6 classifiers)
+    ├── ML_Feature_Importance_Permutation.csv  # Permutation importance and odds ratios
+    └── figures/                               # Master figure suite
+        ├── FINAL_Project_Dashboard.png        # Master 6-panel project dashboard
         ├── FINAL_Confusion_Matrix.png         # Calibrated LOSO confusion matrix
         ├── FINAL_ROC_Curve.png                # Calibrated LOSO ROC curve (AUC = 0.9494)
-        ├── FINAL_Personalized_Feature_Ablation.png # Four-stage ablation performance jump
-        ├── FINAL_Feature_Group_Comparison.png # Time vs Frequency vs Nonlinear vs Combined
+        ├── FINAL_Personalized_Feature_Ablation.png # Four-stage progression comparison
+        ├── FINAL_Feature_Group_Comparison.png # Feature group performance breakdown
         ├── FINAL_Subject_Stress_Detection.png # Subject-specific stress recall breakdown
-        ├── DEMO_Raw_ECG_LeadII.png            # Lead-II ECG trace (Clinical dark telemetry)
-        ├── DEMO_Pan_Tompkins_QRS_Detection.png# 4-stage Pan-Tompkins detection (Dark telemetry)
-        ├── DEMO_Protocol_Timeline.png         # WESAD protocol condition timeline (Dark telemetry)
-        ├── ML_Model_Benchmark_Bars.png        # 6-model 4-metric comparative benchmark bars
-        ├── ML_Model_Comparison_ROC.png        # Multi-model ROC discrimination comparison
-        ├── ML_Model_Comparison_PR.png         # Multi-model Precision-Recall curve comparison
-        ├── ML_Confusion_Matrices_Grid.png     # 2x3 confusion matrix grid across all 6 classifiers
-        └── ML_Feature_Importance_Permutation.png # Permutation drops and directional odds ratios
+        ├── DEMO_Raw_ECG_LeadII.png            # Lead-II ECG trace (Dark telemetry)
+        ├── DEMO_Pan_Tompkins_QRS_Detection.png# 4-stage waveform processing (Dark telemetry)
+        ├── DEMO_Protocol_Timeline.png         # Protocol condition timeline (Dark telemetry)
+        ├── ML_Model_Benchmark_Bars.png        # 6-model comparative benchmark bars
+        ├── ML_Model_Comparison_ROC.png        # Multi-model ROC comparison
+        ├── ML_Model_Comparison_PR.png         # Multi-model Precision-Recall comparison
+        ├── ML_Confusion_Matrices_Grid.png     # 2x3 confusion matrix grid
+        └── ML_Feature_Importance_Permutation.png # Permutation drops and odds ratios
 ```
 
 ---
 
-## 12. Dataset Access & Ethical Compliance
+## 12. Dataset Access & Governance
 
 > [!NOTE]
-> **Dataset Exemption & Licensing:** In compliance with scientific data governance and GitHub repository size limits, the raw WESAD sensor recordings (~16 GB) are **not tracked in this repository** and are excluded via `.gitignore`.
+> **Dataset Exemption:** In compliance with data redistribution constraints and repository size limits, the raw WESAD sensor recordings (~16 GB) are **not tracked in this repository** and are excluded via `.gitignore`.
 
-To access the original sensor signals:
+To access the original sensor recordings:
 1. Access the public **WESAD** repository on the [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/465/wesad+wearable+stress+and+affect+detection).
-2. Download and unpack subject archives (`S2/`, `S3/`, ..., `S17/`) into `data/raw/WESAD/`.
+2. Download and extract subject archives (`S2/`, `S3/`, ..., `S17/`) into `data/raw/WESAD/`.
 3. Execute `python/extract_ecg_labels.py` to generate processed MAT-files for MATLAB and CSV files for Python.
 
 ---
 
 ## 13. Academic Citation
 
-If you utilize this signal processing pipeline, baseline normalization methodology, machine learning benchmark, or experimental results in academic publications, please cite the underlying WESAD benchmark:
+If you use this codebase, methodology, or experimental benchmark in academic work, please cite the underlying WESAD benchmark:
 
 ```bibtex
 @inproceedings{schmidt2018wesad,
@@ -445,4 +449,4 @@ If you utilize this signal processing pipeline, baseline normalization methodolo
 ---
 
 ## 14. License
-This codebase, signal processing algorithms, and machine learning suites are released under the [MIT License](LICENSE).
+This codebase, processing algorithms, and machine learning suites are released under the [MIT License](LICENSE).
