@@ -276,13 +276,13 @@ To systematically isolate the contribution of feature expansion versus normaliza
 
 ### 8.2 Permutation Feature Importance & Standardized Odds Ratios
 To evaluate the influence of individual features on model predictions, we computed:
-1. **Permutation Importance:** Mean drop in test ROC-AUC and F1-score when a given feature is randomly shuffled across held-out test subjects under LOSO validation.
+1. **Permutation Importance ($N = 30$ repeats per fold):** Evaluated over 30 independent random permutations per feature across each of the 15 LOSO test folds ($15 \times 30 = 450$ evaluation trials per feature) to quantify empirical degradation in test ROC-AUC and F1-score when feature information is destroyed.
 2. **Standardized Odds Ratios ($e^{w_i}$):** Multiplicative factor in the odds of stress classification per standard deviation change in the normalized feature.
 
 <p align="center">
   <img src="results/figures/ML_Feature_Importance_Permutation.png" width="95%" alt="Feature Importance and Odds Ratios" />
   <br>
-  <em><b>Figure 10: Feature Importance and Odds Ratios.</b> (Left) Mean test ROC-AUC drop under feature permutation across held-out test subjects; (Right) Standardized Logistic Regression odds ratios (e^(w_i)) indicating the direction and magnitude of feature weighting.</em>
+  <em><b>Figure 10: Feature Importance and Odds Ratios.</b> (Left) Mean test ROC-AUC drop under 30-repeat feature permutation across held-out test subjects (15 LOSO folds); (Right) Standardized Logistic Regression odds ratios (e^(w_i)) indicating the direction and magnitude of feature weighting.</em>
 </p>
 
 ### 8.3 Interpretation of Model Weights
