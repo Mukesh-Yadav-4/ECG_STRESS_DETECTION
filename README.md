@@ -17,9 +17,7 @@
 
 **Methods:** This repository provides an end-to-end, reproducible research pipeline implemented in **MATLAB (R2022b+)** and **Python (3.10+)** to quantify, evaluate, and benchmark acute stress-state classification across all **15 subjects** (N = 15, 445 standardized 60-second windows) of the public **WESAD** (Wearable Stress and Affect Detection) benchmark dataset. Single-lead chest ECG acquired at 700 Hz via RespiBAN is conditioned with a zero-phase 4th-order Butterworth bandpass filter (0.5 – 40 Hz). R-peaks are detected using adaptive prominence thresholding based on the Median Absolute Deviation (MAD) of the signal noise floor, followed by physiological RR interval filtering (300 – 1500 ms). From cleaned NN intervals, 13 time-domain and statistical HRV features are computed per window. To overcome baseline heterogeneity, we implement a **subject-specific relative baseline normalization**:
 
-```plaintext
-X* = (X - B_s) / |B_s|
-```
+$$X^* = \frac{X - B_s}{|B_s|}$$
 
 All models are evaluated using strict **15-Fold Leave-One-Subject-Out Cross-Validation (LOSO-CV)** with subject-specific baseline calibration, where model parameters are trained strictly on 14 subjects and evaluated on the held-out test subject.
 
@@ -48,19 +46,15 @@ Fixed global thresholds (e.g., classifying stress whenever Heart Rate > 80 BPM) 
 A fixed cutoff of 80 BPM would misclassify Subject B as stressed at rest, while failing to detect stress in Subject A.
 
 ### 1.2 Mathematical Formulation of Relative Normalization
-To decouple state-dependent physiological responses from resting baseline differences, features are normalized relative to each subject's resting baseline. Let `X` denote a feature vector extracted from an analysis window of subject `s`. Let `W_base^(s)` denote the set of resting baseline windows for subject `s`. The reference baseline vector `B_s` is defined as the mean vector across all baseline windows:
+To decouple state-dependent physiological responses from resting baseline differences, features are normalized relative to each subject's resting baseline. Let $X$ denote a feature vector extracted from an analysis window of subject $s$. Let $\mathcal{W}_{\text{base}}^{(s)}$ denote the set of resting baseline windows for subject $s$. The reference baseline vector $B_s$ is defined as:
 
-```plaintext
-B_s = (1 / |W_base^(s)|) * Σ X_k^(s)    for all k ∈ W_base^(s)
-```
+$$B_s = \frac{1}{|\mathcal{W}_{\text{base}}^{(s)}|} \sum_{k \in \mathcal{W}_{\text{base}}^{(s)}} X_k^{(s)}$$
 
-Each feature vector `X` is then transformed into a relative fractional change:
+Each feature vector $X$ is then transformed into a relative fractional change:
 
-```plaintext
-X* = (X - B_s) / |B_s|
-```
+$$X^* = \frac{X - B_s}{|B_s|}$$
 
-To avoid division by zero for features near zero, `|B_s|` is bounded below by a small numerical constant ε = 10⁻⁶. This transformation expresses each feature as a percentage deviation from the subject's own resting state, centering resting physiology near zero.
+To avoid division by zero for features near zero, $|B_s|$ is bounded below by a small numerical constant $\epsilon = 10^{-6}$. This transformation expresses each feature as a percentage deviation from the subject's own resting state, centering resting physiology near zero.
 
 ---
 
@@ -149,16 +143,11 @@ Standardized **60-second sliding analysis windows** with **50% overlap (30-secon
 | **13** | **HR IQR** | `HR_IQR` | Interquartile range of heart rate: Q3(HR) - Q1(HR) |
 
 ### Formal Mathematical Definitions
-For reference, the primary autonomic variability metrics are formally defined as:
+For reference, the primary autonomic variability metrics are mathematically defined as:
 
-- **SDNN** (Standard Deviation of NN intervals):  
-  `SDNN = sqrt( 1/(N - 1) * Σ (RR_i - MeanRR)² )`
-- **RMSSD** (Root Mean Square of Successive Differences):  
-  `RMSSD = sqrt( 1/(N - 1) * Σ (RR_(i+1) - RR_i)² )`
-- **pNN50** (Percentage of successive differences > 50 ms):  
-  `pNN50 = ( Count(|RR_(i+1) - RR_i| > 50 ms) / (N - 1) ) × 100%`
-- **RR_CV** (Coefficient of Variation):  
-  `RR_CV = SDNN / MeanRR`
+$$\text{SDNN} = \sqrt{\frac{1}{N-1} \sum_{i=1}^N (RR_i - \overline{RR})^2}, \qquad \text{RMSSD} = \sqrt{\frac{1}{N-1} \sum_{i=1}^{N-1} (RR_{i+1} - RR_i)^2}$$
+
+$$\text{pNN50} = \frac{\text{Count}(\lvert RR_{i+1} - RR_i \rvert > 50\text{ ms})}{N-1} \times 100\%, \qquad \text{RR\_CV} = \frac{\text{SDNN}}{\overline{RR}}$$
 
 ### Model Feature Selection
 In the finalized classifier (`matlab/05_modeling/TWENTY_personalized_classifier.m`), an 8-feature subset focusing on primary rate, variability, and robust spread metrics was used:
@@ -166,6 +155,8 @@ In the finalized classifier (`matlab/05_modeling/TWENTY_personalized_classifier.
 ```plaintext
 Feature Vector X = [ MeanHR, SDNN, RMSSD, pNN50, MeanRR, RR_CV, RR_IQR, HR_IQR ]
 ```
+
+$$\mathbf{X} = \left[\, \text{MeanHR},\; \text{SDNN},\; \text{RMSSD},\; \text{pNN50},\; \text{MeanRR},\; \text{RR}_{\text{CV}},\; \text{RR}_{\text{IQR}},\; \text{HR}_{\text{IQR}} \,\right]$$
 
 ---
 
@@ -188,8 +179,8 @@ Fold k (k = 1, ..., 15):
 └────────────────────────────────────────────────────────────┘
 ```
 
-- **Subject Independence:** The classifier weights `w` and bias `b` are trained strictly on the other 14 subjects. No stress labels from subject `k` are ever seen during training.
-- **Baseline Calibration:** For the test fold, subject `k`'s resting baseline windows are used solely to establish reference vector `B_k` for relative normalization: `X_k* = (X_k - B_k) / |B_k|`.
+- **Subject Independence:** The classifier weights $w$ and bias $b$ are trained strictly on the other 14 subjects. No stress labels from subject $k$ are ever seen during training.
+- **Baseline Calibration:** For the test fold, subject $k$'s resting baseline windows are used solely to establish reference vector $B_k$ for relative normalization: $X_k^* = (X_k - B_k) / |B_k|$.
 - **Decision Threshold Calibration (τ = 0.35):** Adjusting the decision threshold from τ = 0.50 to τ = 0.35 optimized the balance between sensitivity (86.25%) and specificity (95.79%).
 
 ---
@@ -309,8 +300,8 @@ To systematically isolate the contribution of feature expansion versus normaliza
 
 ### 8.2 Permutation Feature Importance & Standardized Odds Ratios
 To evaluate the influence of individual features on model predictions, we computed:
-1. **Permutation Importance (N = 30 repeats per fold):** Evaluated over 30 independent random permutations per feature across each of the 15 LOSO test folds (15 × 30 = 450 evaluation trials per feature) to quantify empirical degradation in test ROC-AUC and F1-score when feature information is destroyed.
-2. **Standardized Odds Ratios (e^(w_i)):** Multiplicative factor in the odds of stress classification per standard deviation change in the normalized feature.
+1. **Permutation Importance (N = 30 repeats per fold):** Evaluated over 30 independent random permutations per feature across each of the 15 LOSO test folds ($15 \times 30 = 450$ evaluation trials per feature) to quantify empirical degradation in test ROC-AUC and F1-score when feature information is destroyed.
+2. **Standardized Odds Ratios ($e^{w_i}$):** Multiplicative factor in the odds of stress classification per standard deviation change in the normalized feature.
 
 <p align="center">
   <img src="results/figures/ML_Feature_Importance_Permutation.png" width="95%" alt="Feature Importance and Odds Ratios" />
@@ -406,7 +397,7 @@ To evaluate practical utility for wearable hardware, the pipeline was benchmarke
 
 To maintain rigorous scientific standards, several experimental boundaries and design trade-offs should be recognized:
 
-1. **Resting Baseline Calibration Requirement:** The pipeline depends on an initial resting baseline window (5–10 minutes of calm resting state) to calculate `B_s`. While standard in clinical and ambulatory monitoring protocols (e.g., initial calibration upon waking or during quiet rest), future work will investigate continuous, adaptive baseline estimation (e.g., nocturnal tracking) to update reference vectors dynamically.
+1. **Resting Baseline Calibration Requirement:** The pipeline depends on an initial resting baseline window (5–10 minutes of calm resting state) to calculate $B_s$. While standard in clinical and ambulatory monitoring protocols (e.g., initial calibration upon waking or during quiet rest), future work will investigate continuous, adaptive baseline estimation (e.g., nocturnal tracking) to update reference vectors dynamically.
 2. **Single-Modality Limitation for Low-Reactivity Phenotypes:** As observed in Subject S2 (0% recall), individuals exhibiting blunted autonomic or cardiovascular reactivity during acute psychological stress cannot be distinguished using ECG alone. Integrating complementary modalities—specifically **Electrodermal Activity (EDA / Galvanic Skin Response)** and **Respiration**—is the primary path to resolving low-reactivity cardiac profiles.
 3. **Controlled Laboratory vs. Ambulatory Environments:** The WESAD dataset captures acute psychosocial stress induced via the Trier Social Stress Test (TSST) under seated conditions. Real-world ambulatory deployment will introduce physical exertion artifacts, speech motion, and postural shifts, requiring inertial measurement unit (IMU) motion gating to filter out movement-induced heart rate acceleration.
 
