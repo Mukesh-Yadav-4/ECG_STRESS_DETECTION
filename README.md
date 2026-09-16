@@ -21,7 +21,7 @@ $$X^* = \frac{X - B_s}{|B_s|}$$
 
 All models are evaluated using strict **15-Fold Leave-One-Subject-Out Cross-Validation (LOSO-CV)** with subject-specific baseline calibration, where model parameters are trained strictly on 14 subjects and evaluated on the held-out test subject.
 
-**Results:** Baseline-relative normalization improved cross-subject classification accuracy from 81.57% to **92.36%** (+10.79%) and stress F1-score from 73.03% to **89.03%** (+16.00%) compared to identical uncalibrated feature models. At a calibrated decision threshold of $\tau = 0.35$, the primary classifier achieves a receiver operating characteristic area under the curve (**ROC-AUC**) of **0.9494**, a precision-recall AUC (**PR-AUC**) of **0.9467**, a sensitivity (recall) of **86.25%** (138/160 stress windows), and a specificity of **95.79%** (273/285 non-stress windows). A comparative benchmark across 6 machine learning architectures (Logistic Regression, Multilayer Perceptron, Support Vector Machines, Random Forests, Extra Trees, and Histogram Gradient Boosting) demonstrates consistent generalization with ROC-AUC > 0.937 across all paradigms on held-out test subjects. Permutation importance and standardized odds ratio analyses confirm that interval compression ($\Delta\text{MeanRR}$) and heart rate acceleration ($\Delta\text{MeanHR}$) drive the learned decision boundary.
+**Results:** Baseline-relative normalization improved cross-subject classification accuracy from 81.57% to **92.36%** (+10.79%) and stress F1-score from 73.03% to **89.03%** (+16.00%) compared to identical uncalibrated feature models. At a calibrated decision threshold of τ = 0.35, the primary classifier achieves a receiver operating characteristic area under the curve (**ROC-AUC**) of **0.9494**, a precision-recall AUC (**PR-AUC**) of **0.9467**, a sensitivity (recall) of **86.25%** (138/160 stress windows), and a specificity of **95.79%** (273/285 non-stress windows). A comparative benchmark across 6 machine learning architectures (Logistic Regression, Multilayer Perceptron, Support Vector Machines, Random Forests, Extra Trees, and Histogram Gradient Boosting) demonstrates consistent generalization with ROC-AUC > 0.937 across all paradigms on held-out test subjects. Permutation importance and standardized odds ratio analyses confirm that interval compression (ΔMeanRR) and heart rate acceleration (ΔMeanHR) drive the learned decision boundary.
 
 ---
 
@@ -38,15 +38,15 @@ All models are evaluated using strict **15-Fold Leave-One-Subject-Out Cross-Vali
 ## 1. Problem Formulation & Baseline Normalization
 
 ### 1.1 The Inter-Individual Baseline Problem
-Fixed global thresholds (e.g., classifying stress whenever $\text{Heart Rate} > 80\text{ BPM}$) perform inconsistently across individuals because resting heart rate varies considerably across healthy populations:
+Fixed global thresholds (e.g., classifying stress whenever Heart Rate > 80 BPM) perform inconsistently across individuals because resting heart rate varies considerably across healthy populations:
 
-$$\text{Subject } A: \quad \text{HR}_{\text{rest}} = 54\text{ BPM}, \quad \text{HR}_{\text{stress}} = 74\text{ BPM} \quad (\text{Relative change} = +37.0\%)$$
-$$\text{Subject } B: \quad \text{HR}_{\text{rest}} = 78\text{ BPM}, \quad \text{HR}_{\text{stress}} = 98\text{ BPM} \quad (\text{Relative change} = +25.6\%)$$
+- **Subject A:** Resting HR = 54 BPM, Stress HR = 74 BPM (Relative change = +37.0%)
+- **Subject B:** Resting HR = 78 BPM, Stress HR = 98 BPM (Relative change = +25.6%)
 
-A fixed cutoff of $80\text{ BPM}$ would misclassify Subject B as stressed at rest, while failing to detect stress in Subject A.
+A fixed cutoff of 80 BPM would misclassify Subject B as stressed at rest, while failing to detect stress in Subject A.
 
 ### 1.2 Mathematical Formulation of Relative Normalization
-To decouple state-dependent physiological responses from resting baseline differences, features are normalized relative to each subject's resting baseline. Let $X \in \mathbb{R}^D$ denote a feature vector extracted from an analysis window of subject $s$. Let $\mathcal{W}_{\text{base}}^{(s)}$ denote the set of resting baseline windows for subject $s$. The reference baseline vector $B_s$ is:
+To decouple state-dependent physiological responses from resting baseline differences, features are normalized relative to each subject's resting baseline. Let $X$ denote a feature vector extracted from an analysis window of subject $s$. Let $\mathcal{W}_{\text{base}}^{(s)}$ denote the set of resting baseline windows for subject $s$. The reference baseline vector $B_s$ is defined as:
 
 $$B_s = \frac{1}{|\mathcal{W}_{\text{base}}^{(s)}|} \sum_{k \in \mathcal{W}_{\text{base}}^{(s)}} X_k^{(s)}$$
 
@@ -61,14 +61,14 @@ To avoid division by zero for features near zero, $|B_s|$ is bounded below by a 
 ## 2. Experimental Cohort & Study Protocol
 
 Experiments were conducted on the **WESAD** benchmark dataset (*Schmidt et al., 2018*), collected under a controlled laboratory protocol:
-- **Cohort:** 15 healthy adult subjects ($S2 - S17$, excluding $S1$ and $S12$ due to sensor issues in the original dataset; 12 males, 3 females, age: $27.5 \pm 2.4$ years).
-- **Acquisition Hardware:** Chest-worn RespiBAN Professional telemetry system recording single-lead Lead-II ECG at $f_s = 700\text{ Hz}$.
+- **Cohort:** 15 healthy adult subjects (S2 – S17, excluding S1 and S12 due to sensor issues in the original dataset; 12 males, 3 females, age: 27.5 ± 2.4 years).
+- **Acquisition Hardware:** Chest-worn RespiBAN Professional telemetry system recording single-lead Lead-II ECG at a sampling frequency of 700 Hz.
 - **Experimental Protocol Phases:**
   1. **Baseline Condition (20 min):** Neutral, seated relaxation reading magazines.
   2. **Trier Social Stress Test (TSST):** Psychosocial laboratory stressor consisting of 5 minutes of public speaking preparation/delivery facing an evaluative panel, followed by 5 minutes of mental arithmetic (counting backward from 2,043 in steps of 17 with vocal restart penalties).
   3. **Amusement Condition (10 min):** Exposure to humorous video clips.
   4. **Guided Meditation (20 min):** Controlled breathing to support homeostatic recovery.
-- **Classification Formulation:** Binary classification isolating **Acute Stress** ($N = 160$ valid windows) against **Non-Stress / Calm States** (Baseline + Amusement, $N = 285$ valid windows), totaling **445 standardized windows** across all 15 subjects.
+- **Classification Formulation:** Binary classification isolating **Acute Stress** (N = 160 valid windows) against **Non-Stress / Calm States** (Baseline + Amusement, N = 285 valid windows), totaling **445 standardized windows** across all 15 subjects.
 
 <p align="center">
   <img src="results/figures/DEMO_Protocol_Timeline.png" width="95%" alt="WESAD Protocol Timeline" />
@@ -80,7 +80,7 @@ Experiments were conducted on the **WESAD** benchmark dataset (*Schmidt et al., 
 
 ## 3. Signal Processing & R-Peak Detection Pipeline
 
-The pipeline processes raw $700\text{ Hz}$ single-lead chest ECG into clean Normal-to-Normal (NN) interval time series through three stages:
+The pipeline processes raw 700 Hz single-lead chest ECG into clean Normal-to-Normal (NN) interval time series through three stages:
 
 ```plaintext
 Raw Chest ECG (fs = 700 Hz)
@@ -126,26 +126,37 @@ For demonstration and comparison purposes, the repository also includes a modula
 
 Standardized **60-second sliding analysis windows** with **50% overlap (30-second step)** were extracted across each subject's timeline. Within each window, **13 time-domain and statistical distribution features** were computed (`matlab/02_preprocessing/process_ecg_window.m`):
 
-| # | Feature Name | Code Variable | Formal Definition / Description |
+| # | Feature Name | Variable | Description & Physiological Context |
 | :---: | :--- | :--- | :--- |
-| **1** | **Mean Heart Rate** | `MeanHR` | $\frac{60}{N} \sum_{i=1}^N \frac{1}{RR_i}$ (Beats Per Minute) |
-| **2** | **Median Heart Rate** | `MedianHR` | $\text{median}(\text{HR})$ (Beats Per Minute) |
-| **3** | **Std of Heart Rate** | `StdHR` | $\text{std}(\text{HR})$ (Beats Per Minute) |
-| **4** | **Min Heart Rate** | `MinHR` | $\min(\text{HR})$ (Beats Per Minute) |
-| **5** | **Max Heart Rate** | `MaxHR` | $\max(\text{HR})$ (Beats Per Minute) |
-| **6** | **Mean RR Interval** | `MeanRR` | $\frac{1}{N} \sum_{i=1}^N RR_i$ (Seconds / Milliseconds) |
-| **7** | **Median RR Interval** | `MedianRR` | $\text{median}(RR)$ (Seconds / Milliseconds) |
-| **8** | **SDNN** | `SDNN` | Standard deviation of clean NN intervals: $\sqrt{\frac{1}{N-1}\sum (RR_i - \overline{RR})^2}$ |
-| **9** | **RMSSD** | `RMSSD` | Root mean square of successive differences: $\sqrt{\frac{1}{N-1}\sum (RR_{i+1} - RR_i)^2}$ |
-| **10** | **pNN50** | `pNN50` | Percentage of successive RR differences $> 50\text{ ms}$: $\frac{\sum \mathbb{I}(\lvert RR_{i+1} - RR_i \rvert > 0.05)}{N-1} \times 100\%$ |
-| **11** | **RR Coefficient of Variation** | `RR_CV` | Ratio of SDNN to Mean RR: $\frac{\text{SDNN}}{\text{MeanRR}}$ |
-| **12** | **RR Interquartile Range** | `RR_IQR` | Spread of RR intervals: $Q_3(RR) - Q_1(RR)$ |
-| **13** | **HR Interquartile Range** | `HR_IQR` | Spread of instantaneous heart rate: $Q_3(\text{HR}) - Q_1(\text{HR})$ |
+| **1** | **Mean Heart Rate** | `MeanHR` | Mean of instantaneous heart rate (BPM) |
+| **2** | **Median Heart Rate** | `MedianHR` | Median of instantaneous heart rate (BPM) |
+| **3** | **Std of Heart Rate** | `StdHR` | Standard deviation of instantaneous heart rate (BPM) |
+| **4** | **Min Heart Rate** | `MinHR` | Minimum heart rate observed in the window (BPM) |
+| **5** | **Max Heart Rate** | `MaxHR` | Maximum heart rate observed in the window (BPM) |
+| **6** | **Mean RR Interval** | `MeanRR` | Average clean RR interval duration (seconds / ms) |
+| **7** | **Median RR Interval** | `MedianRR` | Median clean RR interval duration (seconds / ms) |
+| **8** | **SDNN** | `SDNN` | Standard deviation of clean NN intervals (total autonomic variability) |
+| **9** | **RMSSD** | `RMSSD` | Root mean square of successive differences (parasympathetic / vagal tone) |
+| **10** | **pNN50** | `pNN50` | Percentage of successive RR differences exceeding 50 ms (%) |
+| **11** | **RR CV** | `RR_CV` | Coefficient of variation: ratio of SDNN to Mean RR |
+| **12** | **RR IQR** | `RR_IQR` | Interquartile range of RR intervals: Q3(RR) - Q1(RR) |
+| **13** | **HR IQR** | `HR_IQR` | Interquartile range of heart rate: Q3(HR) - Q1(HR) |
+
+### Formal Mathematical Definitions
+For reference, the primary autonomic variability metrics are mathematically defined as:
+
+$$\text{SDNN} = \sqrt{\frac{1}{N-1} \sum_{i=1}^N (RR_i - \overline{RR})^2}, \qquad \text{RMSSD} = \sqrt{\frac{1}{N-1} \sum_{i=1}^{N-1} (RR_{i+1} - RR_i)^2}$$
+
+$$\text{pNN50} = \frac{\text{Count}(\lvert RR_{i+1} - RR_i \rvert > 50\text{ ms})}{N-1} \times 100\%, \qquad \text{RR\_CV} = \frac{\text{SDNN}}{\overline{RR}}$$
 
 ### Model Feature Selection
 In the finalized classifier (`matlab/05_modeling/TWENTY_personalized_classifier.m`), an 8-feature subset focusing on primary rate, variability, and robust spread metrics was used:
 
-$$\mathbf{X} = \left[ \text{MeanHR},\; \text{SDNN},\; \text{RMSSD},\; \text{pNN50},\; \text{MeanRR},\; \text{RR}_{\text{CV}},\; \text{RR}_{\text{IQR}},\; \text{HR}_{\text{IQR}} \right]$$
+```plaintext
+Feature Vector X = [ MeanHR, SDNN, RMSSD, pNN50, MeanRR, RR_CV, RR_IQR, HR_IQR ]
+```
+
+$$\mathbf{X} = \left[\, \text{MeanHR},\; \text{SDNN},\; \text{RMSSD},\; \text{pNN50},\; \text{MeanRR},\; \text{RR}_{\text{CV}},\; \text{RR}_{\text{IQR}},\; \text{HR}_{\text{IQR}} \,\right]$$
 
 ---
 
@@ -168,9 +179,9 @@ Fold k (k = 1, ..., 15):
 └────────────────────────────────────────────────────────────┘
 ```
 
-- **Subject Independence:** The classifier weights $\mathbf{w}$ and bias $b$ are trained strictly on the other 14 subjects. No stress labels from subject $k$ are ever seen during training.
+- **Subject Independence:** The classifier weights $w$ and bias $b$ are trained strictly on the other 14 subjects. No stress labels from subject $k$ are ever seen during training.
 - **Baseline Calibration:** For the test fold, subject $k$'s resting baseline windows are used solely to establish reference vector $B_k$ for relative normalization: $X_k^* = (X_k - B_k) / |B_k|$.
-- **Decision Threshold Calibration ($\tau = 0.35$):** Adjusting the decision threshold from $\tau = 0.50$ to $\tau = 0.35$ optimized the balance between sensitivity (86.25%) and specificity (95.79%).
+- **Decision Threshold Calibration (τ = 0.35):** Adjusting the decision threshold from τ = 0.50 to τ = 0.35 optimized the balance between sensitivity (86.25%) and specificity (95.79%).
 
 ---
 
@@ -209,10 +220,10 @@ In the original WESAD benchmark study (*Schmidt et al., ICMI 2018*), the authors
 
 | Study / Model | Modality | Normalization Scheme | Accuracy | F1-Score | Validation Protocol |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Schmidt et al. (2018) — Decision Tree** | Chest ECG | None (Global raw features) | 79.03% | 71.43% | 15-Fold LOSO |
-| **Schmidt et al. (2018) — Random Forest** | Chest ECG | None (Global raw features) | 83.84% | 75.12% | 15-Fold LOSO |
-| **This Study — Uncalibrated 13-Feature Baseline** | Chest ECG | None (Global raw features) | 81.57% | 73.03% | 15-Fold LOSO |
-| **This Study — Personalized Classifier (Ours)** | **Chest ECG** | **Subject-Specific Relative ($X^*$)** | **92.36%** | **89.03%** | **15-Fold LOSO ($\tau = 0.35$)** |
+| **Schmidt et al. (2018) - Decision Tree** | Chest ECG | None (Global raw features) | 79.03% | 71.43% | 15-Fold LOSO |
+| **Schmidt et al. (2018) - Random Forest** | Chest ECG | None (Global raw features) | 83.84% | 75.12% | 15-Fold LOSO |
+| **This Study - Uncalibrated 13-Feature Baseline** | Chest ECG | None (Global raw features) | 81.57% | 73.03% | 15-Fold LOSO |
+| **This Study - Personalized Classifier (Ours)** | **Chest ECG** | **Subject-Specific Relative (X*)** | **92.36%** | **89.03%** | **15-Fold LOSO (τ = 0.35)** |
 
 *Key Takeaway:* Our uncalibrated feature baseline (81.57% Accuracy, 73.03% F1) closely replicates the results published by Schmidt et al. (79–84% Accuracy, 71–75% F1). Applying subject-specific relative baseline calibration provides an empirical improvement of **+8.5% to +13.3% Accuracy** and **+13.9% to +17.6% F1-score** over published unnormalized chest ECG benchmarks.
 
@@ -272,7 +283,7 @@ To systematically isolate the contribution of feature expansion versus normaliza
 | **M1** | Raw Mean Heart Rate (Uncalibrated) | 77.08% | 64.34% | 61.25% | 85.96% | Baseline rate alone struggles with resting HR differences across subjects. |
 | **M2** | 4 Time-Domain Metrics (Uncalibrated) | 80.90% | 70.59% | 67.50% | 88.42% | Adding RMSSD and SDNN provides +6.25% F1 gain. |
 | **M3** | 13 Expanded Metrics (Uncalibrated) | 81.57% | 73.03% | 68.75% | 88.77% | Adding additional spread metrics yields modest incremental improvement (+0.67% Acc). |
-| **M4** | **Personalized Baseline-Calibrated ($X^*$)** | **92.36%** | **89.03%** | **86.25%** | **95.79%** | **+10.79% Acc, +16.00% F1 jump**; confirms baseline calibration is the primary driver of generalization. |
+| **M4** | **Personalized Baseline-Calibrated (X*)** | **92.36%** | **89.03%** | **86.25%** | **95.79%** | **+10.79% Acc, +16.00% F1 jump**; confirms baseline calibration is the primary driver of generalization. |
 
 <table align="center">
   <tr>
@@ -289,7 +300,7 @@ To systematically isolate the contribution of feature expansion versus normaliza
 
 ### 8.2 Permutation Feature Importance & Standardized Odds Ratios
 To evaluate the influence of individual features on model predictions, we computed:
-1. **Permutation Importance ($N = 30$ repeats per fold):** Evaluated over 30 independent random permutations per feature across each of the 15 LOSO test folds ($15 \times 30 = 450$ evaluation trials per feature) to quantify empirical degradation in test ROC-AUC and F1-score when feature information is destroyed.
+1. **Permutation Importance (N = 30 repeats per fold):** Evaluated over 30 independent random permutations per feature across each of the 15 LOSO test folds ($15 \times 30 = 450$ evaluation trials per feature) to quantify empirical degradation in test ROC-AUC and F1-score when feature information is destroyed.
 2. **Standardized Odds Ratios ($e^{w_i}$):** Multiplicative factor in the odds of stress classification per standard deviation change in the normalized feature.
 
 <p align="center">
@@ -299,10 +310,10 @@ To evaluate the influence of individual features on model predictions, we comput
 </p>
 
 ### 8.3 Interpretation of Model Weights
-- **Cardiac Interval Compression ($\Delta\text{MeanRR}$, Odds Ratio = 0.0645, AUC Drop = 0.1766):** Among the evaluated features, $\Delta\text{MeanRR}$ produced the largest permutation-based ROC-AUC drop (0.1766 drop). As beat-to-beat intervals shorten relative to baseline, the probability of stress classification increases substantially.
-- **Heart Rate Elevation ($\Delta\text{MeanHR}$, Odds Ratio = 5.6453, F1 Drop = 0.1401):** Relative elevation in heart rate strongly increases the odds of stress classification, consistent with acute sympathetic acceleration during the TSST.
-- **Interval Dispersion ($\Delta\text{pNN50}$, Odds Ratio = 4.0784, AUC Drop = 0.0596):** Reflects rapid beat-to-beat adjustments under cognitive challenge.
-- **Overall Variability ($\Delta\text{SDNN}$, Odds Ratio = 0.4625):** Retention of total interval variability is associated with lower odds of stress classification, characteristic of relaxed baseline states.
+- **Cardiac Interval Compression (ΔMeanRR, Odds Ratio = 0.0645, AUC Drop = 0.1766):** Among the evaluated features, ΔMeanRR produced the largest permutation-based ROC-AUC drop (0.1766 drop). As beat-to-beat intervals shorten relative to baseline, the probability of stress classification increases substantially.
+- **Heart Rate Elevation (ΔMeanHR, Odds Ratio = 5.6453, F1 Drop = 0.1401):** Relative elevation in heart rate strongly increases the odds of stress classification, consistent with acute sympathetic acceleration during the TSST.
+- **Interval Dispersion (ΔpNN50, Odds Ratio = 4.0784, AUC Drop = 0.0596):** Reflects rapid beat-to-beat adjustments under cognitive challenge.
+- **Overall Variability (ΔSDNN, Odds Ratio = 0.4625):** Retention of total interval variability is associated with lower odds of stress classification, characteristic of relaxed baseline states.
 
 ---
 
@@ -335,7 +346,7 @@ Evaluating subject-specific stress detection rates across all 15 WESAD subjects 
 </p>
 
 ### 9.1 Discussion of Lower-Reactivity Subjects
-In laboratory stress protocols (*Kirschbaum et al., 1993; Schmidt et al., 2018*), physiological non-responsiveness is a recognized occurrence. For Subject **S2**, subjective self-reports in the original WESAD trial noted low self-perceived stress, and ECG recordings show that S2 experienced almost no heart rate acceleration during the TSST relative to their resting baseline ($\Delta\text{MeanHR} \approx 0$). Because the model relies on baseline-relative physiological shifts, subjects who do not exhibit autonomic reactivity under laboratory conditions cannot be distinguished from baseline using ECG alone. This finding highlights the value of multimodal sensing (e.g., combining ECG with electrodermal activity [EDA] and respiration) for comprehensive affective computing.
+In laboratory stress protocols (*Kirschbaum et al., 1993; Schmidt et al., 2018*), physiological non-responsiveness is a recognized occurrence. For Subject **S2**, subjective self-reports in the original WESAD trial noted low self-perceived stress, and ECG recordings show that S2 experienced almost no heart rate acceleration during the TSST relative to their resting baseline (ΔMeanHR ≈ 0). Because the model relies on baseline-relative physiological shifts, subjects who do not exhibit autonomic reactivity under laboratory conditions cannot be distinguished from baseline using ECG alone. This finding highlights the value of multimodal sensing (e.g., combining ECG with electrodermal activity [EDA] and respiration) for comprehensive affective computing.
 
 ---
 
