@@ -17,7 +17,9 @@
 
 **Methods:** This repository provides an end-to-end, reproducible research pipeline implemented in **MATLAB (R2022b+)** and **Python (3.10+)** to quantify, evaluate, and benchmark acute stress-state classification across all **15 subjects** (N = 15, 445 standardized 60-second windows) of the public **WESAD** (Wearable Stress and Affect Detection) benchmark dataset. Single-lead chest ECG acquired at 700 Hz via RespiBAN is conditioned with a zero-phase 4th-order Butterworth bandpass filter (0.5 – 40 Hz). R-peaks are detected using adaptive prominence thresholding based on the Median Absolute Deviation (MAD) of the signal noise floor, followed by physiological RR interval filtering (300 – 1500 ms). From cleaned NN intervals, 13 time-domain and statistical HRV features are computed per window. To overcome baseline heterogeneity, we implement a **subject-specific relative baseline normalization**:
 
-$$X^* = \frac{X - B_s}{|B_s|}$$
+$$
+X^* = \frac{X - B_s}{|B_s|}
+$$
 
 All models are evaluated using strict **15-Fold Leave-One-Subject-Out Cross-Validation (LOSO-CV)** with subject-specific baseline calibration, where model parameters are trained strictly on 14 subjects and evaluated on the held-out test subject.
 
@@ -48,11 +50,15 @@ A fixed cutoff of 80 BPM would misclassify Subject B as stressed at rest, while 
 ### 1.2 Mathematical Formulation of Relative Normalization
 To decouple state-dependent physiological responses from resting baseline differences, features are normalized relative to each subject's resting baseline. Let $X$ denote a feature vector extracted from an analysis window of subject $s$. Let $\mathcal{W}_{\text{base}}^{(s)}$ denote the set of resting baseline windows for subject $s$. The reference baseline vector $B_s$ is defined as:
 
-$$B_s = \frac{1}{|\mathcal{W}_{\text{base}}^{(s)}|} \sum_{k \in \mathcal{W}_{\text{base}}^{(s)}} X_k^{(s)}$$
+$$
+B_s = \frac{1}{|\mathcal{W}_{\text{base}}^{(s)}|} \sum_{k \in \mathcal{W}_{\text{base}}^{(s)}} X_k^{(s)}
+$$
 
 Each feature vector $X$ is then transformed into a relative fractional change:
 
-$$X^* = \frac{X - B_s}{|B_s|}$$
+$$
+X^* = \frac{X - B_s}{|B_s|}
+$$
 
 To avoid division by zero for features near zero, $|B_s|$ is bounded below by a small numerical constant $\epsilon = 10^{-6}$. This transformation expresses each feature as a percentage deviation from the subject's own resting state, centering resting physiology near zero.
 
@@ -145,9 +151,13 @@ Standardized **60-second sliding analysis windows** with **50% overlap (30-secon
 ### Formal Mathematical Definitions
 For reference, the primary autonomic variability metrics are mathematically defined as:
 
-$$\text{SDNN} = \sqrt{\frac{1}{N-1} \sum_{i=1}^N (RR_i - \overline{RR})^2}, \qquad \text{RMSSD} = \sqrt{\frac{1}{N-1} \sum_{i=1}^{N-1} (RR_{i+1} - RR_i)^2}$$
+$$
+\text{SDNN} = \sqrt{\frac{1}{N-1} \sum_{i=1}^N (RR_i - \overline{RR})^2}, \qquad \text{RMSSD} = \sqrt{\frac{1}{N-1} \sum_{i=1}^{N-1} (RR_{i+1} - RR_i)^2}
+$$
 
-$$\text{pNN50} = \frac{\text{Count}(\lvert RR_{i+1} - RR_i \rvert > 50\text{ ms})}{N-1} \times 100\%, \qquad \text{RR\_CV} = \frac{\text{SDNN}}{\overline{RR}}$$
+$$
+\text{pNN50} = \frac{\text{Count}(\lvert RR_{i+1} - RR_i \rvert > 50\text{ ms})}{N-1} \times 100\%, \qquad \text{RR\_CV} = \frac{\text{SDNN}}{\overline{RR}}
+$$
 
 ### Model Feature Selection
 In the finalized classifier (`matlab/05_modeling/TWENTY_personalized_classifier.m`), an 8-feature subset focusing on primary rate, variability, and robust spread metrics was used:
@@ -156,7 +166,9 @@ In the finalized classifier (`matlab/05_modeling/TWENTY_personalized_classifier.
 Feature Vector X = [ MeanHR, SDNN, RMSSD, pNN50, MeanRR, RR_CV, RR_IQR, HR_IQR ]
 ```
 
-$$\mathbf{X} = \left[\, \text{MeanHR},\; \text{SDNN},\; \text{RMSSD},\; \text{pNN50},\; \text{MeanRR},\; \text{RR}_{\text{CV}},\; \text{RR}_{\text{IQR}},\; \text{HR}_{\text{IQR}} \,\right]$$
+$$
+\mathbf{X} = \left[\, \text{MeanHR},\; \text{SDNN},\; \text{RMSSD},\; \text{pNN50},\; \text{MeanRR},\; \text{RR}_{\text{CV}},\; \text{RR}_{\text{IQR}},\; \text{HR}_{\text{IQR}} \,\right]
+$$
 
 ---
 
