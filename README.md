@@ -7,8 +7,9 @@
 [![ROC-AUC](https://img.shields.io/badge/ROC--AUC-0.9494-007ACC.svg?style=flat-square)]()
 [![Sensitivity](https://img.shields.io/badge/Sensitivity-86.25%25-2ea44f.svg?style=flat-square)]()
 [![Specificity](https://img.shields.io/badge/Specificity-95.79%25-success.svg?style=flat-square)]()
-[![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat-square)](LICENSE)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22806710.svg)](https://doi.org/10.5281/zenodo.22806710)
 [![Research Paper: PDF](https://img.shields.io/badge/Research%20Paper-PDF%20Download-b31b1b.svg?style=flat-square&logo=adobeacrobatreader)](paper/ECG_Stress_Detection_WESAD_Benchmark_Paper.pdf)
+[![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat-square)](LICENSE)
 
 ---
 
@@ -488,16 +489,29 @@ To access the original sensor recordings:
 
 ## 14. Academic Citation
 
-If you use this codebase, methodology, or experimental benchmark in academic work, please cite the underlying WESAD benchmark:
+If you use this codebase, methodology, or experimental benchmark in academic work, please cite both the primary research paper and the underlying WESAD dataset:
 
+### Primary Research Paper
+```bibtex
+@article{yadav2026ecg,
+  title     = {Personalized Electrocardiographic and HRV Dynamics for Acute Stress Detection: A Leave-One-Subject-Out Benchmark on WESAD},
+  author    = {Yadav, Mukesh},
+  journal   = {Zenodo},
+  year      = {2026},
+  doi       = {10.5281/zenodo.22806710},
+  url       = {https://doi.org/10.5281/zenodo.22806710}
+}
+```
+
+### Underlying WESAD Benchmark
 ```bibtex
 @inproceedings{schmidt2018wesad,
-  title={Introducing WESAD, a Multimodal Dataset for Wearable Stress and Affect Detection},
-  author={Schmidt, Philip and Reiss, Attila and Duerichen, Robert and Marberger, Claus and Van Laerhoven, Kristof},
-  booktitle={Proceedings of the 20th ACM International Conference on Multimodal Interaction (ICMI)},
-  pages={400--408},
-  year={2018},
-  doi={10.1145/3242969.3242985}
+  title     = {Introducing WESAD, a Multimodal Dataset for Wearable Stress and Affect Detection},
+  author    = {Schmidt, Philip and Reiss, Attila and Duerichen, Robert and Marberger, Claus and Van Laerhoven, Kristof},
+  booktitle = {Proceedings of the 20th ACM International Conference on Multimodal Interaction (ICMI)},
+  pages     = {400--408},
+  year      = {2018},
+  doi       = {10.1145/3242969.3242985}
 }
 ```
 
