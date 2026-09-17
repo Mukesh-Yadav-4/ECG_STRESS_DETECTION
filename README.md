@@ -398,6 +398,16 @@ python python/explainability_feature_importance.py
 python python/plot_ml_evaluation.py
 ```
 
+#### C. Interactive Clinical Telemetry Web Application
+Launch the local interactive Streamlit + Plotly web dashboard for real-time ECG waveform inspection, QRS detection, and dynamic decision threshold sweeps:
+```bash
+# 1. Install dependencies
+pip install -r requirements.txt
+
+# 2. Launch interactive web dashboard
+streamlit run demo/app.py
+```
+
 ### 10.3 Computational Complexity & Wearable Edge Feasibility
 To evaluate practical utility for wearable hardware, the pipeline was benchmarked for runtime and memory overhead:
 - **Feature Extraction Latency:** Computing all 13 time-domain and statistical distribution metrics across a 60-second window (42,000 raw samples at 700 Hz) requires **< 0.85 ms** on a single CPU core.
@@ -423,9 +433,12 @@ To maintain rigorous scientific standards, several experimental boundaries and d
 ECG_STRESS_DETECTION/
 ├── README.md                                  # Comprehensive research documentation & benchmark report
 ├── paper/                                     # Research manuscript
-│   └── ECG_Stress_Detection_WESAD_Benchmark_Paper.pdf # Full 5-page IEEE publication manuscript
+│   └── ECG_Stress_Detection_WESAD_Benchmark_Paper.pdf # Full 6-page IEEE publication manuscript
+├── demo/                                      # Interactive web application suite
+│   ├── app.py                                 # Streamlit + Plotly clinical telemetry web dashboard
+│   └── sample_data/                           # Compact 60-second ECG samples (S2, S3, S10, S17)
 ├── LICENSE                                    # MIT Open Source License
-├── requirements.txt                           # Python dependencies for ML benchmark suite
+├── requirements.txt                           # Production Python dependencies for local & cloud deployment
 ├── ECG_STRESS_DETECTION_RUN.txt               # Quick reference guide for execution
 │
 ├── matlab/                                    # Modular MATLAB signal processing pipeline

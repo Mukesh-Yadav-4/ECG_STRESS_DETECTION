@@ -1,0 +1,111 @@
+{
+  "fs_original": 700,
+  "fs_demo": 350,
+  "window_sec": 60,
+  "subjects": {
+    "S2": {
+      "Baseline": {
+        "hrv": {
+          "MeanHR": 75.0,
+          "SDNN_ms": 92.46,
+          "RMSSD_ms": 67.52,
+          "pNN50": 31.5,
+          "NumBeats": 75
+        },
+        "stress_probability": 0.164,
+        "predicted_label": 0,
+        "calibrated_threshold": 0.35
+      },
+      "Stress": {
+        "hrv": {
+          "MeanHR": 80.1,
+          "SDNN_ms": 60.3,
+          "RMSSD_ms": 43.1,
+          "pNN50": 23.1,
+          "NumBeats": 80
+        },
+        "stress_probability": 0.2241,
+        "predicted_label": 0,
+        "calibrated_threshold": 0.35
+      }
+    },
+    "S3": {
+      "Baseline": {
+        "hrv": {
+          "MeanHR": 55.7,
+          "SDNN_ms": 101.46,
+          "RMSSD_ms": 107.38,
+          "pNN50": 67.9,
+          "NumBeats": 55
+        },
+        "stress_probability": 0.0674,
+        "predicted_label": 0,
+        "calibrated_threshold": 0.35
+      },
+      "Stress": {
+        "hrv": {
+          "MeanHR": 102.8,
+          "SDNN_ms": 55.29,
+          "RMSSD_ms": 25.92,
+          "pNN50": 3.0,
+          "NumBeats": 103
+        },
+        "stress_probability": 0.6097,
+        "predicted_label": 1,
+        "calibrated_threshold": 0.35
+      }
+    },
+    "S10": {
+      "Baseline": {
+        "hrv": {
+          "MeanHR": 95.1,
+          "SDNN_ms": 32.19,
+          "RMSSD_ms": 10.26,
+          "pNN50": 0.0,
+          "NumBeats": 95
+        },
+        "stress_probability": 0.9019,
+        "predicted_label": 1,
+        "calibrated_threshold": 0.35
+      },
+      "Stress": {
+        "hrv": {
+          "MeanHR": 119.5,
+          "SDNN_ms": 59.44,
+          "RMSSD_ms": 28.1,
+          "pNN50": 2.6,
+          "NumBeats": 119
+        },
+        "stress_probability": 0.9848,
+        "predicted_label": 1,
+        "calibrated_threshold": 0.35
+      }
+    },
+    "S17": {
+      "Baseline": {
+        "hrv": {
+          "MeanHR": 65.2,
+          "SDNN_ms": 113.35,
+          "RMSSD_ms": 106.15,
+          "pNN50": 63.5,
+          "NumBeats": 65
+        },
+        "stress_probability": 0.2622,
+        "predicted_label": 0,
+        "calibrated_threshold": 0.35
+      },
+      "Stress": {
+        "hrv": {
+          "MeanHR": 107.7,
+          "SDNN_ms": 60.31,
+          "RMSSD_ms": 61.09,
+          "pNN50": 14.2,
+          "NumBeats": 108
+        },
+        "stress_probability": 0.9674,
+        "predicted_label": 1,
+        "calibrated_threshold": 0.35
+      }
+    }
+  }
+}

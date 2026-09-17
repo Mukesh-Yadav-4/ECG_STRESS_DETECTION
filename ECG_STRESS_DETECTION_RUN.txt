@@ -25,6 +25,16 @@ Or run them one by one:
 
 
 =============================================
+INTERACTIVE STREAMLIT WEB DASHBOARD
+=============================================
+
+Launch the browser-based clinical telemetry dashboard:
+   streamlit run demo/app.py
+   # Opens an interactive dashboard with live ECG waveforms, detected R-peaks,
+   # autonomic HRV metrics, real-time stress needle gauge, and dynamic threshold slider.
+
+
+=============================================
 MATLAB SCRIPTS & LIVE DEMO
 =============================================
 
