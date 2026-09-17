@@ -55,3 +55,14 @@ results/WESAD_HRV_features_expanded.csv
 # Figure archives & theme staging
 results/figures/archive/
 results/figures/default_theme/
+
+# =========================================================
+# PYTHON CACHE & VENV
+# =========================================================
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+.pytest_cache/
