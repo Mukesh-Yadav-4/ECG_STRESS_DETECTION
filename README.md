@@ -11,6 +11,8 @@
 [![Research Paper: PDF](https://img.shields.io/badge/Research%20Paper-PDF%20Download-b31b1b.svg?style=flat-square&logo=adobeacrobatreader)](paper/ECG_Stress_Detection_WESAD_Benchmark_Paper.pdf)
 [![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat-square)](LICENSE)
 
+> 🌐 **Interactive Research Benchmark & ECG Telemetry:** [Mukesh Yadav | Biosignal Processing & Neuromorphic Hardware](https://mukesh-yadav-res-portfolio.vercel.app/)
+
 ---
 
 ## Abstract
