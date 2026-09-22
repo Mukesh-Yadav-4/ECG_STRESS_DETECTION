@@ -1,0 +1,41 @@
+========================================================================
+HOW TO RESTORE THIS ECG PROJECT AFTER WORKING ON ANOTHER STM32 PROJECT
+========================================================================
+
+RULE OF THUMB:
+The STM32 NUCLEO-G474RE board only runs ONE program at a time.
+Whenever you flash a different project onto the board in another chat,
+the board runs that project until you flash this ECG firmware back.
+
+VISUAL CHECK:
+- LD2 Green LED Blinking (1 Hz): ECG Firmware is active & transmitting!
+- LD2 Solid ON or OFF: Board is running another project.
+
+------------------------------------------------------------------------
+THE 2-STEP FIX (Takes 10 seconds):
+------------------------------------------------------------------------
+
+STEP 1: RE-FLASH THE ECG FIRMWARE
+Go to:
+  C:\Users\YASH\Desktop\projects\STM32_PROJECTS\STM32G474_ECG_Telemetry\
+Double-click:
+  flash_firmware.bat
+
+(This uploads STM32G474_ECG_Telemetry.bin. You will see LD2 start blinking!)
+
+
+STEP 2: LAUNCH / REFRESH THE CLINICAL DASHBOARD
+Go to:
+  C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\
+Double-click:
+  start_dashboard.bat
+
+(Open http://localhost:8501, and toggle 'Continuous Live Stream' to ON.)
+
+------------------------------------------------------------------------
+TROUBLESHOOTING: "Access is Denied on COM10"
+If PowerShell or Streamlit says COM10 is busy/access denied:
+1. Close any other PowerShell, Arduino IDE, or terminal that might be connected to COM10.
+2. In the Streamlit terminal, press Ctrl + C to close it.
+3. Re-run start_dashboard.bat.
+========================================================================

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hardware Components List - WESAD ECG & IoMT Project</title>
+<style>
+    @page {
+        size: A4 portrait;
+        margin: 1.5cm;
+    }
+    body {
+        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+        color: #1E293B;
+        line-height: 1.45;
+        font-size: 10.5pt;
+        margin: 0;
+        padding: 0;
+    }
+    .header {
+        border-bottom: 2px solid #0EA5E9;
+        padding-bottom: 12px;
+        margin-bottom: 20px;
+    }
+    .header h1 {
+        margin: 0 0 6px 0;
+        font-size: 18pt;
+        color: #0F172A;
+    }
+    .header p {
+        margin: 0;
+        color: #64748B;
+        font-size: 9.5pt;
+    }
+    h2 {
+        font-size: 12pt;
+        color: #0369A1;
+        margin: 18px 0 8px 0;
+        border-bottom: 1px solid #E2E8F0;
+        padding-bottom: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 14px;
+    }
+    th, td {
+        padding: 7px 10px;
+        text-align: left;
+        border: 1px solid #E2E8F0;
+        font-size: 9.5pt;
+    }
+    th {
+        background-color: #F1F5F9;
+        color: #334155;
+        font-weight: 600;
+    }
+    tr:nth-child(even) td {
+        background-color: #F8FAFC;
+    }
+    .check-col {
+        width: 25px;
+        text-align: center;
+    }
+    .item-col {
+        width: 28%;
+        font-weight: 600;
+        color: #0F172A;
+    }
+    .spec-col {
+        width: 32%;
+        font-family: 'Consolas', 'Courier New', monospace;
+        font-size: 8.5pt;
+        color: #0284C7;
+    }
+    .callout {
+        background-color: #EFF6FF;
+        border-left: 4px solid #3B82F6;
+        padding: 10px 14px;
+        margin: 14px 0;
+        font-size: 9pt;
+        color: #1E3A8A;
+        border-radius: 0 4px 4px 0;
+    }
+    .callout-warn {
+        background-color: #FEF2F2;
+        border-left: 4px solid #EF4444;
+        color: #991B1B;
+    }
+    .footer {
+        margin-top: 25px;
+        font-size: 8.5pt;
+        color: #94A3B8;
+        text-align: center;
+        border-top: 1px solid #E2E8F0;
+        padding-top: 8px;
+    }
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Hardware Components List & Procurement Checklist</h1>
+    <p><b>Project:</b> Real-Time WESAD ECG Telemetry & Autonomic Stress Detection System (STM32G474 + AD8232)</p>
+</div>
+
+<h2>1. Primary Processing & Computing Hardware</h2>
+<table>
+    <thead>
+        <tr>
+            <th class="check-col">&#9634;</th>
+            <th class="item-col">Component</th>
+            <th class="spec-col">Recommended Part / Spec</th>
+            <th>Description & Purpose</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="check-col">&#9634;</td>
+            <td class="item-col">Microcontroller Board</td>
+            <td class="spec-col">ST NUCLEO-G474RE</td>
+            <td>ARM Cortex-M4 @ 170 MHz with FPU. Runs on-chip Biquad DSP filter and CRC-16 telemetry packing. Includes on-board ST-LINK V3 programmer/debugger and Virtual COM Port.</td>
+        </tr>
+        <tr>
+            <td class="check-col">&#9634;</td>
+            <td class="item-col">Host Computer</td>
+            <td class="spec-col">Windows 10 / 11 Laptop</td>
+            <td>Runs STM32CubeIDE for firmware flashing, the Python serial ingestion engine, and the interactive Streamlit telemetry dashboard.</td>
+        </tr>
+        <tr>
+            <td class="check-col">&#9634;</td>
+            <td class="item-col">USB Interface Cable</td>
+            <td class="spec-col">Micro-USB to USB-A (or USB-C)</td>
+            <td>Connects Nucleo board to laptop. <b>Must be a full data-sync cable</b> (with D+ and D- data lines), not a charge-only phone cord.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>2. Biosignal Analog Front-End (AFE)</h2>
+<table>
+    <thead>
+        <tr>
+            <th class="check-col">&#9634;</th>
+            <th class="item-col">Component</th>
+            <th class="spec-col">Recommended Part / Spec</th>
+            <th>Description & Purpose</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="check-col">&#9634;</td>
+            <td class="item-col">ECG Sensor Breakout</td>
+            <td class="spec-col">AD8232 Heart Rate Monitor</td>
+            <td>Analog front-end instrumentation amplifier with integrated high-pass filter and Right-Leg Drive (RLD) to extract clean ~1 mV cardiac microvolt signals from skin.</td>
+        </tr>
+        <tr>
+            <td class="check-col">&#9634;</td>
+            <td class="item-col">Biomedical Sensor Cable</td>
+            <td class="spec-col">3.5 mm Jack to 3 Snap Leads</td>
+            <td>Shielded cable connecting the AD8232 3.5 mm input socket to 3 snap electrodes: Red (RA), Yellow/Black (LA), and Green (RL reference).</td>
+        </tr>
+        <tr>
+            <td class="check-col">&#9634;</td>
+            <td class="item-col">Disposable ECG Electrodes</td>
+            <td class="spec-col">Ag/AgCl Pre-Gelled Foam (10–30 pcs)</td>
+            <td>Standard medical snap electrodes (e.g., 3M Red Dot or generic standard ECG pads) for low-impedance electrical skin contact.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>3. Wiring, Headers & Prototyping</h2>
+<table>
+    <thead>
+        <tr>
+            <th class="check-col">&#9634;</th>
+            <th class="item-col">Component</th>
+            <th class="spec-col">Recommended Part / Spec</th>
+            <th>Description & Purpose</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="check-col">&#9634;</td>
+            <td class="item-col">DuPont Jumper Wires</td>
+            <td class="spec-col">Female-to-Male (F-M), ~20 cm</td>
+            <td>At least 6 wires: Connects AD8232 pins (3.3V, GND, OUTPUT, LO-, LO+, SDN) directly to STM32 Nucleo headers.</td>
+        </tr>
+        <tr>
+            <td class="check-col">&#9634;</td>
+            <td class="item-col">Male-to-Male Jumpers</td>
+            <td class="spec-col">M-M Jumper Pack (~10 pcs)</td>
+            <td>Useful for breadboard routing or adding external test points.</td>
+        </tr>
+        <tr>
+            <td class="check-col">&#9634;</td>
+            <td class="item-col">Male Header Pins</td>
+            <td class="spec-col">0.1" (2.54 mm) Pitch, 1x6 Strip</td>
+            <td>To solder onto the AD8232 board if it arrives unpopulated without header pins.</td>
+        </tr>
+        <tr>
+            <td class="check-col">&#9634;</td>
+            <td class="item-col">Solderless Breadboard</td>
+            <td class="spec-col">Half-size (400 tie-points)</td>
+            <td>Provides physical stability for the sensor module during bench testing.</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="callout callout-warn">
+    <b>Critical Clinical Safety Rule:</b> Always run the host laptop on <b>battery power (unplugged from AC wall outlet)</b> while electrodes are attached to a human subject. This prevents 50 Hz powerline ground loops and guarantees complete galvanic isolation.
+</div>
+
+<div class="callout">
+    <b>Skin Preparation Tip:</b> Clean electrode placement sites with standard <b>70% Isopropyl Alcohol prep swabs</b> prior to applying electrodes. Removing dead skin cells and oils reduces contact impedance by over 80%, virtually eliminating baseline wander.
+</div>
+
+<div class="footer">
+    Generated for IEEE Biomedical Engineering Research | WESAD ECG Stress Detection Project
+</div>
+
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Project Roadmap - WESAD ECG Telemetry & Stress Detection System</title>
+<style>
+    @page {
+        size: A4 portrait;
+        margin: 1.4cm;
+    }
+    body {
+        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+        color: #1E293B;
+        line-height: 1.45;
+        font-size: 9.5pt;
+        margin: 0;
+        padding: 0;
+    }
+    .header {
+        border-bottom: 2px solid #0EA5E9;
+        padding-bottom: 10px;
+        margin-bottom: 16px;
+    }
+    .header h1 {
+        margin: 0 0 6px 0;
+        font-size: 16pt;
+        color: #0F172A;
+    }
+    .header p {
+        margin: 0;
+        color: #64748B;
+        font-size: 8.5pt;
+    }
+    .meta-box {
+        background-color: #F8FAFC;
+        border-left: 3px solid #0EA5E9;
+        padding: 8px 12px;
+        margin-bottom: 16px;
+        font-size: 8.5pt;
+        color: #334155;
+    }
+    .meta-box b {
+        color: #0F172A;
+    }
+    h2 {
+        font-size: 11pt;
+        color: #0369A1;
+        margin: 16px 0 8px 0;
+        border-bottom: 1px solid #E2E8F0;
+        padding-bottom: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+    h3 {
+        font-size: 10pt;
+        color: #0F172A;
+        margin: 12px 0 6px 0;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 12px;
+    }
+    th, td {
+        padding: 6px 8px;
+        text-align: left;
+        border: 1px solid #E2E8F0;
+        font-size: 8.5pt;
+    }
+    th {
+        background-color: #F1F5F9;
+        color: #334155;
+        font-weight: 600;
+    }
+    tr:nth-child(even) td {
+        background-color: #F8FAFC;
+    }
+    .badge {
+        display: inline-block;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 7.5pt;
+        font-weight: 700;
+        font-family: 'Consolas', monospace;
+    }
+    .badge-done {
+        background-color: #DCFCE7;
+        color: #15803D;
+        border: 1px solid #86EFAC;
+    }
+    .badge-next {
+        background-color: #FEF3C7;
+        color: #B45309;
+        border: 1px solid #FCD34D;
+    }
+    .badge-plan {
+        background-color: #F1F5F9;
+        color: #64748B;
+        border: 1px solid #CBD5E1;
+    }
+    ul {
+        margin: 4px 0 10px 18px;
+        padding: 0;
+    }
+    li {
+        margin-bottom: 3px;
+    }
+    code, pre {
+        font-family: 'Consolas', 'Courier New', monospace;
+        font-size: 8pt;
+    }
+    pre {
+        background-color: #0F172A;
+        color: #E2E8F0;
+        padding: 8px 10px;
+        border-radius: 4px;
+        margin: 6px 0 10px 0;
+        line-height: 1.35;
+    }
+    .flow-container {
+        background: #F8FAFC;
+        border: 1px solid #E2E8F0;
+        border-radius: 6px;
+        padding: 10px;
+        margin-bottom: 14px;
+        text-align: center;
+    }
+    .flow-row {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        gap: 6px;
+        font-size: 8pt;
+    }
+    .flow-box {
+        background: #FFFFFF;
+        border: 1px solid #CBD5E1;
+        border-radius: 4px;
+        padding: 6px 8px;
+        flex: 1;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .flow-box b {
+        display: block;
+        color: #0369A1;
+        margin-bottom: 2px;
+    }
+    .flow-arrow {
+        color: #0EA5E9;
+        font-weight: bold;
+        font-size: 11pt;
+    }
+    .footer {
+        margin-top: 18px;
+        font-size: 8pt;
+        color: #94A3B8;
+        text-align: center;
+        border-top: 1px solid #E2E8F0;
+        padding-top: 6px;
+    }
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Project Roadmap: WESAD ECG Telemetry & Stress Detection System</h1>
+    <p>Target Architecture: Embedded STM32G474 Edge Node & Real-Time Host Analytics Suite</p>
+</div>
+
+<div class="meta-box">
+    <b>Target Platform:</b> STM32G474 (ARM Cortex-M4 @ 170 MHz with FPU) + PC/Cloud Telemetry Receiver<br>
+    <b>Scientific Focus:</b> Autonomic Nervous System (ANS) Stress Detection using Lead-II ECG & HRV<br>
+    <b>Engineering Focus:</b> Real-Time Embedded DSP, Robust Binary Telemetry, and Secure IoMT Edge Node<br>
+    <b>Target Standard:</b> IEEE Journal / Conference Publication Quality (IEEE TBME / JBHI / Sensors)
+</div>
+
+<h2>1. System Architecture Overview</h2>
+<div class="flow-container">
+    <div class="flow-row">
+        <div class="flow-box">
+            <b>1. Sensor Source</b>
+            WESAD Replay / AD8232 ADC<br>
+            <i>350 Hz / 700 Hz</i>
+        </div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box">
+            <b>2. STM32 DSP Filter</b>
+            5-Stage Biquad IIR<br>
+            <i>0.5–40 Hz BP + 50 Hz Notch</i>
+        </div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box">
+            <b>3. Telemetry Protocol</b>
+            20-Byte Binary Frame<br>
+            <i>Sync 0xAA 0x55 | CRC-16</i>
+        </div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box">
+            <b>4. Host Ingestion</b>
+            60s Circular Buffer<br>
+            <i>Pan-Tompkins & 8 HRV Metrics</i>
+        </div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box">
+            <b>5. ML & Dashboard</b>
+            Calibrated LogReg / MLP<br>
+            <i>Live Stress Needle Gauge</i>
+        </div>
+    </div>
+</div>
+
+<h2>2. Milestone Status Dashboard</h2>
+<table>
+    <thead>
+        <tr>
+            <th style="width: 8%;">Phase</th>
+            <th style="width: 25%;">Milestone</th>
+            <th>Scope / Deliverable</th>
+            <th style="width: 14%; text-align: center;">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>1</b></td>
+            <td><b>Dataset & DSP Pipeline</b></td>
+            <td>WESAD extraction, MATLAB 0.5–40 Hz filter, Pan-Tompkins peak detection</td>
+            <td style="text-align: center;"><span class="badge badge-done">COMPLETED</span></td>
+        </tr>
+        <tr>
+            <td><b>2</b></td>
+            <td><b>ML Benchmark (LOSO)</b></td>
+            <td>15-Fold cross-validation across 6 models, zero-leakage baseline normalization</td>
+            <td style="text-align: center;"><span class="badge badge-done">COMPLETED</span></td>
+        </tr>
+        <tr>
+            <td><b>3</b></td>
+            <td><b>STM32 C DSP Core</b></td>
+            <td>5-stage Biquad IIR C code, 20-byte telemetry framing, test vectors</td>
+            <td style="text-align: center;"><span class="badge badge-done">COMPLETED</span></td>
+        </tr>
+        <tr>
+            <td><b>4</b></td>
+            <td><b>PC Telemetry Receiver</b></td>
+            <td>Non-blocking serial listener, CRC-16 validator, buffer management</td>
+            <td style="text-align: center;"><span class="badge badge-done">COMPLETED</span></td>
+        </tr>
+        <tr>
+            <td><b>5</b></td>
+            <td><b>Live Streamlit Integration</b></td>
+            <td>Real-time rolling strip-chart, live HRV gauges, live stress prediction</td>
+            <td style="text-align: center;"><span class="badge badge-done">COMPLETED</span></td>
+        </tr>
+        <tr>
+            <td><b>6</b></td>
+            <td><b>Physical Hardware Setup</b></td>
+            <td>STM32CubeIDE project config, UART DMA, AD8232 analog front-end</td>
+            <td style="text-align: center;"><span class="badge badge-next">NEXT STEP</span></td>
+        </tr>
+        <tr>
+            <td><b>7</b></td>
+            <td><b>IoMT Encryption Layer</b></td>
+            <td>Hyperchaotic map / geometric transformation payload encryption</td>
+            <td style="text-align: center;"><span class="badge badge-plan">PHASE 2</span></td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>3. Detailed Phase Breakdown</h2>
+
+<h3>Phase 1: Clinical Signal Processing & Data Extraction <span class="badge badge-done">COMPLETED</span></h3>
+<ul>
+    <li>Extracted 700 Hz Lead-II ECG and labels across 15 WESAD subjects into standardized <code>.mat</code> files.</li>
+    <li>Implemented baseline wander & noise rejection: 4th-order Butterworth (0.5–40 Hz) and 50 Hz notch filter.</li>
+    <li>Extracted <b>8 Core Autonomic HRV Metrics:</b> <code>MeanHR</code>, <code>RMSSD</code>, <code>SDNN</code>, <code>pNN50</code>, <code>MeanRR</code>, <code>RR_CV</code>, <code>RR_IQR</code>, <code>HR_IQR</code>.</li>
+</ul>
+
+<h3>Phase 2: Multi-Model Machine Learning Benchmark <span class="badge badge-done">COMPLETED</span></h3>
+<ul>
+    <li>Applied zero-leakage subject-specific baseline normalization: <code>&Delta;x = (x - &mu;<sub>baseline</sub>) / max(|&mu;<sub>baseline</sub>|, &epsilon;)</code>.</li>
+    <li>15-Fold Leave-One-Subject-Out (LOSO) cross-validation results:
+        <b>Logistic Regression</b> (92.13% Acc, 88.29% F1 &mdash; Top Performer),
+        <b>MLP Neural Net</b> (91.69% Acc, 87.87% F1),
+        <b>SVM RBF</b> (91.46% Acc, 0.9524 ROC-AUC &mdash; Highest AUC).
+    </li>
+</ul>
+
+<h3>Phase 3: STM32 C Firmware Core <span class="badge badge-done">COMPLETED</span></h3>
+<ul>
+    <li>CMSIS-DSP Biquad IIR filter (<code>ecg_dsp_filter.c</code>) matching exact MATLAB design.</li>
+    <li>20-byte binary telemetry frame (Sync <code>0xAA 0x55</code>, Version, Flags, SeqID, Timestamp, Raw ECG, Filt ECG, CRC-16-CCITT).</li>
+    <li>Hardware-free verification harness (<code>main_bench.c</code>) validated with 100% CRC integrity.</li>
+</ul>
+
+<h3>Phase 4: PC Telemetry Receiver & Stream Ingestion <span class="badge badge-done">COMPLETED</span></h3>
+<ul>
+    <li>Thread-safe non-blocking Python receiver (<code>stm32_telemetry_receiver.py</code>) with auto-sync and CRC checking.</li>
+    <li>End-to-end stream simulator (<code>simulate_stm32_stream.py</code>) verified: 7,000 frames streamed with 0 drops and 100% stress detection on S10.</li>
+</ul>
+
+<h3>Phase 5: Streamlit Live Telemetry Dashboard <span class="badge badge-done">COMPLETED</span></h3>
+<ul>
+    <li>Added <b>Tab 1: STM32G474 IoMT Hardware Telemetry</b> with dual-mode virtual and physical COM port support.</li>
+    <li>Live rolling Plotly strip-chart (Raw vs. Filtered), 6 HRV autonomic meters, and calibrated stress dial (&tau;=0.35).</li>
+</ul>
+
+<h3>Phase 6: Physical STM32 Deployment & AD8232 Sensor <span class="badge badge-next">NEXT STEP</span></h3>
+<ul>
+    <li>Configure STM32CubeIDE: TIM2 trigger @ 700 Hz, ADC1 DMA circular mode, USART2 Virtual COM Port DMA.</li>
+    <li>Wire AD8232: <code>3.3V</code>, <code>GND</code>, <code>OUTPUT &rarr; PA0</code>, <code>LO+/LO- &rarr; PB0/PB1</code>.</li>
+</ul>
+
+<h3>Phase 7: Secure IoMT Cryptographic Layer <span class="badge badge-plan">PLANNED (PHASE 2)</span></h3>
+<ul>
+    <li>Deploy Hyperchaotic map & geometric transformation encryption on STM32 telemetry frames.</li>
+</ul>
+
+<h2>4. Repository Structure</h2>
+<pre>
+ECG_STRESS_DETECTION/
+├── ROADMAP.md / ROADMAP.pdf             <-- Master project roadmap and architecture guide
+├── HARDWARE_COMPONENTS_LIST.pdf         <-- Hardware procurement & wiring checklist
+├── embedded_stm32/                      <-- STM32G474 C Firmware Core
+│   ├── include/ (ecg_dsp_filter.h, telemetry_protocol.h, wesad_test_samples.h)
+│   ├── src/ (ecg_dsp_filter.c, telemetry_protocol.c, wesad_test_samples.c)
+│   └── main_bench.c                     <-- Verification test harness
+├── python/                              <-- Host Ingestion & Analytics
+│   ├── stm32_telemetry_receiver.py      <-- Non-blocking serial receiver & ML engine
+│   ├── simulate_stm32_stream.py         <-- Software stream simulator
+│   └── train_loso_ml_benchmark.py       <-- 15-Fold LOSO ML training suite
+└── demo/app.py                          <-- Streamlit Clinical Telemetry Dashboard
+</pre>
+
+<div class="footer">
+    WESAD ECG & HRV Stress Detection Project | Target Standard: IEEE TBME / JBHI / Sensors
+</div>
+
+</body>
+</html>

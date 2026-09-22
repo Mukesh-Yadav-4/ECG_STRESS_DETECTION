@@ -1,5 +1,4 @@
 ECG Stress Detection - Quick Run Guide
-=============================================
 
 1. Open Terminal / PowerShell and go to project directory:
    cd "C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION"
@@ -13,25 +12,19 @@ Run everything in one command (Benchmark + Explainability + Plots):
    python python/train_loso_ml_benchmark.py; python python/explainability_feature_importance.py; python python/plot_ml_evaluation.py
 
 Or run them one by one:
-   python python/train_loso_ml_benchmark.py
-   # Runs LOSO (Leave-One-Subject-Out) cross-validation across 15 subjects with 6 models:
-   # Logistic Regression, Random Forest, XGBoost, LightGBM, CatBoost, SVM.
 
-   python python/explainability_feature_importance.py
+python python/train_loso_ml_benchmark.py
+
+   # Runs LOSO (Leave-One-Subject-Out) cross-validation across 15 subjects with 6 models:
+   # Logistic Regression, SVM (RBF Kernel), Random Forest, Extra Trees, HistGradientBoosting, MLP Neural Net.
+
+python python/explainability_feature_importance.py
+
    # Generates feature importances, clinical odds ratios, and top HRV predictors.
 
-   python python/plot_ml_evaluation.py
+	
+
    # Saves ROC curves, PR curves, and benchmark bar comparisons to results/figures/.
-
-
-=============================================
-INTERACTIVE STREAMLIT WEB DASHBOARD
-=============================================
-
-Launch the browser-based clinical telemetry dashboard:
-   streamlit run demo/app.py
-   # Opens an interactive dashboard with live ECG waveforms, detected R-peaks,
-   # autonomic HRV metrics, real-time stress needle gauge, and dynamic threshold slider.
 
 
 =============================================
@@ -49,15 +42,19 @@ Option A: Inside MATLAB (Recommended for live demo / presentation)
    TWENTY_EIGHT_report_figures       % Exports individual high-res figures (Confusion Matrix, ROC, etc.)
    TWENTY_NINE_project_dashboard     % Generates the master 6-panel clinical dashboard
 
+
 Option B: Headless from Terminal / PowerShell (No GUI)
+
+cd "C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION"
+
    # Run the interactive demo:
-   matlab -batch "cd('matlab'); setup_project; DEMO_stress_detection"
+matlab -batch "cd('matlab'); setup_project; DEMO_stress_detection"
 
    # Export individual publication figures:
-   matlab -batch "cd('matlab'); setup_project; TWENTY_EIGHT_report_figures; exit"
+matlab -batch "cd('matlab'); setup_project; TWENTY_EIGHT_report_figures; exit"
 
    # Export master project dashboard:
-   matlab -batch "cd('matlab'); setup_project; TWENTY_NINE_project_dashboard; exit"
+matlab -batch "cd('matlab'); setup_project; TWENTY_NINE_project_dashboard; exit"
 
 
 =============================================
@@ -86,5 +83,9 @@ OUTPUT LOCATIONS
   results/feature_importance_ranking.csv
 
 - Generated High-Res Figures:
-  results/figures/matlab/   (Dashboard, Confusion Matrix, Subject Performance, ROC, Feature Ablation, Demo signals)
-  results/figures/python/   (Multi-Model Benchmark Bars, Multi-Model ROC/PR Curves, Grid Confusion Matrices, Explainability)
+  results/figures/FINAL_Project_Dashboard.png
+  results/figures/FINAL_Confusion_Matrix.png
+  results/figures/FINAL_Subject_Stress_Performance.png
+  results/figures/FINAL_ROC_Curve.png
+  results/figures/FINAL_Personalized_Feature_Ablation.png
+  results/figures/FINAL_Window_Sensitivity.png

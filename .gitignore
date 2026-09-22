@@ -2,15 +2,20 @@
 # DATASET - NEVER UPLOAD
 # =========================================================
 
-data/raw/
-data/raw/**
-data/processed/
-data/processed/**
+data/
+data/**
+**/WESAD/**
 *.pkl
 *.pkl.gz
 *.zip
 *.tar.gz
 *.7z
+*.bin
+*.elf
+*.hex
+*.o
+*.a
+*.map
 
 # =========================================================
 # MATLAB TEMPORARY FILES
@@ -55,6 +60,7 @@ results/WESAD_HRV_features_expanded.csv
 # Figure archives & theme staging
 results/figures/archive/
 results/figures/default_theme/
+paper/ECG_Stress_Detection_Overleaf_Package/
 
 # =========================================================
 # PYTHON CACHE & VENV
@@ -66,3 +72,26 @@ __pycache__/
 env/
 venv/
 .pytest_cache/
+
+# Streamlit agent skills (environment-specific symlinks)
+.agents/skills/developing-with-streamlit
+.claude/skills/developing-with-streamlit
+
+# =========================================================
+# COMPILED BINARIES & SHARED LIBRARIES
+# =========================================================
+embedded_stm32/*.exe
+embedded_stm32/*.dll
+embedded_stm32/*.bin
+*.exe
+*.dll
+
+# =========================================================
+# SCRATCH & TEMPORARY DEV FILES
+# =========================================================
+scratch_test.py
+
+# =========================================================
+# OFFICE / WORD DUPLICATES
+# =========================================================
+*.docx

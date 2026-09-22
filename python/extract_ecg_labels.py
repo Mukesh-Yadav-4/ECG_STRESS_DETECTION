@@ -4,10 +4,11 @@ import numpy as np
 from scipy.io import savemat
 
 # ---------------------------------------------------------
-# Paths
+# Paths (Configurable via WESAD_DIR environment variable)
 # ---------------------------------------------------------
 
-BASE_DIR = r"C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\WESAD\WESAD"
+DEFAULT_WESAD_DIR = r"C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\WESAD\WESAD"
+BASE_DIR = os.environ.get("WESAD_DIR", DEFAULT_WESAD_DIR)
 OUTPUT_DIR = os.path.join(BASE_DIR, "MATLAB_DATA")
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
