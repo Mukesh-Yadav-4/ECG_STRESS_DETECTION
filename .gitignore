@@ -50,6 +50,18 @@ results/figures/default_theme/
 paper/ECG_Stress_Detection_Overleaf_Package/
 
 # =========================================================
+# RESEARCH MANUSCRIPT SOURCE (PROPRIETARY)
+# =========================================================
+paper/*.tex
+paper/*.bib
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.bbl
+paper/*.blg
+paper/*.synctex.gz
+
+# =========================================================
 # PYTHON CACHE & VENV
 # =========================================================
 __pycache__/

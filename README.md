@@ -309,10 +309,8 @@ ECG_STRESS_DETECTION/
 ├── LICENSE                                    # MIT Open Source License
 │
 ├── paper/                                     # Publication Manuscript & Assets
-│   ├── main.tex                               # Full IEEE conference/journal LaTeX source
-│   ├── references.bib                         # Complete bibliography
 │   ├── figures/                               # Master publication figures (12 figures)
-│   └── Personalized_ECG_Stress_Detection_WESAD_Benchmark_and_STM32_Edge_IoMT.pdf # Compiled 9-page preprint
+│   └── Personalized_ECG_Stress_Detection_WESAD_Benchmark_and_STM32_Edge_IoMT.pdf # Compiled IEEE preprint
 │
 ├── embedded_stm32/                            # Bare-Metal STM32G474RE Firmware
 │   ├── src/
@@ -347,36 +345,13 @@ ECG_STRESS_DETECTION/
 
 ---
 
-## 11. Quickstart & Reproduction
+## 11. Interactive Demonstrations & Dashboard
 
-### A. Python Machine Learning Suite
-```bash
-# 1. Install dependencies
-pip install -r requirements.txt
-
-# 2. Run 15-fold LOSO benchmark across all 6 classifiers
-python python/train_loso_ml_benchmark.py
-
-# 3. Compute permutation importance and odds ratios
-python python/explainability_feature_importance.py
-```
-
-### B. Real-Time Telemetry Dashboard
-```bash
-# Option 1: Double-click start_dashboard.bat
-# Option 2: Run via terminal
-python python/stm32_telemetry_receiver.py --port COM10 --baud 115200
-```
-
-### C. MATLAB Pipeline
-```matlab
-% In MATLAB R2022b+:
-cd('matlab');
-setup_project;
-DEMO_stress_detection;                       % Interactive waveform demo
-run('05_modeling/TWENTY_TWO_calibrated_stress_detection.m');     % Calibrated LOSO evaluation
-TWENTY_NINE_project_dashboard;               % Generate master results dashboard
-```
+* 🌐 **Live Cloud Dashboard:** Explore interactive ECG signal streams, QRS detection, dynamic HRV biomarkers, and calibrated acute stress inference directly in the browser via the [Streamlit Cloud Demo](https://ecgstressdetection-2bremsry4npbmx9yn7whju.streamlit.app/).
+* 💻 **Bare-Metal Telemetry Receiver:** Stream and decrypt real-time Lead-II ECG packets from a physical STM32 NUCLEO-G474RE board over serial COM port:
+  ```bash
+  python python/stm32_telemetry_receiver.py --port COM10 --baud 115200
+  ```
 
 ---
 
