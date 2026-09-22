@@ -30,7 +30,7 @@ Email: mkpy06@gmail.com}
 \maketitle
 
 \begin{abstract}
-Automated classification of acute psychological stress from non-invasive wearable electrocardiography (ECG) is a fundamental problem in physiological computing, affective state recognition, and wearable Internet of Medical Things (IoMT). A central barrier to cross-subject generalization is inter-individual baseline heterogeneity: resting heart rate and basal heart rate variability (HRV) metrics vary widely across individuals due to genetic, cardiorespiratory fitness, and circadian factors, causing uncalibrated global classifiers to degrade substantially on unseen subjects. Furthermore, resource constraints and telemetry-privacy vulnerabilities pose major roadblocks for edge-node wearable deployment. In this work, we present an end-to-end reproducible research pipeline benchmarked across all 15 subjects ($N=15$, 445 standardized 60-second windows) of the public Wearable Stress and Affect Detection (WESAD) dataset, paired with a bare-metal embedded microcontroller deployment. Single-lead chest ECG acquired at 700~Hz is conditioned via zero-phase 4th-order Butterworth filtering (0.5--40~Hz), followed by adaptive noise-floor peak prominence detection and physiological interval gating. A selected 8-feature representation capturing heart rate, time-domain variability, and robust spread metrics is transformed via subject-specific relative baseline calibration: $X^* = (X - B_s) / |B_s|$. Evaluated under strict 15-fold Leave-One-Subject-Out Cross-Validation (LOSO-CV), baseline-relative calibration elevates classification accuracy from 81.57\% to 92.36\% (+10.79\%) and stress F1-score from 73.03\% to 89.03\% (+16.00\%) over identical unnormalized baselines. At a calibrated decision threshold of $\tau = 0.35$, the primary model achieves an ROC-AUC of 0.9494, PR-AUC of 0.9467, sensitivity of 86.25\%, and specificity of 95.79\%. A comparative benchmark across six machine learning architectures demonstrates consistent generalization (ROC-AUC $>$ 0.937). Permutation importance and odds ratio analyses indicate that cardiac interval compression ($\Delta\text{MeanRR}$) and heart rate acceleration ($\Delta\text{MeanHR}$) are the primary contributors to the learned boundary. Translating this framework to physical hardware, we implement a bare-metal edge processing node on the ARM Cortex-M4 microcontroller (STM32G474RE, 16~MHz HSI). Real-time signal conditioning is executed via an on-chip 5-stage Direct Form II Transposed Biquad IIR filter executing in $\approx 1.87~\mu\text{s}$ per sample ($<$0.1\% CPU utilization at 350~Hz). To safeguard patient privacy against casual wire tapping, an on-chip 32-bit discrete chaotic stream scrambler (Marsaglia Xorshift32 + Golden Ratio Weyl sequence with Nonce-CBC diffusion) executes in $2.0~\mu\text{s}$ (32 clock cycles), elevating wire Shannon entropy to $H = 7.25\text{--}7.98\text{ bits/byte}$ while supporting bit-exact ($0.000000\text{ V}$) terminal descrambling. Continuous hardware-in-the-loop streaming over 15,000 packets demonstrates 100\% frame synchronization and zero CRC errors (100\% transmission reliability) across authorized monitoring and adversarial eavesdropper operating modes.
+Automated classification of acute psychological stress from non-invasive wearable electrocardiography (ECG) is a fundamental problem in physiological computing, affective state recognition, and wearable Internet of Medical Things (IoMT). A central barrier to cross-subject generalization is inter-individual baseline heterogeneity: resting heart rate and basal heart rate variability (HRV) metrics vary widely across individuals due to genetic, cardiorespiratory fitness, and circadian factors, causing uncalibrated global classifiers to degrade substantially on unseen subjects. Furthermore, resource constraints and telemetry-privacy vulnerabilities pose major roadblocks for edge-node wearable deployment. In this work, we present an end-to-end reproducible research pipeline benchmarked across all 15 subjects ($N=15$, 445 standardized 60-second windows with 50\% overlap) of the public Wearable Stress and Affect Detection (WESAD) dataset, paired with a bare-metal embedded microcontroller deployment. Single-lead chest ECG acquired at 700~Hz is conditioned via zero-phase 4th-order Butterworth filtering (0.5--40~Hz), followed by adaptive noise-floor peak prominence detection and physiological interval gating. A selected 8-feature representation capturing heart rate, time-domain variability, and robust spread metrics is transformed via subject-specific relative baseline calibration: $X^* = (X - B_s) / (|B_s| + \epsilon)$. Evaluated under strict 15-fold Leave-One-Subject-Out Cross-Validation (LOSO-CV), baseline-relative calibration elevates classification accuracy from 81.57\% to 92.36\% (+10.79\%) and stress F1-score from 73.03\% to 89.03\% (+16.00\%) over identical unnormalized baselines. The primary model achieves an ROC-AUC of 0.9494 and PR-AUC of 0.9467 across all thresholds; at the calibrated operating decision threshold of $\tau = 0.35$, it delivers a sensitivity of 86.25\%, specificity of 95.79\%, accuracy of 92.36\%, and stress F1-score of 89.03\%. A comparative benchmark across six machine learning architectures demonstrates consistent generalization (ROC-AUC $>$ 0.937). Permutation importance and odds ratio analyses indicate that cardiac interval compression ($\Delta\text{MeanRR}$) and heart rate acceleration ($\Delta\text{MeanHR}$) are the primary statistical contributors to the learned boundary. Translating this framework to physical hardware, we implement a bare-metal edge processing node on the ARM Cortex-M4 microcontroller (STM32G474RE, configured at 170~MHz SYSCLK via PLL). Real-time signal conditioning is executed via an on-chip 5-stage Direct Form I Biquad IIR filter executing in $\approx 1.87~\mu\text{s}$ per sample ($\approx 318$ CPU cycles, 0.065\% CPU utilization at 350~Hz). To safeguard patient privacy against casual wire tapping, an on-chip 32-bit discrete chaotic stream scrambler (Marsaglia Xorshift32 + Golden Ratio Weyl sequence with Nonce-CBC diffusion) executes in 32 clock cycles ($0.19~\mu\text{s}$ at 170~MHz; $2.0~\mu\text{s}$ under 16~MHz base clock), elevating wire Shannon entropy to $H = 7.25\text{--}7.98\text{ bits/byte}$ while supporting bit-exact ($0.000000\text{ V}$) terminal descrambling. Continuous hardware-in-the-loop streaming over 15,000 packets demonstrates 100\% frame synchronization and zero CRC errors (100\% transmission reliability) across authorized monitoring and adversarial eavesdropper operating modes.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -46,11 +46,11 @@ Beyond algorithmic generalization, deploying continuous physiological computing 
 
 To overcome these fundamental barriers, we present a personalized physiological framework evaluated under rigorous Leave-One-Subject-Out (LOSO) cross-validation on the public WESAD benchmark \cite{schmidt2018wesad}, coupled with a physical bare-metal ARM Cortex-M4 edge node implementation. The primary contributions of this work include:
 \begin{enumerate}
-    \item \textbf{Subject-Specific Relative Normalization:} We demonstrate that formulating features as fractional deviations relative to each subject's resting baseline ($X^* = (X - B_s) / |B_s|$) provides an empirical boost of +10.79\% in accuracy and +16.00\% in F1-score over identical unnormalized feature sets.
+    \item \textbf{Subject-Specific Relative Normalization:} We demonstrate that formulating features as fractional deviations relative to each subject's resting baseline ($X^* = (X - B_s) / (|B_s| + \epsilon)$) provides an empirical boost of +10.79\% in accuracy and +16.00\% in F1-score over identical unnormalized feature sets.
     \item \textbf{Rigorous 15-Fold LOSO Evaluation:} We benchmark the full 15-subject cohort ($N=15$) under strict label-isolated Leave-One-Subject-Out evaluation with unsupervised baseline calibration, preventing test-label exposure across folds and achieving 92.36\% accuracy and an ROC-AUC of 0.9494.
     \item \textbf{Comprehensive ML \& Explainability Suite:} We benchmark six canonical machine learning paradigms and conduct a 30-repeat permutation importance analysis per fold ($15 \times 30 = 450$ trials per feature) alongside standardized odds ratios to quantitatively interpret the physiological decision boundary.
-    \item \textbf{Bare-Metal Edge DSP on STM32G474RE:} We implement and flash a real-time signal conditioning engine on an ARM Cortex-M4 microcontroller featuring a 5-stage Direct Form II Transposed Biquad IIR filter ($f_s = 350$~Hz) consuming only $1.87~\mu\text{s}$ per sample ($<$0.1\% CPU utilization at 16~MHz).
-    \item \textbf{On-Chip Discrete Chaotic Stream Scrambling \& Obfuscation:} We deploy an ultra-lightweight 32-bit discrete chaotic stream scrambler ($2.0~\mu\text{s}$, 32 cycles) that elevates wire Shannon entropy to $H = 7.25\text{--}7.98$~bits/byte to protect cardiac telemetry against unauthorized wire eavesdropping, verified via a synchronized dual-mode monitoring/adversarial dashboard across 15,000+ packets with zero CRC frame drops.
+    \item \textbf{Bare-Metal Edge DSP on STM32G474RE:} We implement and flash a real-time signal conditioning engine on an ARM Cortex-M4 microcontroller running at 170~MHz SYSCLK via PLL, featuring a 5-stage Direct Form I Biquad IIR filter ($f_s = 350$~Hz) consuming only $1.87~\mu\text{s}$ per sample ($\approx 318$ CPU cycles, 0.065\% CPU utilization).
+    \item \textbf{On-Chip Discrete Chaotic Stream Scrambling \& Obfuscation:} We deploy an ultra-lightweight 32-bit discrete chaotic stream scrambler (32 cycles, $0.19~\mu\text{s}$ at 170~MHz) that elevates wire Shannon entropy to $H = 7.25\text{--}7.98$~bits/byte to protect cardiac telemetry against unauthorized wire eavesdropping, verified via a synchronized dual-mode monitoring/adversarial dashboard across 15,000+ packets with zero CRC frame drops.
 \end{enumerate}
 
 \section{Related Work \& Benchmarks}
@@ -295,7 +295,7 @@ Subject-specific stress detection rates across all 15 subjects (Figure~\ref{fig:
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.98\linewidth]{figures/FINAL_Subject_Stress_Detection.png}
-\caption{Subject-specific stress recall distribution across all 15 WESAD subjects: 14/15 subjects achieve successful stress detection ($>0\%$ recall; overall 138/160 = 86.3\%), with 13/15 achieving $\ge 75\%$ and 9/15 achieving 100\% recall. Subject S2 is the sole non-responder (0.0\% recall).}
+\caption{Subject-specific stress recall distribution across all 15 WESAD subjects: 14/15 subjects achieve successful stress detection ($>0\%$ recall; overall 138/160 = 86.3\%), with 13/15 achieving $\ge 75\%$ and 9/15 achieving 100\% recall. Subject S2 exhibited blunted cardiac reactivity under the stress protocol (0.0\% recall).}
 \label{fig:subjects}
 \end{figure}
 
@@ -307,29 +307,27 @@ However, Subject \textbf{S2} exhibited 0.0\% stress recall. In our analysis, S2 
 To transition from offline algorithmic benchmarking to physical cyber-physical deployment, we implemented a bare-metal signal conditioning and telemetry engine on an ARM Cortex-M4 microcontroller (STMicroelectronics STM32G474RET6U on a NUCLEO-G474RE development board, shown in Figure~\ref{fig:hardware_setup}).
 
 \subsection{Hardware Architecture \& Deterministic Timing}
-The STM32G474RET6U integrates an ARM 32-bit Cortex-M4 RISC core featuring a hardware single-precision Floating-Point Unit (FPU), memory protection unit (MPU), and digital signal processing (DSP) instruction extensions. For low-power wearable telemetry baseline profiling, the core is operated directly from the 16~MHz High-Speed Internal (HSI) RC oscillator without engaging power-hungry phase-locked loops (PLLs, which support up to 170~MHz as dynamic headroom). The MCU provides 512~KB of dual-bank Flash memory and 128~KB of SRAM with hardware parity checking.
+The STM32G474RET6U integrates an ARM 32-bit Cortex-M4 RISC core featuring a hardware single-precision Floating-Point Unit (FPU), memory protection unit (MPU), and digital signal processing (DSP) instruction extensions. The MCU is configured to run at a core system clock of 170~MHz SYSCLK driven by the Phase-Locked Loop (PLL) sourced from the 16~MHz High-Speed Internal (HSI) RC oscillator (HSI 16~MHz / 4 $\times$ 85 / 2 = 170~MHz). The MCU provides 512~KB of dual-bank Flash memory and 128~KB of SRAM with hardware parity checking.
 
-Real-time signal acquisition and processing is governed deterministically by the ARM SysTick timer interrupt configured at a sampling rate of $f_s = 350$~Hz, yielding an exact inter-sample interval of:
+Real-time signal acquisition and processing is governed deterministically by timer interrupts configured at a sampling rate of $f_s = 350$~Hz, yielding an exact inter-sample interval of:
 \begin{equation}
-    T_s = \frac{1}{350~\text{Hz}} = 2.857~\text{ms} \quad (45,714~\text{CPU cycles @ 16 MHz})
+    T_s = \frac{1}{350~\text{Hz}} = 2.857~\text{ms} \quad (485,714~\text{CPU cycles @ 170 MHz})
 \end{equation}
-Every $2.857$~ms, the SysTick interrupt service routine (ISR) ingests a Lead-II ECG sample, executes real-time digital filtering, applies stream scrambling, and transmits a serialized telemetry frame over USART2.
+Every $2.857$~ms, the timer interrupt service routine (ISR) ingests a Lead-II ECG sample, executes real-time digital filtering, applies stream scrambling, and transmits a serialized telemetry frame over USART2.
 
-\subsection{Real-Time 5-Stage Direct Form II Transposed Biquad IIR Filter}
-Offline zero-phase Butterworth filtering requires forward-backward passes over stored buffers, introducing latency and memory overhead incompatible with streaming edge devices. To achieve equivalent artifact rejection in a causal, streaming pipeline, we designed a cascaded 5-stage Biquad Infinite Impulse Response (IIR) filter implemented in Direct Form II Transposed structure \cite{oppenheim1999discrete}:
+\subsection{Real-Time 5-Stage Direct Form I Biquad IIR Filter}
+Offline zero-phase Butterworth filtering requires forward-backward passes over stored buffers, introducing latency and memory overhead incompatible with streaming edge devices. To achieve equivalent artifact rejection in a causal, streaming pipeline, we designed a cascaded 5-stage Biquad Infinite Impulse Response (IIR) filter implemented in Direct Form I structure \cite{oppenheim1999discrete}:
 \begin{itemize}
     \item \textbf{Stage 1 (Highpass):} 2nd-order Butterworth highpass filter ($f_c = 0.5$~Hz, $Q = 0.707$) to eliminate respiratory baseline wander, electrode offset drift, and perspiration-induced motion artifacts.
     \item \textbf{Stages 2--4 (Lowpass Cascade):} Three cascaded 2nd-order Butterworth lowpass sections ($f_c = 40$~Hz, overall 6th-order roll-off of $-36$~dB/octave) to suppress high-frequency electromyographic (EMG) tremor, telemetry RF hash, and digitization ripple.
     \item \textbf{Stage 5 (Mains Powerline Notch):} 2nd-order digital notch filter ($f_0 = 50$~Hz, $Q = 30$, selectable to 60~Hz via compile-time coefficient tuning) providing sharp attenuation ($>30$~dB) of mains powerline interference without degrading adjacent QRS spectral content.
 \end{itemize}
 
-Each biquad section is governed by the transposed state-space difference equations:
-\begin{align}
-    y[n] &= b_0 x[n] + w_1[n-1] \\
-    w_1[n] &= b_1 x[n] - a_1 y[n] + w_2[n-1] \\
-    w_2[n] &= b_2 x[n] - a_2 y[n]
-\end{align}
-where $x[n]$ is the input sample, $y[n]$ is the section output, and $w_1, w_2$ are section state delay registers. The transposed structure was selected because it maximizes numerical dynamic range under single-precision floating-point arithmetic and avoids internal register overflow during rapid cardiac transients.
+Each biquad section is governed by the canonical Direct Form I difference equation:
+\begin{equation}
+    y[n] = b_0 x[n] + b_1 x[n-1] + b_2 x[n-2] - a_1 y[n-1] - a_2 y[n-2]
+\end{equation}
+where $x[n]$ is the current input sample, $y[n]$ is the section output sample, and four state variables ($x[n-1], x[n-2], y[n-1], y[n-2]$) are maintained per stage in on-chip SRAM. The Direct Form I structure was implemented with single-precision floating-point arithmetic using negated feedback coefficients ($a_1, a_2$), ensuring numerical stability and straightforward mapping to the CMSIS-DSP vector architecture.
 
 \begin{figure}[htbp]
 \centering
@@ -339,7 +337,7 @@ where $x[n]$ is the input sample, $y[n]$ is the section output, and $w_1, w_2$ a
 \end{figure}
 
 \subsection{DSP Cycle Profiling \& Computational Margin}
-Leveraging the Cortex-M4 single-precision FPU and hardware fused multiply-accumulate (FMA) instructions, each biquad section requires only 6 floating-point operations. Across the full 5-stage cascade, execution takes approximately \textbf{30 CPU clock cycles} ($\approx 1.87~\mu\text{s}$ at 16~MHz). At $f_s = 350$~Hz, the dedicated signal conditioning load consumes:
+Leveraging the Cortex-M4 single-precision FPU and hardware fused multiply-accumulate (FMA) instructions, each biquad section requires 5 multiply-accumulate operations. Across the full 5-stage cascade, execution takes approximately \textbf{318 CPU clock cycles} ($\approx 1.87~\mu\text{s}$ at 170~MHz; or $\approx 20~\mu\text{s}$ under un-multiplied 16~MHz HSI). At $f_s = 350$~Hz ($T_s = 2857~\mu\text{s}$), the dedicated signal conditioning load consumes:
 \begin{equation}
     \text{Utilization}_{\text{DSP}} = \frac{1.87~\mu\text{s}}{2857~\mu\text{s}} \times 100\% = 0.065\%
 \end{equation}
@@ -351,7 +349,7 @@ This minimal CPU utilization confirms that over 99.9\% of the microcontroller pr
 \subsection{Motivation \& Privacy Risks in Wearable IoMT}
 Wearable physiological monitors continuously transmit cardiac waveforms over wireless (BLE, IEEE 802.15.4) or wired serial channels to edge gateways and clinical consoles. Because ECG morphology is unique to each individual, unencrypted telemetry exposes patients to biometric re-identification, involuntary stress tracking, and privacy violation \cite{alturjman2020iomt}. Adversaries tapping the physical wire or eavesdropping on unauthenticated RF packets can easily recover QRS intervals and deduce autonomic stress levels.
 
-However, executing full-scale symmetric block ciphers (e.g., AES-128 in CBC/GCM mode) on microcontrollers introduces buffering latency (requiring 16-byte block alignment) and computational energy consumption. To deliver line-rate wire privacy with negligible CPU overhead, we designed an on-chip 32-bit discrete chaotic stream scrambler. We explicitly note that this lightweight scheme is engineered for low-overhead physical telemetry obfuscation against casual wiretapping and biometric re-identification, rather than as a replacement for formally validated cryptographic ciphers (such as AES-GCM). In long-term deployments, pairing with an extended 32-bit/64-bit Nonce counter or a hardware AES accelerator prevents periodic Nonce counter cycle reuse.
+However, executing full-scale symmetric block ciphers (e.g., AES-128 in CBC/GCM mode) on microcontrollers introduces buffering latency (requiring 16-byte block alignment) and computational energy consumption. To deliver line-rate wire privacy with negligible CPU overhead, we designed an on-chip 32-bit discrete chaotic stream scrambler. We explicitly note that this lightweight scheme is engineered for low-overhead physical telemetry obfuscation against casual wiretapping and biometric re-identification, rather than as a replacement for formally validated cryptographic ciphers (such as AES-GCM). In our demonstration firmware, a fixed secret key ($\texttt{CHAOS\_SECRET\_KEY} = \text{0x9E3779B9}$) is utilized for open-source reproducibility; production deployments should integrate dynamic session key negotiation (e.g., ECDH) and an extended 64-bit Nonce counter to prevent keystream reuse.
 
 \subsection{Chaotic Stream Engine Mathematical Formulation}
 The scrambler combines Marsaglia's 32-bit Xorshift pseudo-random number generator (PRNG) \cite{marsaglia2003xorshift} with an additive Golden Ratio Weyl sequence and per-packet Nonce Cipher Block Chaining (CBC) feedback diffusion.
@@ -368,14 +366,16 @@ To prevent orbit collapse and eliminate linear feedback shift register (LFSR) co
 \end{equation}
 where $W = \lfloor 2^{32} \cdot (3 - \sqrt{5})/2 \rfloor = \text{0x61C88647}$ is the 32-bit fractional golden ratio constant ($2^{32}/\phi^2$).
 
-To ensure that identical static ECG segments produce completely uncorrelated ciphertext across successive frames, Nonce-dependent CBC feedback diffusion is applied directly to the 32-bit IEEE-754 binary bit representation:
-\begin{equation}
-    C_k = P_k \oplus K_k \oplus C_{k-1}
-\end{equation}
-where $P_k$ is the plaintext float bit-pattern, $K_k$ is the pseudo-chaotic keystream word, and $C_{k-1}$ is the prior ciphertext word (initialized by a per-frame 16-bit packet counter Nonce).
+To ensure that identical static ECG segments produce completely uncorrelated ciphertext across successive frames, Nonce-dependent CBC feedback diffusion is applied directly to the 32-bit IEEE-754 binary bit representations of both the raw and filtered ECG samples (8 bytes total payload per packet):
+\begin{align}
+    S_{\text{seed}} &= K_{\text{secret}} \oplus (\text{seq\_id} \times \text{0x45D9F3B}) \oplus \text{timestamp\_ms} \\
+    C_0 &= \text{IV}_{\text{init}} \oplus (\text{seq\_id} \ \& \ \text{0xFF}) \\
+    C_k &= P_k \oplus (K_k \ \& \ \text{0xFF}) \oplus C_{k-1}
+\end{align}
+where $P_k$ is the plaintext payload byte sequence (spanning the 4-byte \texttt{raw\_ecg} and 4-byte \texttt{filtered\_ecg} fields), $K_k$ is the pseudo-chaotic keystream word derived from state $S$, and $C_{k-1}$ is the prior ciphertext byte diffused via Cipher Block Chaining.
 
 \subsection{Complexity, Entropy Elevation \& Descrambling Precision}
-The entire scrambling sequence executes in \textbf{32 CPU clock cycles} ($\approx 2.0~\mu\text{s}$ at 16~MHz) and requires only 8 bytes of static SRAM for state variables, introducing zero frame buffering delay.
+The entire scrambling sequence executes in \textbf{32 CPU clock cycles} ($\approx 0.19~\mu\text{s}$ at 170~MHz; $\approx 2.0~\mu\text{s}$ under un-multiplied 16~MHz base clock) and requires only 8 bytes of static SRAM for state variables, introducing zero frame buffering delay.
 
 The obfuscation effectiveness was evaluated using Shannon entropy:
 \begin{equation}
@@ -405,22 +405,23 @@ Because symmetric descrambling executes bitwise directly on IEEE-754 binary patt
 To validate the integrated system under realistic prototype hardware conditions, a physical Hardware-in-the-Loop (HIL) testbed was constructed (Figure \ref{fig:hardware_setup}). Standardized WESAD continuous Lead-II records (all 15 subjects, S2--S17, excluding non-existent S12) were programmed into MCU Flash memory and streamed into the interrupt pipeline at 350~Hz, exercising the complete ADC emulation, Biquad IIR filtering, chaotic scrambling, and UART serialization stages.
 
 \subsection{20-Byte Binary Telemetry Protocol \& Frame Integrity}
-Telemetry data is encapsulated in a compact 20-byte binary packet:
+Telemetry data is encapsulated in a compact, deterministic 20-byte binary packet matching the embedded C struct:
 \begin{itemize}
-    \item \textbf{Header (Bytes 0--1):} Fixed synchronizing preambles \texttt{0xAA 0x55}.
-    \item \textbf{Packet Index (Bytes 2--3):} 16-bit monotonic counter (\texttt{uint16\_t}) serving as transmission Nonce.
-    \item \textbf{Timestamp (Bytes 4--7):} 32-bit hardware millisecond timestamp (\texttt{uint32\_t}).
-    \item \textbf{Raw ECG (Bytes 8--11):} 32-bit IEEE-754 floating-point raw voltage.
-    \item \textbf{Scrambled ECG (Bytes 12--15):} 32-bit IEEE-754 scrambled ciphertext.
-    \item \textbf{Checksum (Bytes 16--17):} CRC-16-CCITT polynomial ($x^{16} + x^{12} + x^5 + 1$, initial \texttt{0xFFFF}).
-    \item \textbf{Delimiter (Bytes 18--19):} CRLF frame boundary (\texttt{0x0D 0x0A}).
+    \item \textbf{Sync Word (Bytes 0--1):} Fixed synchronizing preambles \texttt{0xAA 0x55}.
+    \item \textbf{Protocol Version (Byte 2):} 8-bit protocol version identifier (\texttt{0x01}).
+    \item \textbf{Status Flags (Byte 3):} Bit 0 indicates encryption status (0 = Plaintext, 1 = Scrambled); Bit 1 indicates sensor source (0 = WESAD flash playback, 1 = Live AD8232 ADC).
+    \item \textbf{Sequence ID (Bytes 4--5):} 16-bit monotonic packet counter (\texttt{uint16\_t}) for packet loss tracking and Nonce generation.
+    \item \textbf{Timestamp (Bytes 6--9):} 32-bit hardware millisecond timestamp (\texttt{uint32\_t}).
+    \item \textbf{Raw ECG (Bytes 10--13):} 32-bit IEEE-754 floating-point raw voltage (scrambled in-place when Bit 0 is active).
+    \item \textbf{Filtered ECG (Bytes 14--17):} 32-bit IEEE-754 floating-point real-time filtered output (scrambled in-place when Bit 0 is active).
+    \item \textbf{Checksum (Bytes 18--19):} CRC-16-CCITT polynomial ($x^{16} + x^{12} + x^5 + 1$, initial \texttt{0xFFFF}) computed over payload bytes 2--17.
 \end{itemize}
 
 At 115,200 baud (8-N-1 UART framing, 10 bits/byte), transmitting 20 bytes requires:
 \begin{equation}
     T_{\text{tx}} = \frac{20 \times 10}{115,200} = 1.736~\text{ms}
 \end{equation}
-While dedicated DSP filtering occupies merely $0.065\%$ of the CPU budget ($1.87~\mu\text{s}$), physical wire serialization requires $1.736$~ms ($60.8\%$ of the $2.857$~ms sampling window), leaving an idle margin of $1.121$~ms ($39.2\%$ headroom) before the subsequent timer interrupt. In production firmware, offloading packet transmission to Direct Memory Access (DMA) completely decouples wire serialization from CPU execution.
+In the evaluated hardware-in-the-loop prototype, telemetry frames are dispatched via direct blocking transmission (\texttt{HAL\_UART\_Transmit}), which occupies 1.736~ms ($60.8\%$ of the $2.857$~ms window), leaving 1.121~ms ($39.2\%$) idle CPU margin before the subsequent interrupt. Circular Direct Memory Access (\texttt{HAL\_UART\_Transmit\_DMA}) is documented as the production architecture to decouple wire serialization completely from CPU execution in battery-operated edge designs.
 
 In physical laboratory stress tests connecting the STM32 via USB COM port (COM10) to the host terminal, over \textbf{15,000 consecutive packets ($>42$ seconds of uninterrupted streaming)} were ingested with \textbf{0 CRC errors and 0 dropped frames (100.0\% transmission reliability)}.
 
@@ -446,17 +447,17 @@ A cyber-physical telemetry dashboard was deployed to demonstrate authorized clin
 \end{figure}
 
 \section{Discussion \& Limitations}
-The empirical results demonstrate that subject-specific baseline calibration substantially improves cross-subject generalizability in wearable ECG stress detection (+10.79\% Acc, +16.00\% F1), while bare-metal ARM Cortex-M4 implementation confirms ultra-low-power feasibility ($<$0.1\% CPU load for DSP, $2.0~\mu\text{s}$ for privacy scrambling).
+The empirical results demonstrate that subject-specific baseline calibration substantially improves cross-subject generalizability in wearable ECG stress detection (+10.79\% Acc, +16.00\% F1), while bare-metal ARM Cortex-M4 implementation confirms ultra-low-power feasibility (0.065\% CPU load for DSP, $0.19~\mu\text{s}$ for privacy scrambling at 170~MHz SYSCLK).
 
 Several limitations present opportunities for future investigation:
 \begin{itemize}
     \item \textbf{Baseline Acquisition Protocol:} The relative transformation requires an initial 5--10 minute resting baseline. Future work will investigate automated nocturnal baseline recalibration to track circadian drift without requiring deliberate user calibration sessions.
     \item \textbf{Motion Artifacts in Free-Living Settings:} While laboratory TSST protocols produce minimal motion, real-world deployment requires coupling ECG with 3-axis accelerometer gating to prevent physical exertion from triggering false-positive stress classifications.
-    \item \textbf{Multi-Sensor Fusion for Low Reactivity:} As observed with Subject S2 (autonomic non-responder), integrating peripheral EDA and respiratory dynamics may offer robust multi-modal coverage for individuals exhibiting blunted cardiac reactivity.
+    \item \textbf{Multi-Sensor Fusion for Low Reactivity:} As observed with Subject S2 (who exhibited blunted cardiac reactivity under the laboratory stress protocol), integrating peripheral EDA and respiratory dynamics may offer robust multi-modal coverage for individuals exhibiting attenuated autonomic response.
 \end{itemize}
 
 \section{Conclusion}
-This study presented a personalized electrocardiographic acute stress detection framework evaluated under strict 15-fold Leave-One-Subject-Out cross-validation on the WESAD benchmark, coupled with an end-to-end bare-metal edge implementation on an ARM Cortex-M4 (STM32G474RE) microcontroller. Subject-specific relative baseline calibration elevates classification accuracy to 92.36\%, stress F1-score to 89.03\%, and ROC-AUC to 0.9494, outperforming uncalibrated benchmarks by over 10\%. On hardware, a 5-stage Direct Form II Transposed Biquad IIR filter conditions 350~Hz ECG signals with sub-2~$\mu$s latency, while a 32-bit discrete chaotic stream scrambler elevates wire entropy to $H = 7.25\text{--}7.98$~bits/byte to obfuscate physiological telemetry with bit-exact terminal reconstruction. Validated over 15,000 real-time frames with zero packet loss, this framework establishes an accurate, interpretable, and privacy-preserving foundation for wearable affective computing and remote health monitoring.
+This study presented a personalized electrocardiographic acute stress detection framework evaluated under strict 15-fold Leave-One-Subject-Out cross-validation on the WESAD benchmark, coupled with an end-to-end bare-metal edge implementation on an ARM Cortex-M4 (STM32G474RE) microcontroller. Subject-specific relative baseline calibration elevates classification accuracy to 92.36\%, stress F1-score to 89.03\%, and ROC-AUC to 0.9494, outperforming uncalibrated benchmarks by over 10\%. On hardware, a 5-stage Direct Form I Biquad IIR filter conditions 350~Hz ECG signals with sub-2~$\mu$s latency, while a 32-bit discrete chaotic stream scrambler elevates wire entropy to $H = 7.25\text{--}7.98$~bits/byte to obfuscate physiological telemetry with bit-exact terminal reconstruction. Validated over 15,000 real-time frames with zero packet loss, this framework establishes an accurate, interpretable, and privacy-preserving foundation for wearable affective computing and remote health monitoring.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}

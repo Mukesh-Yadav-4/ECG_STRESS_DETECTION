@@ -10,7 +10,7 @@
 [![ROC-AUC](https://img.shields.io/badge/ROC--AUC-0.9494-007ACC.svg?style=flat-square)]()
 [![Sensitivity](https://img.shields.io/badge/Sensitivity-86.25%25-2ea44f.svg?style=flat-square)]()
 [![Specificity](https://img.shields.io/badge/Specificity-95.79%25-success.svg?style=flat-square)]()
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22806710.svg)](https://doi.org/10.5281/zenodo.22806710)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22895173.svg)](https://doi.org/10.5281/zenodo.22895173)
 [![Research Paper: PDF](https://img.shields.io/badge/Research%20Paper-PDF%20Download-b31b1b.svg?style=flat-square&logo=adobeacrobatreader)](paper/Personalized_ECG_Stress_Detection_WESAD_Benchmark_and_STM32_Edge_IoMT.pdf)
 [![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat-square)](LICENSE)
 
@@ -60,10 +60,10 @@ Automated classification of acute psychological stress from non-invasive wearabl
 
 In this work, we present an end-to-end reproducible research pipeline benchmarked across all **15 subjects** ($N = 15$, 445 standardized 60-second windows) of the public **WESAD** (Wearable Stress and Affect Detection) dataset, paired with a bare-metal embedded microcontroller deployment on the **ARM Cortex-M4 (STM32G474RE)**:
 
-1. **Relative Baseline Calibration:** Transforming features into fractional deviations relative to each subject's resting baseline ($X^* = (X - B_s) / |B_s|$) elevates classification accuracy from **81.57% to 92.36% (+10.79%)** and stress F1-score from **73.03% to 89.03% (+16.00%)** under strict 15-fold Leave-One-Subject-Out cross-validation.
-2. **Discriminative Generalization:** At an operational decision threshold of $\tau = 0.35$, the primary classifier achieves **ROC-AUC of 0.9494**, **PR-AUC of 0.9467**, **Sensitivity of 86.25%**, and **Specificity of 95.79%**, benchmarked across 6 machine learning architectures (ROC-AUC > 0.937).
-3. **Bare-Metal Edge DSP:** A 5-stage Direct Form II Transposed Biquad IIR filter ($f_s = 350$ Hz) executes in **$1.87\ \mu\text{s}$ per sample** (<0.1% CPU load at 16 MHz HSI), providing real-time line-rate conditioning.
-4. **Lightweight Telemetry Obfuscation:** A 32-bit discrete chaotic stream scrambler (Marsaglia Xorshift32 + Golden Ratio Weyl sequence + Nonce-CBC diffusion) executes in **$2.0\ \mu\text{s}$ (32 clock cycles)**, elevating wire Shannon entropy to **$H = 7.25\text{--}7.98$ bits/byte** while supporting bit-exact ($0.000000$ V) terminal descrambling.
+1. **Relative Baseline Calibration:** Transforming features into fractional deviations relative to each subject's resting baseline ($X^* = (X - B_s) / (|B_s| + \epsilon)$) elevates classification accuracy from **81.57% to 92.36% (+10.79%)** and stress F1-score from **73.03% to 89.03% (+16.00%)** under strict 15-fold Leave-One-Subject-Out cross-validation.
+2. **Discriminative Generalization:** The primary classifier achieves an **ROC-AUC of 0.9494** and **PR-AUC of 0.9467** across all decision thresholds; at the calibrated operating decision threshold of $\tau = 0.35$, it delivers a **Sensitivity of 86.25%**, **Specificity of 95.79%**, and **F1-score of 89.03%**, benchmarked across 6 machine learning architectures (ROC-AUC > 0.937).
+3. **Bare-Metal Edge DSP:** A 5-stage Direct Form I Biquad IIR filter ($f_s = 350$ Hz) executes in **$\approx 1.87\ \mu\text{s}$ per sample** ($\approx 318$ CPU cycles, 0.065% CPU load at 170 MHz SYSCLK), providing real-time line-rate conditioning.
+4. **Lightweight Telemetry Obfuscation:** A 32-bit discrete chaotic stream scrambler (Marsaglia Xorshift32 + Golden Ratio Weyl sequence + Nonce-CBC diffusion) executes in **32 clock cycles ($0.19\ \mu\text{s}$ at 170 MHz; $2.0\ \mu\text{s}$ at 16 MHz)**, elevating wire Shannon entropy to **$H = 7.25\text{--}7.98$ bits/byte** while supporting bit-exact ($0.000000$ V) terminal descrambling.
 5. **Physical HIL Verification:** Validated over **15,000 real-time packets (>42 seconds uninterrupted)** across a physical USB-UART link with **zero CRC errors and zero dropped frames (100.0% transmission reliability)**.
 
 ---
@@ -104,7 +104,7 @@ Experiments were conducted on the **WESAD** benchmark dataset (*Schmidt et al., 
   2. **Trier Social Stress Test (TSST, 10 min):** 5 min public speaking facing an evaluative panel + 5 min mental arithmetic (counting backward from 2,043 by 17 with vocal restart penalties).
   3. **Amusement Phase (10 min):** Humorous video clips.
   4. **Meditation Recovery (20 min):** Guided diaphragmatic breathing.
-* **Dataset Standardization:** 445 non-overlapping and 50%-overlapping 60-second windows (**160 Acute Stress windows** vs. **285 Calm/Resting windows**).
+* **Dataset Standardization:** 445 standardized 60-second windows with 50% overlap (30-second hop) (**160 Acute Stress windows** vs. **285 Calm/Resting windows**).
 
 <p align="center">
   <img src="paper/figures/DEMO_Protocol_Timeline.png" width="95%" alt="WESAD Protocol Timeline" />
@@ -245,7 +245,7 @@ To interpret the learned decision boundary, we conducted a **30-repeat permutati
 <p align="center">
   <img src="results/figures/FINAL_Subject_Stress_Detection.png" width="95%" alt="Subject Stress Detection Rates" />
   <br>
-  <em><b>Figure 9: Subject-Specific Recall Breakdown.</b> 14 of 15 subjects achieve successful stress detection (>0% recall; overall 138/160 = 86.3%), with 13 of 15 achieving >= 75% and 9 of 15 achieving 100% recall. Subject S2 is documented as an autonomic non-responder.</em>
+  <em><b>Figure 9: Subject-Specific Recall Breakdown.</b> 14 of 15 subjects achieve successful stress detection (>0% recall; overall 138/160 = 86.3%), with 13 of 15 achieving >= 75% and 9 of 15 achieving 100% recall. Subject S2 exhibited blunted cardiac reactivity under the stress protocol.</em>
 </p>
 
 * **Consistent Generalization:** 9 of 15 subjects achieved **100.0% recall** (S3, S4, S5, S8, S11, S13, S14, S16, S17), and 13 of 15 achieved **$\ge 75.0\%$ recall**.
@@ -255,27 +255,27 @@ To interpret the learned decision boundary, we conducted a **30-repeat permutati
 
 ## 8. Bare-Metal Edge Microcontroller Implementation (STM32G474RE)
 
-To validate wearable edge feasibility, the signal conditioning and security pipeline was flashed onto an **ARM Cortex-M4 microcontroller** (`embedded_stm32/`):
+To validate wearable edge feasibility, the signal conditioning and security pipeline was flashed onto an **ARM Cortex-M4 microcontroller** configured at **170 MHz SYSCLK via PLL** (`embedded_stm32/`):
 
 ### 8.1 On-Chip 5-Stage CMSIS-DSP Biquad IIR Filter
-Conditioning is executed via a 5-stage Direct Form II Transposed Biquad cascade running at $f_s = 350$ Hz ($T_s = 2.857$ ms):
+Conditioning is executed via a 5-stage Direct Form I Biquad cascade running at $f_s = 350$ Hz ($T_s = 2.857$ ms):
 * **Stage 1 (Highpass):** 2nd-order Butterworth ($f_c = 0.5$ Hz, $Q = 0.707$) to eliminate respiratory wander.
 * **Stages 2–4 (Lowpass Cascade):** Three 2nd-order Butterworth sections ($f_c = 40$ Hz, 6th-order $-36$ dB/octave roll-off) to suppress EMG noise.
 * **Stage 5 (Mains Powerline Notch):** 2nd-order digital notch filter ($f_0 = 50$ Hz, $Q = 30$, selectable to 60 Hz) providing $>30$ dB mains attenuation.
 
 $$
-\text{CPU Utilization}_{\text{DSP}} = \frac{1.87\ \mu\text{s}}{2857\ \mu\text{s}} \times 100\% = \mathbf{0.065\%} \quad (\text{at } 16\text{ MHz HSI})
+\text{CPU Utilization}_{\text{DSP}} = \frac{1.87\ \mu\text{s}}{2857\ \mu\text{s}} \times 100\% = \mathbf{0.065\%} \quad (\approx 318\text{ cycles at } 170\text{ MHz SYSCLK})
 $$
 
 ### 8.2 Lightweight 32-Bit Discrete Chaotic Stream Scrambler
 To obfuscate cardiac telemetry against unauthorized wire tapping, an ultra-fast stream scrambler executes directly on 32-bit IEEE-754 float bit patterns:
 1. **Marsaglia Xorshift32 PRNG:** $S_k^{(1)} = S_k \oplus (S_k \ll 13)$, $S_k^{(2)} = S_k^{(1)} \oplus (S_k^{(1)} \gg 17)$, $S_k^{(3)} = S_k^{(2)} \oplus (S_k^{(2)} \ll 5)$
 2. **Golden Ratio Weyl Sequence:** $K_k = (S_k^{(3)} + W) \pmod{2^{32}}$, where $W = \lfloor 2^{32} \cdot \frac{3-\sqrt{5}}{2} \rfloor = \text{0x61C88647}$
-3. **Nonce-CBC Feedback Diffusion:** $C_k = P_k \oplus K_k \oplus C_{k-1}$
+3. **Nonce-CBC Feedback Diffusion:** $C_k = P_k \oplus (K_k\ \&\ \text{0xFF}) \oplus C_{k-1}$
 
-* **Execution Overhead:** **32 clock cycles ($\approx 2.0\ \mu\text{s}$)** and only 8 bytes of static SRAM.
+* **Execution Overhead:** **32 clock cycles ($0.19\ \mu\text{s}$ at 170 MHz; $2.0\ \mu\text{s}$ at 16 MHz)** and only 8 bytes of static SRAM.
 * **Obfuscation Quality:** Elevates wire Shannon entropy to **$H = 7.25\text{--}7.98$ bits/byte** (near-ideal white noise).
-* **Terminal Descrambling:** Symmetric inversion $P_k = C_k \oplus K_k \oplus C_{k-1}$ achieves **bit-exact $0.000000$ V reconstruction**.
+* **Terminal Descrambling:** Symmetric inversion achieves **bit-exact $0.000000$ V reconstruction**.
 
 ---
 
@@ -284,16 +284,17 @@ To obfuscate cardiac telemetry against unauthorized wire tapping, an ultra-fast 
 Data is framed into a compact 20-byte binary packet transmitted via UART at 115,200 baud (8-N-1):
 
 ```plaintext
-Bytes 0-1   : Preamble 0xAA 0x55
-Bytes 2-3   : Packet Sequence Index (uint16_t Nonce)
-Bytes 4-7   : Hardware Timestamp (uint32_t ms)
-Bytes 8-11  : Raw ECG Voltage (IEEE-754 float)
-Bytes 12-15 : Scrambled ECG Voltage (IEEE-754 float)
-Bytes 16-17 : CRC-16-CCITT Checksum (uint16_t)
-Bytes 18-19 : CRLF Delimiter 0x0D 0x0A
+Bytes 0-1   : Sync Word 0xAA 0x55
+Byte 2      : Protocol Version 0x01
+Byte 3      : Status Flags (Bit 0: Encrypted, Bit 1: Live Sensor)
+Bytes 4-5   : Packet Sequence Index (uint16_t Nonce)
+Bytes 6-9   : Hardware Timestamp (uint32_t ms)
+Bytes 10-13 : Raw ECG Voltage (IEEE-754 float32, scrambled in-place)
+Bytes 14-17 : Filtered ECG Voltage (IEEE-754 float32, scrambled in-place)
+Bytes 18-19 : CRC-16-CCITT Checksum (uint16_t over bytes 2-17)
 ```
 
-* **Timing Margin:** Transmitting 20 bytes takes $T_{\text{tx}} = \frac{20 \times 10}{115,200} = 1.736\text{ ms}$, leaving **$1.121\text{ ms}$ ($39.2\%$ headroom)** before the subsequent timer interrupt.
+* **Timing Margin:** Direct blocking transmission (`HAL_UART_Transmit`) requires $T_{\text{tx}} = \frac{20 \times 10}{115,200} = 1.736\text{ ms}$ ($60.8\%$ of window), leaving **$1.121\text{ ms}$ ($39.2\%$ headroom)** before the subsequent timer interrupt. Circular DMA (`HAL_UART_Transmit_DMA`) decouples wire transmission completely in production firmware.
 * **Physical Reliability:** Benchmarked over **15,000 consecutive packets ($>42$ seconds continuous streaming)** on COM10 with **zero CRC errors and zero dropped frames (100.0% reliability)**.
 
 ---
@@ -335,7 +336,7 @@ ECG_STRESS_DETECTION/
 ├── matlab/                                    # Primary MATLAB Signal Processing Suite
 │   ├── DEMO_stress_detection.m                # Interactive Pan-Tompkins visualizer
 │   ├── TWENTY_NINE_project_dashboard.m        # Master 6-panel results dashboard generator
-│   └── TWENTY_FOUR_calibrated_stress_detection.m # Calibrated LOSO evaluation engine
+│   └── 05_modeling/TWENTY_TWO_calibrated_stress_detection.m # Calibrated LOSO evaluation engine
 │
 └── results/                                   # Validated Metrics & Benchmark Outputs
     ├── FINAL_Model_Metrics.csv                # Primary validated classifier metrics
@@ -373,7 +374,7 @@ python python/stm32_telemetry_receiver.py --port COM10 --baud 115200
 cd('matlab');
 setup_project;
 DEMO_stress_detection;                       % Interactive waveform demo
-TWENTY_FOUR_calibrated_stress_detection;     % Calibrated LOSO evaluation
+run('05_modeling/TWENTY_TWO_calibrated_stress_detection.m');     % Calibrated LOSO evaluation
 TWENTY_NINE_project_dashboard;               % Generate master results dashboard
 ```
 
@@ -390,8 +391,8 @@ The raw WESAD dataset (~16 GB) is excluded via `.gitignore` in accordance with r
   author    = {Yadav, Mukesh},
   journal   = {Zenodo},
   year      = {2026},
-  doi       = {10.5281/zenodo.22806710},
-  url       = {https://doi.org/10.5281/zenodo.22806710}
+  doi       = {10.5281/zenodo.22895173},
+  url       = {https://doi.org/10.5281/zenodo.22895173}
 }
 ```
 
