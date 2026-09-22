@@ -229,48 +229,98 @@ class StressInferenceEngine:
         "MeanHR", "SDNN", "RMSSD", "pNN50", "MeanRR", "RR_CV", "RR_IQR", "HR_IQR"
     ]
 
+    # Pre-trained LOSO Logistic Regression model weights and StandardScaler parameters
+    PRETRAINED_SCALER_MEAN = [
+        0.13396199804245354, -0.042778492936395074, -0.06740179672316188, -0.05779717621033419,
+        -0.0850589422514007, 0.03880104331804104, -0.04121221266697188, 0.1642034962592102
+    ]
+    PRETRAINED_SCALER_SCALE = [
+        0.25991081517034126, 0.3400780550345596, 0.464062162013224, 0.6979255402119143,
+        0.15255214660477, 0.3430485088800521, 0.3831749759288099, 0.49510074649574604
+    ]
+    PRETRAINED_MODEL_COEF = [[
+        1.7535375745342527, -0.7691514391131863, -0.03144033325691243, 1.4179732778953027,
+        -2.770404935603579, 0.2860731490971386, -0.5768953874069344, 0.8718691982562059
+    ]]
+    PRETRAINED_MODEL_INTERCEPT = [-0.018190350305372565]
+
     def __init__(self, threshold: float = 0.35):
         self.threshold = threshold
         self.scaler = StandardScaler()
         self.model = LogisticRegression(C=1.0, max_iter=1000, random_state=42)
         self.baseline_ref: Optional[Dict[str, float]] = None
         self._is_trained = False
+        self._load_pretrained_weights()
         self._train_default_model()
 
+    def _load_pretrained_weights(self):
+        """Loads verified pre-trained LOSO benchmark weights to guarantee zero-startup-delay availability."""
+        try:
+            self.scaler.mean_ = np.array(self.PRETRAINED_SCALER_MEAN, dtype=np.float64)
+            self.scaler.scale_ = np.array(self.PRETRAINED_SCALER_SCALE, dtype=np.float64)
+            self.scaler.var_ = self.scaler.scale_ ** 2
+            self.scaler.n_features_in_ = len(self.FEATURE_COLS)
+            self.model.classes_ = np.array([0, 1])
+            self.model.coef_ = np.array(self.PRETRAINED_MODEL_COEF, dtype=np.float64)
+            self.model.intercept_ = np.array(self.PRETRAINED_MODEL_INTERCEPT, dtype=np.float64)
+            self._is_trained = True
+        except Exception:
+            pass
+
     def _train_default_model(self):
-        """Loads expanded WESAD features and fits relative baseline classifier."""
-        feat_path = os.path.join(RESULTS_DIR, "WESAD_HRV_features_expanded.csv")
-        if not os.path.isfile(feat_path):
+        """Loads expanded WESAD features and fits relative baseline classifier if dataset is present."""
+        candidate_paths = [
+            os.path.join(RESULTS_DIR, "WESAD_HRV_features_expanded.csv"),
+            os.path.join(PROJECT_ROOT, "demo", "sample_data", "WESAD_HRV_features_expanded.csv"),
+            os.path.join(os.path.dirname(__file__), "..", "demo", "sample_data", "WESAD_HRV_features_expanded.csv"),
+            os.path.join(os.path.dirname(__file__), "..", "results", "WESAD_HRV_features_expanded.csv"),
+        ]
+        feat_path = None
+        for cp in candidate_paths:
+            if os.path.isfile(cp):
+                feat_path = cp
+                break
+
+        if not feat_path:
             return
 
-        df = pd.read_csv(feat_path)
-        if "Label" not in df.columns and "Condition" in df.columns:
-            df["Label"] = (df["Condition"] == "Stress").astype(int)
-        df_clean = df[df["Label"].isin([0, 1])].copy()
+        try:
+            df = pd.read_csv(feat_path)
+            if "Label" not in df.columns and "Condition" in df.columns:
+                df["Label"] = (df["Condition"] == "Stress").astype(int)
+            df_clean = df[df["Label"].isin([0, 1])].copy()
 
-        # Subject-relative normalization
-        X_list, y_list = [], []
-        eps = 1e-6
-        for subj in df_clean["Subject"].unique():
-            s_df = df_clean[df_clean["Subject"] == subj]
-            s_base = s_df[s_df["Label"] == 0]
-            if len(s_base) == 0:
-                continue
-            s_mean = s_base[self.FEATURE_COLS].mean().values
-            denom = np.where(np.abs(s_mean) < eps, eps, np.abs(s_mean))
+            # Subject-relative normalization
+            X_list, y_list = [], []
+            eps = 1e-6
+            for subj in df_clean["Subject"].unique():
+                s_df = df_clean[df_clean["Subject"] == subj]
+                s_base = s_df[s_df["Label"] == 0]
+                if len(s_base) == 0:
+                    continue
+                s_mean = s_base[self.FEATURE_COLS].mean().values
+                denom = np.where(np.abs(s_mean) < eps, eps, np.abs(s_mean))
 
-            for _, row in s_df.iterrows():
-                vals = row[self.FEATURE_COLS].values
-                delta_x = (vals - s_mean) / denom
-                X_list.append(delta_x)
-                y_list.append(row["Label"])
+                for _, row in s_df.iterrows():
+                    vals = row[self.FEATURE_COLS].values
+                    delta_x = (vals - s_mean) / denom
+                    X_list.append(delta_x)
+                    y_list.append(row["Label"])
 
-        X = np.array(X_list)
-        y = np.array(y_list)
+            X = np.array(X_list)
+            y = np.array(y_list)
 
-        X_scaled = self.scaler.fit_transform(X)
-        self.model.fit(X_scaled, y)
-        self._is_trained = True
+            fresh_scaler = StandardScaler()
+            X_scaled = fresh_scaler.fit_transform(X)
+            fresh_model = LogisticRegression(C=1.0, max_iter=1000, random_state=42)
+            fresh_model.fit(X_scaled, y)
+
+            self.scaler = fresh_scaler
+            self.model = fresh_model
+            self._is_trained = True
+        except Exception:
+            # Pretrained weights remain active as fallback
+            pass
 
     def set_subject_baseline(self, baseline_metrics: Dict[str, float]):
         """Sets individual baseline metrics for personalized relative shifting."""
@@ -278,8 +328,8 @@ class StressInferenceEngine:
 
     def predict(self, hrv_metrics: Dict[str, float]) -> Tuple[float, int]:
         """Returns (stress_probability, binary_prediction)."""
-        if not self._is_trained or self.baseline_ref is None:
-            return 0.5, 0
+        if not self._is_trained:
+            self._load_pretrained_weights()
 
         # Physiological minimum denominator floors to prevent division-by-near-zero
         floors = {
@@ -292,8 +342,21 @@ class StressInferenceEngine:
             "RR_IQR": 0.02,
             "HR_IQR": 1.0,
         }
+
+        # Use assigned baseline or fallback to population resting reference
+        base_ref = self.baseline_ref or {
+            "MeanHR": 75.0,
+            "SDNN": 50.0,
+            "RMSSD": 40.0,
+            "pNN50": 20.0,
+            "MeanRR": 0.8,
+            "RR_CV": 0.0625,
+            "RR_IQR": 0.08,
+            "HR_IQR": 8.0,
+        }
+
         raw_vals = np.array([hrv_metrics.get(c, 0.0) for c in self.FEATURE_COLS], dtype=np.float64)
-        base_vals = np.array([max(floors.get(c, 1.0), self.baseline_ref.get(c, 1.0)) for c in self.FEATURE_COLS], dtype=np.float64)
+        base_vals = np.array([max(floors.get(c, 1.0), base_ref.get(c, 1.0)) for c in self.FEATURE_COLS], dtype=np.float64)
         denom = base_vals
 
         delta_x = np.clip((raw_vals - base_vals) / denom, -5.0, 5.0)

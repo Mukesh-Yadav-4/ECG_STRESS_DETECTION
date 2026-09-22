@@ -179,6 +179,8 @@ def load_tabular_results():
     }
     for key, filename in csv_map.items():
         path = os.path.join(RESULTS_DIR, filename)
+        if not os.path.isfile(path):
+            path = os.path.join(SAMPLE_DIR, filename)
         if os.path.isfile(path):
             try:
                 data[key] = pd.read_csv(path)
@@ -200,11 +202,15 @@ st.markdown(
     <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.4rem;">
         <span style="font-size: 1.8rem;">🫀</span>
         <h1 style="font-size: 1.75rem; font-weight: 800; margin: 0; color: #F8FAFC; letter-spacing: -0.02em;">
-            Personalized ECG & HRV Dynamics for Acute Stress Detection
+            Personalized Electrocardiographic and HRV Dynamics for Acute Stress Detection
         </h1>
     </div>
     <p style="color: #94A3B8; font-size: 0.95rem; margin: 0 0 0.8rem 0;">
-        15-Fold Leave-One-Subject-Out (LOSO-CV) Clinical Telemetry Benchmark on the WESAD Dataset
+        15-Fold Leave-One-Subject-Out (LOSO-CV) Benchmark &amp; Bare-Metal Edge IoMT Implementation • 
+        <b>Mukesh Yadav</b> (Department of Electronics and Communication Engineering, JSSATEN) • 
+        <a href="https://doi.org/10.5281/zenodo.22895173" target="_blank" style="color: #00F0FF; text-decoration: none; font-weight: 600;">
+            Zenodo DOI: 10.5281/zenodo.22895173 ↗
+        </a>
     </p>
     """,
     unsafe_allow_html=True,
@@ -299,7 +305,7 @@ with tab_stm32:
                 "Simulated State:",
                 options=["Baseline", "Stress"],
                 format_func=lambda c: "🟢 Resting State (Baseline Calm)" if c == "Baseline" else "🔴 Acute Stress (TSST Public Speaking)",
-                index=1,
+                index=0,
             )
 
             stm_duration = st.slider(
@@ -314,7 +320,6 @@ with tab_stm32:
             try:
                 import serial.tools.list_ports
                 all_ports = list(serial.tools.list_ports.comports())
-                # Prioritize ST-Link port at the top of the list
                 sorted_ports = sorted(
                     all_ports,
                     key=lambda p: 0 if ("stlink" in p.description.lower() or "stmicroelectronics" in p.description.lower()) else 1
@@ -322,8 +327,12 @@ with tab_stm32:
                 port_options = [p.device for p in sorted_ports]
                 port_labels = {p.device: f"{p.device} — {p.description.split('(')[0].strip()}" for p in sorted_ports}
             except Exception:
-                port_options = ["COM10"]
-                port_labels = {"COM10": "COM10 — ST-Link"}
+                port_options = []
+                port_labels = {}
+
+            if not port_options:
+                port_options = ["Virtual / Offline Port"]
+                port_labels = {"Virtual / Offline Port": "Virtual / Offline Port (No USB Hardware Attached)"}
 
             com_port = st.selectbox(
                 "Detected Serial COM Port:",
@@ -336,7 +345,10 @@ with tab_stm32:
             baud_rate = st.selectbox("Baud Rate:", [115200, 921600], index=0)
             stm_duration = st.slider("Streaming Capture Window (Seconds):", min_value=5, max_value=30, value=8, step=1)
             stm_subj, stm_cond = "S2", "Baseline"
-            st.success(f"🟢 Connected to {port_labels.get(com_port, com_port)}")
+            if com_port == "Virtual / Offline Port":
+                st.info("ℹ️ Physical USB COM Port mode connects to local hardware. On cloud instances without hardware connected, use **'Simulated STM32 Link (Virtual)'** above to stream authentic 20-byte packet telemetry.")
+            else:
+                st.caption(f"Ready to ingest from serial port: `{com_port}` @ {baud_rate} baud")
 
         st.markdown("<hr style='border: 0; border-top: 1px solid #1C243B; margin: 0.8rem 0;'>", unsafe_allow_html=True)
         continuous_stream = st.toggle(
@@ -881,7 +893,7 @@ with tab_demo:
             "Experimental Condition:",
             options=["Baseline", "Stress"],
             format_func=lambda c: "🟢 Resting State (Baseline Calm)" if c == "Baseline" else "🔴 Acute Stress (TSST Public Speaking)",
-            index=1,
+            index=0,
         )
 
         filter_mode = st.toggle(
