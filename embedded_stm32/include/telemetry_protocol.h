@@ -27,6 +27,7 @@
 
 #define TELEMETRY_FLAG_ENCRYPTED (1 << 0)
 #define TELEMETRY_FLAG_LIVE_ADC  (1 << 1)
+#define TELEMETRY_FLAG_CHAOS_4D  (1 << 2)
 
 #pragma pack(push, 1)
 typedef struct {
@@ -80,6 +81,47 @@ void telemetry_encrypt_packet(telemetry_packet_t *pkt);
  * @brief Decrypt ECG samples in-place using per-packet Nonce-seeded chaotic keystream
  */
 void telemetry_decrypt_packet(telemetry_packet_t *pkt);
+
+/* ================= NOVEL 4D COUPLED HYPERCHAOTIC CIPHER (M-4DCHS) ================= */
+#define M4D_PARAM_A      35.0f
+#define M4D_PARAM_B      3.0f
+#define M4D_PARAM_C      28.0f
+#define M4D_PARAM_D      (-1.0f)
+#define M4D_PARAM_R      5.0f
+#define M4D_DT           0.0025f
+
+typedef struct {
+    float x;
+    float y;
+    float z;
+    float w;
+    uint8_t prev_cipher;
+} m4d_state_t;
+
+/**
+ * @brief Reset M-4DJHS chaotic keystream generator state and IV
+ */
+void telemetry_m4d_reset(float x0, float y0, float z0, float w0, uint8_t iv);
+
+/**
+ * @brief Dynamic Nonce KDF for M-4DJHS
+ */
+void telemetry_m4d_seed_nonce(uint16_t seq_id, uint32_t timestamp_ms);
+
+/**
+ * @brief Generate next 8-bit keystream byte from M-4DJHS attractor
+ */
+uint8_t telemetry_m4d_get_keystream_byte(void);
+
+/**
+ * @brief Encrypt ECG samples using 4D Memristive-Jerk Hyperchaotic keystream
+ */
+void telemetry_m4d_encrypt_packet(telemetry_packet_t *pkt);
+
+/**
+ * @brief Decrypt ECG samples using 4D Memristive-Jerk Hyperchaotic keystream
+ */
+void telemetry_m4d_decrypt_packet(telemetry_packet_t *pkt);
 
 #ifdef __cplusplus
 }

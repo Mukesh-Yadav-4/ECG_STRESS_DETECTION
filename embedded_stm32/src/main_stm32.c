@@ -16,7 +16,10 @@
 #include "wesad_test_samples.h"
 
 /* Set to 0 for WESAD memory replay, or 1 for live AD8232 ADC input on PA0 */
-#define USE_LIVE_AD8232_ADC  0
+#define USE_LIVE_AD8232_ADC   0
+
+/* Telemetry Security Engine: 0 = Plaintext, 1 = 32-Bit Scrambler, 2 = 4D Memristive Hyperchaos (M-4DJHS) */
+#define USE_ENCRYPTION_MODE   2
 
 #define ECG_SAMPLE_RATE_HZ   350
 
@@ -101,6 +104,11 @@ int main(void)
             /* 2. Package into 20-byte Telemetry Packet with CRC-16 */
             uint32_t ts_ms = HAL_GetTick();
             uint8_t flags = USE_LIVE_AD8232_ADC ? TELEMETRY_FLAG_LIVE_ADC : 0;
+#if USE_ENCRYPTION_MODE == 2
+            flags |= (TELEMETRY_FLAG_ENCRYPTED | TELEMETRY_FLAG_CHAOS_4D);
+#elif USE_ENCRYPTION_MODE == 1
+            flags |= TELEMETRY_FLAG_ENCRYPTED;
+#endif
             telemetry_pack(&g_tx_packet, g_seq_counter++, ts_ms, raw_ecg_val, filtered_ecg_val, flags);
 
             /* 3. Transmit binary packet over ST-LINK Virtual COM Port (USART2) */

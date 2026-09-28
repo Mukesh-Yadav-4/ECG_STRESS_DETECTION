@@ -94,3 +94,9 @@ scratch_test.py
 # OFFICE / WORD DUPLICATES
 # =========================================================
 *.docx
+
+# =========================================================
+# TEACHER LOCAL EXPERIMENTS - NEVER TRACK OR PUSH
+# =========================================================
+local_teacher_experiments/
+local_teacher_experiments/**

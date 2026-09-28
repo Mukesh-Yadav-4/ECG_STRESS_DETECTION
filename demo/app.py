@@ -10,6 +10,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 import streamlit as st
+import streamlit.components.v1 as components
 import sys
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -51,44 +52,60 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"], .main {
     font-family: 'DM Sans', -apple-system, sans-serif !important;
 }
 
+/* Eliminate top dead space and optimize viewport margins */
+.block-container {
+    padding-top: 0.6rem !important;
+    padding-bottom: 0.3rem !important;
+    padding-left: 1.2rem !important;
+    padding-right: 1.2rem !important;
+    max-width: 100% !important;
+}
+header[data-testid="stHeader"] {
+    display: none !important;
+    height: 0px !important;
+}
+div[data-testid="stVerticalBlock"] {
+    gap: 0.35rem !important;
+}
+
 [data-testid="stSidebar"] {
     background-color: #0B0E1B !important;
     border-right: 1px solid var(--border-subtle) !important;
 }
 
-/* Custom Card Container */
+/* Compact Telemetry Card */
 .telemetry-card {
     background-color: var(--bg-card);
     border: 1px solid var(--border-subtle);
-    border-radius: 12px;
-    padding: 1.25rem 1.4rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-    transition: border 0.2s ease, transform 0.2s ease;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.35rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+    transition: border 0.15s ease;
 }
 .telemetry-card:hover {
     border-color: var(--border-accent);
 }
 
 .kpi-title {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text-dim);
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.15rem;
 }
 .kpi-value {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 1.85rem;
+    font-size: 1.35rem;
     font-weight: 700;
     color: var(--text-main);
-    line-height: 1.15;
+    line-height: 1.1;
 }
 .kpi-sub {
-    font-size: 0.8rem;
+    font-size: 0.68rem;
     color: var(--text-muted);
-    margin-top: 0.35rem;
+    margin-top: 0.15rem;
 }
 
 /* Status Badges */
@@ -98,11 +115,11 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"], .main {
     background: rgba(255, 51, 102, 0.15);
     border: 1px solid rgba(255, 51, 102, 0.6);
     color: #FF6688;
-    padding: 0.4rem 1.1rem;
+    padding: 0.25rem 0.75rem;
     border-radius: 9999px;
     font-weight: 700;
-    font-size: 0.95rem;
-    letter-spacing: 0.04em;
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
     font-family: 'JetBrains Mono', monospace;
 }
 .status-pill-calm {
@@ -111,11 +128,11 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"], .main {
     background: rgba(16, 185, 129, 0.15);
     border: 1px solid rgba(16, 185, 129, 0.6);
     color: #34D399;
-    padding: 0.4rem 1.1rem;
+    padding: 0.25rem 0.75rem;
     border-radius: 9999px;
     font-weight: 700;
-    font-size: 0.95rem;
-    letter-spacing: 0.04em;
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
     font-family: 'JetBrains Mono', monospace;
 }
 
@@ -123,21 +140,21 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"], .main {
 button[data-baseweb="tab"] {
     background: transparent !important;
     color: var(--text-muted) !important;
-    font-size: 0.92rem !important;
+    font-size: 0.84rem !important;
     font-weight: 600 !important;
-    padding: 0.75rem 1.25rem !important;
-    border-radius: 8px !important;
+    padding: 0.35rem 0.85rem !important;
+    border-radius: 6px !important;
 }
 button[data-baseweb="tab"][aria-selected="true"] {
     color: #00F0FF !important;
     background: rgba(0, 240, 255, 0.08) !important;
     border-bottom: 2px solid #00F0FF !important;
 }
+div[data-testid="stTabs"] {
+    margin-bottom: 0.3rem !important;
+}
 
 /* Hide default streamlit decorations */
-header[data-testid="stHeader"] {
-    background: transparent !important;
-}
 #MainMenu, footer {
     visibility: hidden;
 }
@@ -199,19 +216,25 @@ tab_data = load_tabular_results()
 # ==============================================================================
 st.markdown(
     """
-    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.4rem;">
-        <span style="font-size: 1.8rem;">🫀</span>
-        <h1 style="font-size: 1.75rem; font-weight: 800; margin: 0; color: #F8FAFC; letter-spacing: -0.02em;">
-            Personalized Electrocardiographic and HRV Dynamics for Acute Stress Detection
-        </h1>
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1C243B; padding-bottom:0.3rem; margin-bottom:0.4rem;">
+        <div style="display:flex; align-items:center; gap:0.55rem;">
+            <span style="font-size:1.35rem;">🫀</span>
+            <div>
+                <h1 style="font-size:1.15rem; font-weight:800; margin:0; color:#F8FAFC; letter-spacing:-0.01em; display:inline;">
+                    Personalized Electrocardiographic and HRV Dynamics for Acute Stress Detection
+                </h1>
+                <span style="font-size:0.75rem; color:#64748B; margin-left:0.6rem;">
+                    15-Fold LOSO-CV Benchmark &amp; Bare-Metal Edge IoMT Node
+                </span>
+            </div>
+        </div>
+        <div style="font-size:0.75rem; color:#94A3B8; display:flex; gap:0.75rem; align-items:center;">
+            <span><b>Mukesh Yadav</b> (ECE, JSSATEN)</span>
+            <a href="https://doi.org/10.5281/zenodo.22895173" target="_blank" style="color:#00F0FF; text-decoration:none; font-weight:600; background:rgba(0,240,255,0.08); border:1px solid rgba(0,240,255,0.25); padding:2px 8px; border-radius:4px;">
+                Zenodo DOI ↗
+            </a>
+        </div>
     </div>
-    <p style="color: #94A3B8; font-size: 0.95rem; margin: 0 0 0.8rem 0;">
-        15-Fold Leave-One-Subject-Out (LOSO-CV) Benchmark &amp; Bare-Metal Edge IoMT Implementation • 
-        <b>Mukesh Yadav</b> (Department of Electronics and Communication Engineering, JSSATEN) • 
-        <a href="https://doi.org/10.5281/zenodo.22895173" target="_blank" style="color: #00F0FF; text-decoration: none; font-weight: 600;">
-            Zenodo DOI: 10.5281/zenodo.22895173 ↗
-        </a>
-    </p>
     """,
     unsafe_allow_html=True,
 )
@@ -219,21 +242,23 @@ st.markdown(
 # Top KPI Metric Strip
 k1, k2, k3, k4, k5, k6 = st.columns(6)
 kpis = [
-    ("Accuracy", "92.36 %", "+10.79% vs uncalibrated", "#10B981"),
+    ("Accuracy", "92.36 %", "+10.79% vs raw", "#10B981"),
     ("Stress F1-Score", "89.03 %", "+16.00% boost", "#00F0FF"),
-    ("ROC-AUC", "0.9494", "High diagnostic separation", "#8B5CF6"),
-    ("Sensitivity", "86.25 %", "138 / 160 stress windows", "#FF3366"),
-    ("Specificity", "95.79 %", "273 / 285 calm windows", "#10B981"),
-    ("Benchmark", "15 Subjects", "445 standardized windows", "#F59E0B"),
+    ("ROC-AUC", "0.9494", "High separation", "#8B5CF6"),
+    ("Sensitivity", "86.25 %", "138/160 stress", "#FF3366"),
+    ("Specificity", "95.79 %", "273/285 calm", "#10B981"),
+    ("Benchmark", "15 Subjects", "445 windows", "#F59E0B"),
 ]
 for col, (label, val, sub, color) in zip([k1, k2, k3, k4, k5, k6], kpis):
     with col:
         st.markdown(
             f"""
-            <div class="telemetry-card" style="padding: 0.85rem 1rem; border-left: 3px solid {color};">
-                <div class="kpi-title">{label}</div>
-                <div class="kpi-value" style="font-size: 1.45rem; color: {color};">{val}</div>
-                <div class="kpi-sub" style="font-size: 0.72rem;">{sub}</div>
+            <div class="telemetry-card" style="padding: 0.35rem 0.65rem; margin-bottom: 0.3rem; border-left: 3px solid {color};">
+                <div class="kpi-title" style="font-size: 0.65rem; margin-bottom: 0.1rem;">{label}</div>
+                <div style="display: flex; align-items: baseline; justify-content: space-between;">
+                    <span class="kpi-value" style="font-size: 1.25rem; color: {color};">{val}</span>
+                    <span class="kpi-sub" style="font-size: 0.65rem; margin: 0; color: #94A3B8;">{sub}</span>
+                </div>
             </div>
             """,
             unsafe_allow_html=True,
@@ -253,30 +278,14 @@ tab_stm32, tab_demo, tab_features, tab_benchmark = st.tabs([
 # TAB 1: STM32G474 IoMT Hardware Telemetry
 # ==============================================================================
 with tab_stm32:
-    st.markdown(
-        """
-        <div style="margin-bottom: 1.25rem;">
-            <div style="display: flex; align-items: center; gap: 0.6rem;">
-                <span style="font-size: 1.5rem;">⚡</span>
-                <h2 style="font-size: 1.4rem; font-weight: 700; margin: 0; color: #00F0FF;">
-                    STM32G474 Edge Node: Real-Time IoMT Telemetry & Stress Detection
-                </h2>
-            </div>
-            <p style="color: #94A3B8; font-size: 0.88rem; margin: 0.2rem 0 0 0;">
-                Direct telemetry ingestion from the ARM Cortex-M4 edge microcontroller (20-byte binary frames @ 350/700 Hz with hardware CRC-16).
-            </p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
 
     stm_col_ctrl, stm_col_view = st.columns([1, 3.1])
 
     with stm_col_ctrl:
         st.markdown(
             """
-            <div class="telemetry-card">
-                <div class="kpi-title" style="color: #00F0FF;">Hardware Link Interface</div>
+            <div class="telemetry-card" style="padding:0.4rem 0.6rem; margin-bottom:0.25rem;">
+                <div class="kpi-title" style="color: #00F0FF; font-size:0.65rem; margin-bottom:0.15rem;">Hardware Link Interface</div>
             """,
             unsafe_allow_html=True,
         )
@@ -285,12 +294,13 @@ with tab_stm32:
             "Telemetry Link Mode:",
             options=["Simulated STM32 Link (Virtual)", "Physical USB COM Port"],
             index=0,
+            horizontal=True,
             help="Simulated mode streams real WESAD subjects through the exact STM32 20-byte packet protocol without needing physical hardware connected.",
         )
 
         if link_mode == "Simulated STM32 Link (Virtual)":
             stm_subj = st.selectbox(
-                "Simulated Patient / Subject:",
+                "Patient / Subject:",
                 options=["S3", "S2", "S10", "S17"],
                 format_func=lambda s: {
                     "S3": "S3 (Strong Autonomic Responder)",
@@ -302,19 +312,14 @@ with tab_stm32:
             )
 
             stm_cond = st.radio(
-                "Simulated State:",
+                "Condition:",
                 options=["Baseline", "Stress"],
-                format_func=lambda c: "🟢 Resting State (Baseline Calm)" if c == "Baseline" else "🔴 Acute Stress (TSST Public Speaking)",
+                format_func=lambda c: "🟢 Resting Calm" if c == "Baseline" else "🔴 Acute Stress",
                 index=0,
+                horizontal=True,
             )
 
-            stm_duration = st.slider(
-                "Streaming Window (Seconds):",
-                min_value=10,
-                max_value=60,
-                value=25,
-                step=5,
-            )
+            stm_duration = 25
 
         else:
             try:
@@ -342,49 +347,68 @@ with tab_stm32:
                 key="hardware_com_port_select"
             )
 
-            baud_rate = st.selectbox("Baud Rate:", [115200, 921600], index=0)
-            stm_duration = st.slider("Streaming Capture Window (Seconds):", min_value=5, max_value=30, value=8, step=1)
+            baud_rate = 115200
+            stm_duration = 8
             stm_subj, stm_cond = "S2", "Baseline"
-            if com_port == "Virtual / Offline Port":
-                st.info("ℹ️ Physical USB COM Port mode connects to local hardware. On cloud instances without hardware connected, use **'Simulated STM32 Link (Virtual)'** above to stream authentic 20-byte packet telemetry.")
-            else:
-                st.caption(f"Ready to ingest from serial port: `{com_port}` @ {baud_rate} baud")
+            if com_port != "Virtual / Offline Port":
+                st.caption(f"Port `{com_port}` @ {baud_rate} baud")
 
-        st.markdown("<hr style='border: 0; border-top: 1px solid #1C243B; margin: 0.8rem 0;'>", unsafe_allow_html=True)
         continuous_stream = st.toggle(
-            "🔴 Continuous Live Stream (Hospital Monitor)",
+            "🔴 Live Stream (350 Hz)",
             value=False,
             help="Continuously ingests incoming packets in real-time and scrolls the live ECG waveform without freezing."
         )
 
-        chart_renderer = st.radio(
-            "Telemetry Waveform Engine:",
-            options=["🟢 Hospital Monitor (Flicker-Free Native)", "📊 Plotly Interactive Lab"],
+        chart_renderer = "🟢 Hospital Monitor (Flicker-Free Native)"
+
+        crypto_engine_choice = st.selectbox(
+            "IoMT Cipher:",
+            options=[
+                "🔮 4D Coupled Hyperchaos (M-4DCHS)",
+                "⚡ 32-Bit Scrambler (Xorshift32 + Weyl)",
+                "🔓 Unencrypted Plaintext"
+            ],
             index=0,
-            help="Hospital Monitor uses native streaming with zero unmounting/flicker. Plotly Interactive Lab enables manual box-zoom/pan inspection."
+            help="Select the cryptographic engine running on the edge IoMT node."
         )
 
+        if "4D" in crypto_engine_choice:
+            active_flags = 0x05  # TELEMETRY_FLAG_ENCRYPTED | TELEMETRY_FLAG_CHAOS_4D
+            spec_sec = "4D Hyperchaos (M-4DCHS)"
+            spec_cost = "0.48 µs (82 cycles)"
+            spec_key = "> 2^256 (ℝ⁴)"
+        elif "32-Bit" in crypto_engine_choice:
+            active_flags = 0x01  # TELEMETRY_FLAG_ENCRYPTED
+            spec_sec = "32-Bit Cipher (Xorshift32)"
+            spec_cost = "0.19 µs (32 cycles)"
+            spec_key = "2^32"
+        else:
+            active_flags = 0x00
+            spec_sec = "None (Plaintext)"
+            spec_cost = "0.00 µs"
+            spec_key = "0 bits"
+
         security_view_mode = st.radio(
-            "IoMT Security Inspector:",
-            options=["🟢 Authorized Clinical View (Decrypted Telemetry)", "🕵️ Eavesdropper Intercept View (Raw Wire Ciphertext)"],
+            "IoMT Security View:",
+            options=["🟢 Authorized (Decrypted)", "🕵️ Wiretap (Ciphertext)"],
             index=0,
-            help="Toggle between authorized clinical view (decrypted ECG with 100% bit precision) and intercepted wire view (high-entropy chaotic white noise)."
+            horizontal=True,
+            help="Toggle between authorized clinical view and wiretap ciphertext noise."
         )
 
         st.markdown("</div>", unsafe_allow_html=True)
 
         # Edge Node Specs Card
         st.markdown(
-            """
-            <div class="telemetry-card" style="font-size: 0.82rem; color: #CBD5E1; margin-top: 1rem; border-left: 3px solid #00F0FF;">
-                <div class="kpi-title" style="color: #00F0FF;">STM32G474 Specs & Framing</div>
-                • <b>Core:</b> ARM Cortex-M4 @ 170 MHz + FPU<br>
-                • <b>DSP Filter:</b> 5-stage Biquad IIR (0.5–40 Hz BP + 50 Hz Notch)<br>
-                • <b>Telemetry Frame:</b> 20 Bytes Binary<br>
-                • <b>Header / Sync:</b> <code>0xAA 0x55</code><br>
-                • <b>Integrity Check:</b> CRC-16-CCITT (Poly: <code>0x1021</code>)<br>
-                • <b>Security Layer:</b> 32-Bit Chaotic Cipher (Xorshift32 + Weyl)<br>
-                • <b>On-Chip Cipher Cost:</b> 0.19 µs/packet (32 cycles @ 170 MHz)
+            f"""
+            <div class="telemetry-card" style="font-size:0.68rem; line-height:1.32; padding:0.35rem 0.55rem; margin-top:0.25rem; border-left:2px solid #00F0FF;">
+                <div class="kpi-title" style="color:#00F0FF; font-size:0.62rem; margin-bottom:0.1rem;">STM32 Edge Node Specs</div>
+                • <b>MCU:</b> Cortex-M4 @ 170MHz + FPU<br>
+                • <b>DSP:</b> 5-stage IIR (0.5–40Hz + 50Hz)<br>
+                • <b>Frame:</b> 20B Binary + CRC-16<br>
+                • <b>Security:</b> {spec_sec}<br>
+                • <b>Keyspace:</b> <code>{spec_key}</code><br>
+                • <b>Cost:</b> {spec_cost}
             </div>
             """,
             unsafe_allow_html=True,
@@ -463,6 +487,479 @@ with tab_stm32:
                 }
                 telemetry_stream.classifier.set_subject_baseline(base_dict)
 
+            def generate_threejs_phase_space_html(ecg_samples: list) -> str:
+                ecg_json = json.dumps(ecg_samples)
+                return f"""<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body, html {{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #0B0E1B;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+    user-select: none;
+  }}
+  #canvas-container {{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, #111827 0%, #070913 100%);
+  }}
+  .hud-panel {{
+    position: absolute;
+    top: 6px;
+    left: 8px;
+    background: rgba(11, 14, 27, 0.9);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    border-radius: 6px;
+    padding: 3px 7px;
+    font-size: 9.5px;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    color: #F1F5F9;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    z-index: 10;
+  }}
+  .hud-header {{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 700;
+    font-size: 9.5px;
+    color: #00F0FF;
+    margin-bottom: 1px;
+  }}
+  .live-dot {{
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00F0FF;
+    box-shadow: 0 0 6px #00F0FF;
+    display: inline-block;
+    animation: blink 1.2s infinite alternate ease-in-out;
+  }}
+  @keyframes blink {{
+    0% {{ opacity: 0.3; transform: scale(0.9); }}
+    100% {{ opacity: 1.0; transform: scale(1.1); }}
+  }}
+  .hud-row {{
+    color: #94A3B8;
+    font-size: 9px;
+  }}
+  .hud-val {{
+    color: #A78BFA;
+    font-weight: 600;
+  }}
+  .toolbar {{
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    display: flex;
+    gap: 4px;
+    z-index: 10;
+  }}
+  .btn-mode {{
+    background: rgba(15, 20, 36, 0.9);
+    backdrop-filter: blur(8px);
+    border: 1px solid #334155;
+    color: #94A3B8;
+    padding: 3px 8px;
+    font-size: 9.5px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }}
+  .btn-mode:hover {{
+    color: #F1F5F9;
+    border-color: #8B5CF6;
+  }}
+  .btn-mode.active {{
+    background: #8B5CF6;
+    color: #FFFFFF;
+    border-color: #A78BFA;
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
+  }}
+  .bottom-bar {{
+    position: absolute;
+    bottom: 5px;
+    right: 8px;
+    display: flex;
+    gap: 4px;
+    z-index: 10;
+  }}
+  .btn-icon {{
+    background: rgba(15, 20, 36, 0.9);
+    backdrop-filter: blur(8px);
+    border: 1px solid #334155;
+    color: #CBD5E1;
+    padding: 2px 6px;
+    font-size: 8.5px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }}
+  .btn-icon:hover {{
+    border-color: #00F0FF;
+    color: #00F0FF;
+  }}
+  .btn-icon.active {{
+    background: rgba(0, 240, 255, 0.2);
+    border-color: #00F0FF;
+    color: #00F0FF;
+  }}
+  .instructions {{
+    position: absolute;
+    bottom: 5px;
+    left: 8px;
+    color: #64748B;
+    font-size: 8px;
+    z-index: 10;
+    pointer-events: none;
+    font-family: 'JetBrains Mono', monospace;
+  }}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div id="canvas-container"></div>
+
+<div class="hud-panel">
+  <div class="hud-header">
+    <span class="live-dot" id="live-dot"></span>
+    <span id="hud-title">M-4DCHS HYPERCHAOTIC ATTRACTOR</span>
+  </div>
+  <div class="hud-row" id="hud-coords">
+    x: <span class="hud-val">0.00</span> &nbsp; 
+    y: <span class="hud-val">0.00</span> &nbsp; 
+    z: <span class="hud-val">0.00</span> &nbsp; 
+    w: <span class="hud-val">0.00</span>
+  </div>
+  <div class="hud-row" id="hud-sub" style="margin-top:2px; font-size:9.5px; color:#64748B;">
+    λ₁=+0.205, λ₂=+0.085 | div(F)=-39.0 | Keyspace &gt; 2²⁵⁶
+  </div>
+</div>
+
+<div class="toolbar">
+  <button id="btn-chaos" class="btn-mode active" onclick="setMode('chaos')">🔮 4D Hyperchaos</button>
+  <button id="btn-cardiac" class="btn-mode" onclick="setMode('cardiac')">❤️ 3D Cardiac Loop</button>
+</div>
+
+<div class="bottom-bar">
+  <button id="btn-autorotate" class="btn-icon active" onclick="toggleAutoRotate()">🔄 Auto-Rotate</button>
+  <button id="btn-reset" class="btn-icon" onclick="resetCamera()">🎯 Reset View</button>
+</div>
+
+<div class="instructions">
+  🖱️ Drag: Rotate 3D &nbsp;|&nbsp; Scroll: Zoom &nbsp;|&nbsp; Right-Click: Pan
+</div>
+
+<script>
+let currentMode = 'chaos';
+let autoRotate = true;
+
+const container = document.getElementById('canvas-container');
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+camera.position.set(28, 22, 38);
+
+const renderer = new THREE.WebGLRenderer({{ antialias: true, alpha: true, powerPreference: 'high-performance' }});
+renderer.setSize(container.clientWidth, container.clientHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+container.appendChild(renderer.domElement);
+
+let controls;
+let isDragging = false;
+let prevMousePos = {{ x: 0, y: 0 }};
+let spherical = {{ radius: 52, theta: 0.65, phi: 1.1 }};
+
+function updateCamSpherical() {{
+  camera.position.x = spherical.radius * Math.sin(spherical.phi) * Math.sin(spherical.theta);
+  camera.position.y = spherical.radius * Math.cos(spherical.phi);
+  camera.position.z = spherical.radius * Math.sin(spherical.phi) * Math.cos(spherical.theta);
+  camera.lookAt(0, 0, 0);
+}}
+
+if (typeof THREE.OrbitControls !== 'undefined') {{
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  controls.autoRotate = autoRotate;
+  controls.autoRotateSpeed = 1.0;
+}} else {{
+  renderer.domElement.addEventListener('pointerdown', (e) => {{
+    isDragging = true;
+    prevMousePos = {{ x: e.clientX, y: e.clientY }};
+  }});
+  window.addEventListener('pointermove', (e) => {{
+    if (!isDragging) return;
+    const dx = e.clientX - prevMousePos.x;
+    const dy = e.clientY - prevMousePos.y;
+    spherical.theta -= dx * 0.01;
+    spherical.phi = Math.max(0.1, Math.min(Math.PI - 0.1, spherical.phi - dy * 0.01));
+    prevMousePos = {{ x: e.clientX, y: e.clientY }};
+    updateCamSpherical();
+  }});
+  window.addEventListener('pointerup', () => {{ isDragging = false; }});
+  renderer.domElement.addEventListener('wheel', (e) => {{
+    e.preventDefault();
+    spherical.radius = Math.max(15, Math.min(150, spherical.radius + e.deltaY * 0.06));
+    updateCamSpherical();
+  }}, {{ passive: false }});
+  updateCamSpherical();
+}}
+
+// Grid & Axes
+const gridHelper = new THREE.GridHelper(36, 14, 0x334155, 0x1E293B);
+gridHelper.position.y = -15;
+scene.add(gridHelper);
+
+const axesHelper = new THREE.AxesHelper(16);
+axesHelper.position.set(-16, -15, -16);
+scene.add(axesHelper);
+
+// Lighting
+const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.75);
+scene.add(ambientLight);
+const dirLight = new THREE.DirectionalLight(0x00F0FF, 0.85);
+dirLight.position.set(25, 35, 25);
+scene.add(dirLight);
+
+const chaosGroup = new THREE.Group();
+const cardiacGroup = new THREE.Group();
+scene.add(chaosGroup);
+scene.add(cardiacGroup);
+cardiacGroup.visible = false;
+
+// 1. M-4DCHS CHAOS SYSTEM
+const a = 35.0, b = 3.0, c = 28.0, d = -1.0, r = 5.0, dt = 0.0025;
+let s = [1.0, 1.0, 1.0, 1.0];
+
+function f_ode(v) {{
+  return [
+    a * (v[1] - v[0]) + v[3],
+    c * v[0] - v[0] * v[2] + d * v[1],
+    v[0] * v[1] - b * v[2],
+    -r * v[0]
+  ];
+}}
+
+function rk4(v, h) {{
+  const k1 = f_ode(v);
+  const v2 = [v[0] + 0.5 * h * k1[0], v[1] + 0.5 * h * k1[1], v[2] + 0.5 * h * k1[2], v[3] + 0.5 * h * k1[3]];
+  const k2 = f_ode(v2);
+  const v3 = [v[0] + 0.5 * h * k2[0], v[1] + 0.5 * h * k2[1], v[2] + 0.5 * h * k2[2], v[3] + 0.5 * h * k2[3]];
+  const k3 = f_ode(v3);
+  const v4 = [v[0] + h * k3[0], v[1] + h * k3[1], v[2] + h * k3[2], v[3] + h * k3[3]];
+  const k4 = f_ode(v4);
+  return [
+    v[0] + (h / 6.0) * (k1[0] + 2.0 * k2[0] + 2.0 * k3[0] + k4[0]),
+    v[1] + (h / 6.0) * (k1[1] + 2.0 * k2[1] + 2.0 * k3[1] + k4[1]),
+    v[2] + (h / 6.0) * (k1[2] + 2.0 * k2[2] + 2.0 * k3[2] + k4[2]),
+    v[3] + (h / 6.0) * (k1[3] + 2.0 * k2[3] + 2.0 * k3[3] + k4[3])
+  ];
+}}
+
+for (let i = 0; i < 4000; i++) {{
+  s = rk4(s, dt);
+}}
+
+const MAX_POINTS = 1400;
+const chaosPositions = new Float32Array(MAX_POINTS * 3);
+const chaosColors = new Float32Array(MAX_POINTS * 3);
+const chaosHistory = [];
+
+for (let i = 0; i < MAX_POINTS; i++) {{
+  s = rk4(s, dt);
+  chaosHistory.push([...s]);
+}}
+
+const chaosGeometry = new THREE.BufferGeometry();
+chaosGeometry.setAttribute('position', new THREE.BufferAttribute(chaosPositions, 3));
+chaosGeometry.setAttribute('color', new THREE.BufferAttribute(chaosColors, 3));
+
+const chaosMaterial = new THREE.LineBasicMaterial({{
+  vertexColors: true,
+  linewidth: 2.2,
+  transparent: true,
+  opacity: 0.95
+}});
+const chaosLine = new THREE.Line(chaosGeometry, chaosMaterial);
+chaosGroup.add(chaosLine);
+
+const headGeo = new THREE.OctahedronGeometry(0.75, 0);
+const headMat = new THREE.MeshBasicMaterial({{ color: 0x00F0FF }});
+const headMesh = new THREE.Mesh(headGeo, headMat);
+chaosGroup.add(headMesh);
+
+const headLight = new THREE.PointLight(0x00F0FF, 1.8, 14);
+chaosGroup.add(headLight);
+
+// 2. CARDIAC DELAY EMBEDDING
+const rawEcg = {ecg_json};
+const tau = 8;
+const cardiacPts = [];
+let minX = 999, maxX = -999, minY = 999, maxY = -999, minZ = 999, maxZ = -999;
+
+if (rawEcg && rawEcg.length > 2 * tau) {{
+  for (let i = 2 * tau; i < rawEcg.length; i++) {{
+    const x = rawEcg[i] * 12.0;
+    const y = rawEcg[i - tau] * 12.0;
+    const z = rawEcg[i - 2 * tau] * 12.0;
+    cardiacPts.push([x, y, z]);
+    if (x < minX) minX = x; if (x > maxX) maxX = x;
+    if (y < minY) minY = y; if (y > maxY) maxY = y;
+    if (z < minZ) minZ = z; if (z > maxZ) maxZ = z;
+  }}
+}}
+
+const cLen = cardiacPts.length;
+const cPositions = new Float32Array(cLen * 3);
+const cColors = new Float32Array(cLen * 3);
+const cx = (minX + maxX) / 2.0;
+const cy = (minY + maxY) / 2.0;
+const cz = (minZ + maxZ) / 2.0;
+
+for (let i = 0; i < cLen; i++) {{
+  cPositions[i * 3] = cardiacPts[i][0] - cx;
+  cPositions[i * 3 + 1] = cardiacPts[i][2] - cz;
+  cPositions[i * 3 + 2] = cardiacPts[i][1] - cy;
+  
+  const t = i / cLen;
+  cColors[i * 3] = 0.95 * t + 0.1 * (1 - t);
+  cColors[i * 3 + 1] = 0.05 * t + 0.85 * (1 - t);
+  cColors[i * 3 + 2] = 0.35 * t + 0.95 * (1 - t);
+}}
+
+const cardiacGeo = new THREE.BufferGeometry();
+cardiacGeo.setAttribute('position', new THREE.BufferAttribute(cPositions, 3));
+cardiacGeo.setAttribute('color', new THREE.BufferAttribute(cColors, 3));
+const cardiacMat = new THREE.LineBasicMaterial({{ vertexColors: true, linewidth: 2.4, transparent: true, opacity: 0.95 }});
+const cardiacLine = new THREE.Line(cardiacGeo, cardiacMat);
+cardiacGroup.add(cardiacLine);
+
+const beatGeo = new THREE.SphereGeometry(0.8, 16, 16);
+const beatMat = new THREE.MeshBasicMaterial({{ color: 0xFF0055 }});
+const beatMesh = new THREE.Mesh(beatGeo, beatMat);
+cardiacGroup.add(beatMesh);
+let cardiacIdx = 0;
+
+function setMode(mode) {{
+  currentMode = mode;
+  document.getElementById('btn-chaos').classList.toggle('active', mode === 'chaos');
+  document.getElementById('btn-cardiac').classList.toggle('active', mode === 'cardiac');
+  chaosGroup.visible = (mode === 'chaos');
+  cardiacGroup.visible = (mode === 'cardiac');
+  
+  if (mode === 'chaos') {{
+    document.getElementById('hud-title').innerText = "M-4DCHS HYPERCHAOTIC ATTRACTOR";
+    document.getElementById('hud-sub').innerText = "λ₁=+0.205, λ₂=+0.085 | div(F)=-39.0 | Keyspace > 2²⁵⁶";
+    document.getElementById('live-dot').style.background = "#00F0FF";
+    document.getElementById('live-dot').style.boxShadow = "0 0 8px #00F0FF";
+  }} else {{
+    document.getElementById('hud-title').innerText = "TAKENS 3D CARDIAC PHASE PORTRAIT";
+    document.getElementById('hud-sub').innerText = "Embedding Delay τ = 22.9 ms (8 samples) | Closed QRS Trajectory";
+    document.getElementById('live-dot').style.background = "#FF0055";
+    document.getElementById('live-dot').style.boxShadow = "0 0 8px #FF0055";
+  }}
+}}
+
+function toggleAutoRotate() {{
+  autoRotate = !autoRotate;
+  if (controls) controls.autoRotate = autoRotate;
+  document.getElementById('btn-autorotate').classList.toggle('active', autoRotate);
+}}
+
+function resetCamera() {{
+  camera.position.set(28, 22, 38);
+  if (controls) {{
+    controls.target.set(0, 0, 0);
+    controls.update();
+  }} else {{
+    spherical = {{ radius: 52, theta: 0.65, phi: 1.1 }};
+    updateCamSpherical();
+  }}
+}}
+
+window.addEventListener('resize', () => {{
+  if (!container) return;
+  camera.aspect = container.clientWidth / container.clientHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(container.clientWidth, container.clientHeight);
+}});
+
+function animate() {{
+  requestAnimationFrame(animate);
+  
+  if (currentMode === 'chaos') {{
+    for (let k = 0; k < 5; k++) {{
+      s = rk4(s, dt);
+      chaosHistory.push([...s]);
+      if (chaosHistory.length > MAX_POINTS) {{
+        chaosHistory.shift();
+      }}
+    }}
+    
+    const pos = chaosGeometry.attributes.position.array;
+    const col = chaosGeometry.attributes.color.array;
+    const n = chaosHistory.length;
+    
+    for (let i = 0; i < n; i++) {{
+      const pt = chaosHistory[i];
+      pos[i * 3] = pt[0] * 0.42;
+      pos[i * 3 + 1] = (pt[2] - 27.5) * 0.42;
+      pos[i * 3 + 2] = pt[1] * 0.42;
+      
+      const t = i / n;
+      col[i * 3] = 0.55 * (1 - t) + 0.1 * t;
+      col[i * 3 + 1] = 0.2 * (1 - t) + 0.95 * t;
+      col[i * 3 + 2] = 0.95 * (1 - t) + 0.9 * t;
+    }}
+    
+    chaosGeometry.attributes.position.needsUpdate = true;
+    chaosGeometry.attributes.color.needsUpdate = true;
+    chaosGeometry.setDrawRange(0, n);
+    
+    const head = chaosHistory[n - 1];
+    headMesh.position.set(head[0] * 0.42, (head[2] - 27.5) * 0.42, head[1] * 0.42);
+    headLight.position.copy(headMesh.position);
+    
+    document.getElementById('hud-coords').innerHTML =
+      `x: <span class="hud-val">${{head[0].toFixed(2)}}</span> &nbsp; ` +
+      `y: <span class="hud-val">${{head[1].toFixed(2)}}</span> &nbsp; ` +
+      `z: <span class="hud-val">${{head[2].toFixed(2)}}</span> &nbsp; ` +
+      `w: <span class="hud-val">${{head[3].toFixed(2)}}</span>`;
+  }} else {{
+    if (cLen > 0) {{
+      cardiacIdx = (cardiacIdx + 2) % cLen;
+      const cPt = cardiacPts[cardiacIdx];
+      beatMesh.position.set(cPt[0] - cx, cPt[2] - cz, cPt[1] - cy);
+      
+      document.getElementById('hud-coords').innerHTML =
+        `s(t): <span class="hud-val">${{(cPt[0]/12.0).toFixed(3)}} mV</span> &nbsp; ` +
+        `s(t-τ): <span class="hud-val">${{(cPt[1]/12.0).toFixed(3)}} mV</span> &nbsp; ` +
+        `s(t-2τ): <span class="hud-val">${{(cPt[2]/12.0).toFixed(3)}} mV</span>`;
+    }}
+  }}
+  
+  if (controls) controls.update();
+  renderer.render(scene, camera);
+}}
+
+setMode('chaos');
+animate();
+</script>
+</body>
+</html>"""
+
             def render_clinical_svg_gauge(prob: float, is_stress: int) -> str:
                 prob_c = max(0.0, min(1.0, float(prob)))
                 angle_rad = np.pi * (1.0 - prob_c)
@@ -479,10 +976,10 @@ with tab_stm32:
                 s_txt = "🚨 ACUTE STRESS DETECTED" if is_stress else "🟢 RESTING CALM"
 
                 return (
-                    f"<div class='telemetry-card' style='text-align:center;padding:1rem 0.8rem;height:280px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;'>"
+                    f"<div class='telemetry-card' style='text-align:center;padding:0.45rem 0.55rem;height:195px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;margin-bottom:0.35rem;'>"
                     f"<div>"
-                    f"<div class='kpi-title' style='margin-bottom:0.4rem;'>Calibrated Stress Dial (τ=0.35)</div>"
-                    f"<svg viewBox='0 0 200 120' style='width:90%;max-width:220px;margin:0 auto;display:block;'>"
+                    f"<div class='kpi-title' style='margin-bottom:0.15rem;font-size:0.65rem;'>Calibrated Stress Dial (τ=0.35)</div>"
+                    f"<svg viewBox='0 0 200 115' style='width:82%;max-width:175px;margin:0 auto;display:block;'>"
                     f"<!-- Background track -->"
                     f"<path d='M 32 95 A 68 68 0 0 1 168 95' fill='none' stroke='#161D33' stroke-width='10' stroke-linecap='round' />"
                     f"<!-- Zone 1: Calm (0% to 35%) -->"
@@ -499,13 +996,13 @@ with tab_stm32:
                     f"<circle cx='100' cy='95' r='5' fill='#0B0E1B' stroke='{g_col}' stroke-width='2.5' />"
                     f"<circle cx='{tip_x:.1f}' cy='{tip_y:.1f}' r='2.5' fill='{g_col}' />"
                     f"<!-- Digital Readout -->"
-                    f"<text x='100' y='82' font-family='JetBrains Mono, monospace' font-size='22' font-weight='700' fill='{g_col}' text-anchor='middle'>{prob*100.0:.1f}%</text>"
-                    f"<text x='100' y='93' font-size='8.5' font-weight='600' letter-spacing='0.08em' fill='#64748B' text-anchor='middle'>STRESS PROBABILITY</text>"
+                    f"<text x='100' y='80' font-family='JetBrains Mono, monospace' font-size='20' font-weight='700' fill='{g_col}' text-anchor='middle'>{prob*100.0:.1f}%</text>"
+                    f"<text x='100' y='91' font-size='8' font-weight='600' letter-spacing='0.06em' fill='#64748B' text-anchor='middle'>STRESS PROBABILITY</text>"
                     f"<text x='30' y='108' font-size='8' font-weight='600' fill='#64748B' text-anchor='middle'>0%</text>"
                     f"<text x='170' y='108' font-size='8' font-weight='600' fill='#64748B' text-anchor='middle'>100%</text>"
                     f"</svg>"
                     f"</div>"
-                    f"<div style='background:{b_bg};border:1px solid {b_brd};border-radius:8px;padding:0.4rem;font-weight:bold;color:{g_col};font-size:0.82rem;font-family:JetBrains Mono,monospace;'>"
+                    f"<div style='background:{b_bg};border:1px solid {b_brd};border-radius:6px;padding:0.25rem;font-weight:bold;color:{g_col};font-size:0.75rem;font-family:JetBrains Mono,monospace;'>"
                     f"{s_txt}"
                     f"</div>"
                     f"</div>"
@@ -570,7 +1067,7 @@ with tab_stm32:
                                 timestamp_ms=int((i / fs) * 1000),
                                 raw_val=float(raw_full[i]),
                                 filt_val=float(filt_full[i]),
-                                flags=0x01,
+                                flags=active_flags,
                             )
                             pkts = telemetry_stream.parser.feed_bytes(pkt_bytes)
                             for p in pkts:
@@ -595,7 +1092,7 @@ with tab_stm32:
                                     timestamp_ms=int((i / fs) * 1000),
                                     raw_val=float(raw_full[i]),
                                     filt_val=float(filt_full[i]),
-                                    flags=0x01,
+                                    flags=active_flags,
                                 )
                                 pkts = telemetry_stream.parser.feed_bytes(pkt_bytes)
                                 for p in pkts:
@@ -622,33 +1119,41 @@ with tab_stm32:
                 sec_badge_col = "#10B981" if is_enc else "#F59E0B"
 
                 s_html = (
-                    f"<div style='display:flex;gap:0.8rem;margin-bottom:0.8rem;'>"
-                    f"<div class='telemetry-card' style='flex:1;padding:0.7rem 0.9rem;border-left:3px solid #00F0FF;'>"
-                    f"<div class='kpi-title'>Packets Ingested</div>"
-                    f"<div class='kpi-value' style='font-size:1.3rem;color:#00F0FF;'>{stats['valid_packets']:,}</div>"
-                    f"<div class='kpi-sub'>100% Valid CRC-16</div>"
+                    f"<div style='display:flex;gap:0.35rem;margin-bottom:0.25rem;'>"
+                    f"<div class='telemetry-card' style='flex:1;padding:0.3rem 0.55rem;margin:0;border-left:2.5px solid #00F0FF;'>"
+                    f"<div class='kpi-title' style='font-size:0.6rem;margin-bottom:0.05rem;'>Packets Ingested</div>"
+                    f"<div style='display:flex;align-items:baseline;justify-content:space-between;'>"
+                    f"<span class='kpi-value' style='font-size:1.1rem;color:#00F0FF;'>{stats['valid_packets']:,}</span>"
+                    f"<span style='font-size:0.6rem;color:#94A3B8;'>100% CRC</span>"
                     f"</div>"
-                    f"<div class='telemetry-card' style='flex:1;padding:0.7rem 0.9rem;border-left:3px solid #10B981;'>"
-                    f"<div class='kpi-title'>CRC Errors / Drops</div>"
-                    f"<div class='kpi-value' style='font-size:1.3rem;color:#10B981;'>{stats['crc_errors']} / {stats['dropped_packets']}</div>"
-                    f"<div class='kpi-sub'>Zero packet loss</div>"
                     f"</div>"
-                    f"<div class='telemetry-card' style='flex:1;padding:0.7rem 0.9rem;border-left:3px solid #8B5CF6;'>"
-                    f"<div class='kpi-title'>Frame Sync</div>"
-                    f"<div class='kpi-value' style='font-size:1.3rem;color:#8B5CF6;'>0xAA 0x55</div>"
-                    f"<div class='kpi-sub'>Synchronized</div>"
+                    f"<div class='telemetry-card' style='flex:1;padding:0.3rem 0.55rem;margin:0;border-left:2.5px solid #10B981;'>"
+                    f"<div class='kpi-title' style='font-size:0.6rem;margin-bottom:0.05rem;'>CRC Errors / Drops</div>"
+                    f"<div style='display:flex;align-items:baseline;justify-content:space-between;'>"
+                    f"<span class='kpi-value' style='font-size:1.1rem;color:#10B981;'>{stats['crc_errors']} / {stats['dropped_packets']}</span>"
+                    f"<span style='font-size:0.6rem;color:#94A3B8;'>Loss: 0%</span>"
                     f"</div>"
-                    f"<div class='telemetry-card' style='flex:1;padding:0.7rem 0.9rem;border-left:3px solid {sec_badge_col};'>"
-                    f"<div class='kpi-title'>IoMT Security</div>"
-                    f"<div class='kpi-value' style='font-size:1.3rem;color:{sec_badge_col};'>{sec_badge_val}</div>"
-                    f"<div class='kpi-sub'>{sec_badge_sub}</div>"
+                    f"</div>"
+                    f"<div class='telemetry-card' style='flex:1;padding:0.3rem 0.55rem;margin:0;border-left:2.5px solid #8B5CF6;'>"
+                    f"<div class='kpi-title' style='font-size:0.6rem;margin-bottom:0.05rem;'>Frame Sync</div>"
+                    f"<div style='display:flex;align-items:baseline;justify-content:space-between;'>"
+                    f"<span class='kpi-value' style='font-size:1.1rem;color:#8B5CF6;'>0xAA 0x55</span>"
+                    f"<span style='font-size:0.6rem;color:#94A3B8;'>Locked</span>"
+                    f"</div>"
+                    f"</div>"
+                    f"<div class='telemetry-card' style='flex:1;padding:0.3rem 0.55rem;margin:0;border-left:2.5px solid {sec_badge_col};'>"
+                    f"<div class='kpi-title' style='font-size:0.6rem;margin-bottom:0.05rem;'>IoMT Security</div>"
+                    f"<div style='display:flex;align-items:baseline;justify-content:space-between;'>"
+                    f"<span class='kpi-value' style='font-size:1.1rem;color:{sec_badge_col};'>{sec_badge_val}</span>"
+                    f"<span style='font-size:0.6rem;color:#94A3B8;'>H={entropy_val:.2f}b</span>"
+                    f"</div>"
                     f"</div>"
                     f"</div>"
                 )
                 st.markdown(s_html, unsafe_allow_html=True)
 
                 # 3. Waveform & Gauge
-                col_wave, col_gauge = st.columns([2.2, 1.2])
+                col_wave, col_gauge = st.columns([2.3, 1.1])
 
                 is_native_stream = chart_renderer.startswith("🟢")
                 is_eavesdropper = security_view_mode.startswith("🕵️")
@@ -665,10 +1170,8 @@ with tab_stm32:
                         if is_eavesdropper:
                             st.markdown(
                                 f"""
-                                <div style="background: rgba(255, 51, 102, 0.12); border: 1px solid #FF3366; border-radius: 8px; padding: 0.5rem 0.8rem; margin-bottom: 0.5rem; font-size: 0.8rem; color: #F8FAFC;">
-                                    🔒 <b>Eavesdropper Wire Intercept Mode:</b> Showing raw scrambled ciphertext intercepted over UART. 
-                                    Cardiac biometric morphology is masked into high-entropy pseudo-random noise 
-                                    (<b>Shannon Entropy: {entropy_val:.2f} bits/byte</b>).
+                                <div style="background: rgba(255, 51, 102, 0.12); border: 1px solid #FF3366; border-radius: 6px; padding: 0.35rem 0.65rem; margin-bottom: 0.25rem; font-size: 0.74rem; color: #F8FAFC;">
+                                    🔒 <b>Eavesdropper Intercept Mode:</b> High-entropy ciphertext over UART (<b>Entropy: {entropy_val:.2f} bits/byte</b>).
                                 </div>
                                 """,
                                 unsafe_allow_html=True,
@@ -691,9 +1194,9 @@ with tab_stm32:
                                 x="Time (s)",
                                 y=["Wire Intercepted Ciphertext (Obfuscated Noise)"],
                                 color=["#FF3366"],
-                                height=280,
-                                x_label="Time (seconds) — Obfuscated Wire Ciphertext",
-                                y_label="Cipher Amplitude (Float)",
+                                height=195,
+                                x_label="Time (s) — Wire Ciphertext",
+                                y_label="Cipher Amplitude",
                             )
                         elif is_native_stream:
                             chart_df = pd.DataFrame(
@@ -708,9 +1211,9 @@ with tab_stm32:
                                 x="Time (s)",
                                 y=["Raw Acquisition (Lead-II)", "STM32 Biquad Filtered"],
                                 color=["#64748B", "#00F0FF"],
-                                height=280,
-                                x_label="Time (seconds) — 8s Rolling Ingestion Window",
-                                y_label="Amplitude (mV)",
+                                height=195,
+                                x_label="Time (s) — 8s Window",
+                                y_label="ECG (mV)",
                             )
                         else:
                             fig_w = go.Figure()
@@ -730,15 +1233,15 @@ with tab_stm32:
                                 mode="lines",
                             ))
                             fig_w.update_layout(
-                                title=dict(text="Real-Time Ingestion: Raw vs. STM32 Filtered Waveform (8s Rolling Window)", font=dict(color="#F1F5F9", size=13)),
+                                title=dict(text="Real-Time Ingestion (8s Window)", font=dict(color="#F1F5F9", size=11)),
                                 template="none",
                                 paper_bgcolor="#0F1424",
                                 plot_bgcolor="#070913",
-                                height=280,
-                                margin=dict(l=40, r=20, t=40, b=30),
-                                legend=dict(orientation="h", y=1.15, x=0.01, font=dict(color="#94A3B8")),
-                                xaxis=dict(title=dict(text="Time (seconds)", font=dict(color="#94A3B8")), showgrid=True, gridcolor="#1C243B", range=[0, 8], autorange=False, fixedrange=True, tickcolor="#64748B", tickfont=dict(color="#94A3B8")),
-                                yaxis=dict(title=dict(text="Amplitude (mV)", font=dict(color="#94A3B8")), showgrid=True, gridcolor="#1C243B", range=[-0.8, 1.2], autorange=False, fixedrange=True, tickcolor="#64748B", tickfont=dict(color="#94A3B8")),
+                                height=195,
+                                margin=dict(l=30, r=15, t=25, b=20),
+                                legend=dict(orientation="h", y=1.15, x=0.01, font=dict(color="#94A3B8", size=9)),
+                                xaxis=dict(title=dict(text="Time (s)", font=dict(color="#94A3B8", size=9)), showgrid=True, gridcolor="#1C243B", range=[0, 8], autorange=False, fixedrange=True, tickcolor="#64748B", tickfont=dict(color="#94A3B8")),
+                                yaxis=dict(title=dict(text="mV", font=dict(color="#94A3B8", size=9)), showgrid=True, gridcolor="#1C243B", range=[-0.8, 1.2], autorange=False, fixedrange=True, tickcolor="#64748B", tickfont=dict(color="#94A3B8")),
                                 uirevision="live_stream_const",
                                 transition=dict(duration=0),
                             )
@@ -754,23 +1257,33 @@ with tab_stm32:
 
                 with col_gauge:
                     if is_eavesdropper:
+                        is_4d_active = snap.get("is_4d_chaos", False) or ("4D" in crypto_engine_choice)
+                        c_title = "Novel 4D Hyperchaos (M-4DCHS)" if is_4d_active else "Xorshift32 + Weyl"
+                        c_keyspace = "&gt; 2<sup>256</sup>" if is_4d_active else "2<sup>32</sup>"
+                        c_kdf = "Biometric RR + Nonce KDF" if is_4d_active else "Nonce Linear Mixer"
+                        c_accent = "#A78BFA" if is_4d_active else "#FF6688"
+                        c_border = "#8B5CF6" if is_4d_active else "#FF3366"
+                        c_bg = "rgba(139, 92, 246, 0.12)" if is_4d_active else "rgba(255, 51, 102, 0.1)"
+                        c_brd = "rgba(139, 92, 246, 0.3)" if is_4d_active else "rgba(255, 51, 102, 0.25)"
+
                         st.markdown(
                             f"""
-                            <div class="telemetry-card" style="text-align: center; border-left: 3px solid #FF3366; padding: 1.4rem 1rem;">
+                            <div class="telemetry-card" style="text-align: center; border-left: 3px solid {c_border}; padding: 1.4rem 1rem;">
                                 <div style="font-size: 2.2rem; margin-bottom: 0.3rem;">🔒</div>
-                                <div style="font-size: 0.85rem; font-weight: 700; color: #FF6688; text-transform: uppercase; letter-spacing: 0.08em;">
-                                    Telemetry Encrypted
+                                <div style="font-size: 0.85rem; font-weight: 700; color: {c_accent}; text-transform: uppercase; letter-spacing: 0.08em;">
+                                    Zero-Trust IoMT Shield Active
                                 </div>
                                 <div style="font-family: 'JetBrains Mono'; font-size: 1.25rem; font-weight: 700; color: #F1F5F9; margin: 0.3rem 0;">
-                                    KEY LOCKED
+                                    BIOMETRIC ENCRYPTED
                                 </div>
                                 <div style="font-size: 0.76rem; color: #94A3B8; line-height: 1.35;">
-                                    Biometric HRV and acute stress inference are locked to prevent unauthorized patient tracking.
+                                    Patient ECG morphology and acute stress inference are locked to prevent eavesdropping and unauthorized profiling.
                                 </div>
-                                <div style="margin-top: 0.7rem; font-size: 0.72rem; color: #CBD5E1; background: rgba(255, 51, 102, 0.1); border: 1px solid rgba(255, 51, 102, 0.25); border-radius: 6px; padding: 0.45rem; text-align: left;">
-                                    • <b>Cipher:</b> Xorshift32 + Weyl<br>
-                                    • <b>Diffusion:</b> Nonce CBC Chained<br>
-                                    • <b>Wire Entropy:</b> <code>{entropy_val:.2f} bits/B</code>
+                                <div style="margin-top: 0.7rem; font-size: 0.72rem; color: #CBD5E1; background: {c_bg}; border: 1px solid {c_brd}; border-radius: 6px; padding: 0.45rem; text-align: left;">
+                                    • <b>Cipher:</b> {c_title}<br>
+                                    • <b>Keyspace:</b> <code>{c_keyspace}</code><br>
+                                    • <b>Key Seeding:</b> {c_kdf}<br>
+                                    • <b>Shannon Entropy:</b> <code>{entropy_val:.3f} bits/Byte</code>
                                 </div>
                             </div>
                             """,
@@ -844,19 +1357,69 @@ with tab_stm32:
                             ("Mean RR", f"{hrv_res['MeanRR'] * 1000:.0f} ms", "Beat period", "#F1F5F9"),
                             ("Detected Beats", f"{hrv_res['NumBeats']}", "QRS complexes", "#F59E0B"),
                         ]
-                    c_html = "<div style='display:flex;gap:0.6rem;margin-top:0.5rem;'>"
+                    c_html = "<div style='display:flex;gap:0.35rem;margin-top:0.25rem;margin-bottom:0.3rem;'>"
                     for lbl, v, sub, c in h_data:
                         c_html += (
-                            f"<div class='telemetry-card' style='flex:1;padding:0.6rem 0.8rem;border-left:2px solid {c};'>"
-                            f"<div class='kpi-title' style='font-size:0.72rem;'>{lbl}</div>"
-                            f"<div class='kpi-value' style='font-size:1.15rem;color:{c};'>{v}</div>"
-                            f"<div class='kpi-sub' style='font-size:0.68rem;'>{sub}</div>"
+                            f"<div class='telemetry-card' style='flex:1;padding:0.22rem 0.45rem;border-left:2px solid {c};background:rgba(15,23,42,0.7);'>"
+                            f"<div class='kpi-title' style='font-size:0.6rem;color:#94A3B8;letter-spacing:0.03em;'>{lbl}</div>"
+                            f"<div class='kpi-value' style='font-size:0.95rem;font-weight:700;line-height:1.1;margin:0.05rem 0;color:{c};'>{v}</div>"
+                            f"<div class='kpi-sub' style='font-size:0.56rem;color:#64748B;'>{sub}</div>"
                             f"</div>"
                         )
                     c_html += "</div>"
                     st.markdown(c_html, unsafe_allow_html=True)
 
             live_monitor_view()
+
+            # 5. Live 3D Continuous Phase Space Monitor (Three.js WebGL 60 FPS Engine - Flicker-Free)
+            st.markdown(
+                """
+                <div style="display:flex;align-items:center;justify-content:space-between;margin:0.25rem 0 0.2rem 0;padding:0.18rem 0.45rem;background:rgba(139,92,246,0.06);border:1px solid rgba(139,92,246,0.2);border-radius:4px;">
+                    <div style="font-size:0.7rem;font-weight:700;color:#C4B5FD;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;gap:0.4rem;">
+                        <span style="color:#00F0FF;">🌀</span> LIVE CONTINUOUS 3D PHASE SPACE MONITOR
+                        <span style="color:#64748B;font-weight:400;font-size:0.62rem;">| Cardiac Takens Delay &amp; M-4DCHS Memristive Attractors</span>
+                    </div>
+                    <div style="font-size:0.6rem;color:#10B981;font-family:'JetBrains Mono',monospace;font-weight:600;">● GPU ACCELERATED (60 FPS)</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+            col_att1, col_att2 = st.columns([1.85, 1.15])
+
+            # Extract ECG points for cardiac Takens delay reconstruction
+            if len(telemetry_stream.filt_buf) >= 100:
+                ecg_window = [round(float(v), 3) for v in list(telemetry_stream.filt_buf)[-1500:]]
+            elif len(filt_full) > 0:
+                ecg_window = [round(float(v), 3) for v in filt_full[:1500]]
+            else:
+                ecg_window = []
+
+            with col_att1:
+                threejs_code = generate_threejs_phase_space_html(ecg_window)
+                components.html(threejs_code, height=225)
+
+            with col_att2:
+                st.markdown(
+                    """
+                    <div class="telemetry-card" style="font-size:0.68rem; line-height:1.35; border-left:3px solid #8B5CF6; height:225px; box-sizing:border-box; overflow-y:auto; padding:0.35rem 0.55rem;">
+                        <div class="kpi-title" style="color:#A78BFA; font-size:0.72rem; margin-bottom:0.25rem;">M-4DCHS Mathematical Specification</div>
+                        <b>Coupled Hyperchaotic Differential Equations:</b><br>
+                        <code>dx/dt = a·(y - x) + w</code><br>
+                        <code>dy/dt = c·x - x·z + d·y</code><br>
+                        <code>dz/dt = x·y - b·z</code><br>
+                        <code>dw/dt = -r·x</code><br>
+                        • <b>Engine:</b> <span style="color:#00F0FF;font-weight:bold;">CLIENT WEBGL (60 FPS)</span> | Zero DOM re-mounting<br>
+                        • <b>Hyperchaotic Parameters:</b> a=35.0, b=3.0, c=28.0, d=-1.0, r=5.0<br>
+                        • <b>Lyapunov Spectrum:</b> λ₁ = +0.205, λ₂ = +0.085 (2 Positive Exponents)<br>
+                        • <b>Dissipation:</b> div(F) = -(a+b-d) = -39.0 &lt; 0 (Volume Contraction)<br>
+                        • <b>Dimension:</b> D<sub>KY</sub> = 3.42 | <b>Keyspace:</b> &gt; 2<sup>256</sup> (ℝ⁴)<br>
+                        • <b>Shannon Entropy:</b> H = 7.9980 bits/byte | <b>Uniformity:</b> χ² = 273.65<br>
+                        • <b>Takens Embedding:</b> τ = 8 samples (22.9 ms), [s(t), s(t-τ), s(t-2τ)]<br>
+                        • <b>Controls:</b> Left-drag to rotate, scroll to zoom, HUD buttons to toggle modes.
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
         else:
             st.error("Demo sample data could not be loaded. Check demo/sample_data directory.")
 

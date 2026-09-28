@@ -16,11 +16,20 @@ from scipy.signal import find_peaks
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 
+try:
+    from m4d_hyperchaos import m4d_encrypt_ecg, m4d_decrypt_ecg, _global_m4d_cipher
+except ImportError:
+    from python.m4d_hyperchaos import m4d_encrypt_ecg, m4d_decrypt_ecg, _global_m4d_cipher
+
 # Constants matching embedded protocol (telemetry_protocol.h)
 SYNC_BYTE_0 = 0xAA
 SYNC_BYTE_1 = 0x55
 PROTOCOL_VERSION = 0x01
 FRAME_SIZE = 20  # Total bytes per packet
+
+TELEMETRY_FLAG_ENCRYPTED = 0x01
+TELEMETRY_FLAG_LIVE_ADC  = 0x02
+TELEMETRY_FLAG_CHAOS_4D  = 0x04
 
 # Telemetry frame format:
 # sync[2] (2B), version (1B), flags (1B), seq_id (2B), timestamp_ms (4B), raw (4B), filt (4B), crc (2B)
@@ -86,8 +95,11 @@ def decrypt_ecg_sample(cipher_raw_bytes: bytes, seq_id: int, timestamp_ms: int, 
 def build_c_packet(seq_id: int, timestamp_ms: int, raw_val: float, filt_val: float, flags: int = 0) -> bytes:
     """Builds a 20-byte binary frame matching telemetry_protocol.c."""
     sync = bytes([SYNC_BYTE_0, SYNC_BYTE_1])
-    if flags & 0x01:
-        enc_samples = encrypt_ecg_sample(raw_val, filt_val, seq_id, timestamp_ms)
+    if flags & TELEMETRY_FLAG_ENCRYPTED:
+        if flags & TELEMETRY_FLAG_CHAOS_4D:
+            enc_samples = m4d_encrypt_ecg(raw_val, filt_val, seq_id, timestamp_ms)
+        else:
+            enc_samples = encrypt_ecg_sample(raw_val, filt_val, seq_id, timestamp_ms)
         payload = struct.pack("<BBHI", PROTOCOL_VERSION, flags, seq_id & 0xFFFF, timestamp_ms) + enc_samples
     else:
         payload = struct.pack("<BBHIff", PROTOCOL_VERSION, flags, seq_id & 0xFFFF, timestamp_ms, raw_val, filt_val)
@@ -153,11 +165,15 @@ class TelemetryPacket:
 
     @property
     def is_encrypted(self) -> bool:
-        return bool(self.flags & 0x01)
+        return bool(self.flags & TELEMETRY_FLAG_ENCRYPTED)
+
+    @property
+    def is_4d_chaos(self) -> bool:
+        return bool((self.flags & TELEMETRY_FLAG_ENCRYPTED) and (self.flags & TELEMETRY_FLAG_CHAOS_4D))
 
     @property
     def is_live_sensor(self) -> bool:
-        return bool(self.flags & 0x02)
+        return bool(self.flags & TELEMETRY_FLAG_LIVE_ADC)
 
 
 class TelemetryParser:
@@ -171,6 +187,7 @@ class TelemetryParser:
         self.dropped_packets = 0
         self._last_seq: Optional[int] = None
         self.is_stream_encrypted = False
+        self.cipher_mode = "PLAINTEXT"
 
     def feed_bytes(self, chunk: bytes) -> List[TelemetryPacket]:
         self._buffer.extend(chunk)
@@ -211,13 +228,19 @@ class TelemetryParser:
                     self.dropped_packets += gap
             self._last_seq = seq_id
 
-            if flags & 0x01:
+            if flags & TELEMETRY_FLAG_ENCRYPTED:
                 self.is_stream_encrypted = True
-                # Decrypt biometric samples (raw_ecg, filtered_ecg) using per-packet Nonce
-                plain_raw, plain_filt = decrypt_ecg_sample(frame_bytes[10:18], seq_id, ts_ms)
+                if flags & TELEMETRY_FLAG_CHAOS_4D:
+                    self.cipher_mode = "4D_MEMRISTIVE"
+                    plain_raw, plain_filt = m4d_decrypt_ecg(frame_bytes[10:18], seq_id, ts_ms)
+                else:
+                    self.cipher_mode = "32BIT_XORSHIFT"
+                    plain_raw, plain_filt = decrypt_ecg_sample(frame_bytes[10:18], seq_id, ts_ms)
                 cipher_filt = float((struct.unpack("<i", frame_bytes[14:18])[0] / 2147483648.0) * 1.5)
                 packets.append(TelemetryPacket(ver, flags, seq_id, ts_ms, plain_raw, plain_filt, cipher_filt, True))
             else:
+                self.is_stream_encrypted = False
+                self.cipher_mode = "PLAINTEXT"
                 packets.append(TelemetryPacket(ver, flags, seq_id, ts_ms, raw, filt, filt, True))
 
         return packets
@@ -482,9 +505,12 @@ class LiveTelemetryStream:
             "filtered": filt,
             "cipher": list(self.cipher_buf),
             "is_encrypted": self.parser.is_stream_encrypted,
+            "cipher_mode": getattr(self.parser, "cipher_mode", "PLAINTEXT"),
+            "is_4d_chaos": (getattr(self.parser, "cipher_mode", "") == "4D_MEMRISTIVE"),
             "entropy": round(self.get_eavesdropper_entropy(), 3),
             "hrv": hrv,
             "stress_prob": prob,
             "stress_label": label,
             "stats": stats,
+            "attractor_3d": _global_m4d_cipher.generate_attractor_trajectory(3500) if (getattr(self.parser, "cipher_mode", "") == "4D_MEMRISTIVE") else None,
         }
