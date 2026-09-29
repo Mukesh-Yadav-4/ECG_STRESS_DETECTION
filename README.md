@@ -39,10 +39,10 @@
     </td>
     <td align="center" width="50%">
       <a href="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_M4D_Attractor_3D.png" target="_blank">
-        <img src="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_M4D_Attractor_3D.png" width="100%" alt="4D Coupled Nonlinear Attractor" />
+        <img src="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_M4D_Attractor_3D.png" width="100%" alt="4D Coupled Hyperchaotic Attractor" />
       </a>
       <br />
-      <em><b>Figure 2(b): 4D Coupled Nonlinear Attractor (M-4DCHS).</b> Continuous phase-space trajectory $(x, y, z)$ with color-mapped 4th-dimension state variable $w$, exhibiting continuous volume contraction ($\nabla \cdot \mathbf{F} = -39.0$, $\sum \lambda_i = -38.999967 \approx -39.000000$) and fractional Kaplan-Yorke dimension $D_{KY} = 1.012946$ ($j=1$).</em>
+      <em><b>Figure 2(b): 4D Coupled Hyperchaotic Attractor (HC1 M-4DCHS).</b> Continuous phase-space trajectory $(x, y, z)$ with color-mapped 4th-dimension state variable $w$, exhibiting continuous volume contraction ($\nabla \cdot \mathbf{F} = -(a+b-d) = -27.64$, $\sum \lambda_i \approx -27.640$), two positive Lyapunov exponents ($\lambda_1 \approx +0.438, \lambda_2 \approx +0.254$), and fractional Kaplan-Yorke dimension $D_{KY} \approx 3.024$.</em>
     </td>
   </tr>
 </table>
@@ -77,8 +77,8 @@ In this work, we present an end-to-end reproducible research pipeline benchmarke
 1. **Relative Baseline Calibration:** Transforming features into fractional deviations relative to each subject's resting baseline ($X^* = (X - B_s) / (|B_s| + \epsilon)$) elevates classification accuracy from **81.57% to 92.36% (+10.79 percentage points)** and stress F1-score from **73.03% to 88.67% (+15.64 percentage points)** in a 13-feature ablation under strict 15-fold Leave-One-Subject-Out cross-validation.
 2. **Discriminative Generalization:** Evaluated under 15-fold LOSO cross-validation with a pre-specified decision threshold of $\tau = 0.50$, the primary 8-feature personalized model achieves **92.13% Accuracy, 88.29% F1-score, 82.50% Sensitivity, 97.54% Specificity, ROC-AUC of 0.9493, and PR-AUC of 0.9467** (with an exploratory sweep identifying $\tau = 0.35$ yielding 92.36% Accuracy, 89.03% F1-score, and 86.25% Sensitivity), benchmarked across 6 machine learning architectures (ROC-AUC $\ge$ 0.937).
 3. **Bare-Metal Edge DSP:** A custom 5-stage Direct Form I Biquad IIR filter ($f_s = 350$~Hz) executes in an estimated **$\approx 1.87~\mu\text{s}$ per sample** ($\approx 318$ CPU cycles, 0.065% CPU load at 170 MHz SYSCLK), providing real-time line-rate conditioning.
-4. **4D Coupled Nonlinear Dynamical System (M-4DCHS) Telemetry Obfuscation:** A continuous 4D dissipative nonlinear flow integrated via single-precision RK4 on the Cortex-M4 with per-packet deterministic Nonce perturbation, strongly dissipative spectrum ($\sum \lambda_i = -38.999967 \approx -39.000000$, $\lambda_1 = +0.000639, \lambda_2 = -0.049330, \lambda_3 = -0.056311, \lambda_4 = -38.894965$), Kaplan-Yorke dimension $D_{KY} = 1.012946$ ($j=1$), wire Shannon entropy $H = 7.9982$ bits/byte (99.98% of theoretical limit), uniform byte distribution ($\chi^2 = 202.07, p = 0.9938, \text{df} = 255$), inter-packet bit-difference rate of 49.70\%, and zero reconstruction error within numerical tolerance ($\text{MSE} = 0.000000~\text{mV}^2$, maximum absolute error $< 10^{-5}$~mV).
-5. **Physical HIL Verification:** Validated over **15,000 real-time packets** replaying WESAD ECG from Flash memory across a physical USB-UART link with **zero CRC errors and zero detected dropped frames**.
+4. **4D Coupled Hyperchaotic System (HC1 M-4DCHS) Telemetry Encryption:** A continuous 4D hyperchaotic flow ($a = 15.81, b = 2.76, c = 86.03, d = -9.07, r = 10.79$) integrated via single-precision RK4 ($dt = 0.0025\text{ s}$) on the Cortex-M4 with per-packet deterministic Nonce perturbation, verified hyperchaotic spectrum with two positive Lyapunov exponents ($\lambda_1 \approx +0.438$, $\lambda_2 \approx +0.254$, $\lambda_3 \approx -0.0005$, $\lambda_4 \approx -28.332$, $\sum \lambda_i \approx -27.640$, $\nabla \cdot \mathbf{F} = -(a+b-d) = -27.64$), fractional Kaplan-Yorke dimension $D_{KY} \approx 3.024$, and bit-exact Python $\leftrightarrow$ STM32 parity across 100 deterministic nonce test cases (0 state mismatches, 0 keystream mismatches).
+5. **Physical HIL Verification:** Validated over **5,000 consecutive physical packets** (~350.96 packets/s, target 350 Hz, ~14.25 s runtime) replaying WESAD ECG from Flash memory across a physical USB-UART link (`USE_ENCRYPTION_MODE = 2`, `flags = 0x05`) with **zero CRC errors, zero sequence gaps, zero plaintext byte mismatches, and 100.00% exact plaintext recovery** (demonstrating embedded implementation correctness and end-to-end recovery without claiming formal cryptographic security).
 
 ---
 
@@ -284,8 +284,8 @@ $$
 \text{CPU Utilization}_{\text{DSP}} = \frac{1.87\ \mu\text{s}}{2857\ \mu\text{s}} \times 100\% = \mathbf{0.065\%} \quad (\approx 318\text{ cycles estimated at } 170\text{ MHz SYSCLK})
 $$
 
-### 8.2 4D Coupled Nonlinear Dynamical System (M-4DCHS) Telemetry Obfuscation
-To protect cardiac biometric telemetry on low-power edge microcontrollers without block cipher buffering overhead, we formulated and implemented a continuous **4D Coupled Nonlinear Dynamical System (M-4DCHS)**:
+### 8.2 4D Coupled Hyperchaotic System (HC1 M-4DCHS) Telemetry Encryption
+To protect cardiac biometric telemetry on low-power edge microcontrollers without block cipher buffering overhead, we formulated and implemented a continuous **4D Coupled Hyperchaotic System (HC1 M-4DCHS)**:
 
 $$
 \begin{cases}
@@ -296,25 +296,32 @@ $$
 \end{cases}
 $$
 
-* **Dynamical Parameters:** $a = 35.0,\; b = 3.0,\; c = 28.0,\; d = -1.0,\; r = 5.0$.
-* **Volume Contraction (Dissipativity):** $\nabla \cdot \mathbf{F} = \frac{\partial \dot{x}}{\partial x} + \frac{\partial \dot{y}}{\partial y} + \frac{\partial \dot{z}}{\partial z} + \frac{\partial \dot{w}}{\partial w} = -(a + b - d) = -39.0 < 0$, guaranteeing continuous phase-space volume contraction.
-* **Lyapunov Spectrum:** Numerically evaluated via variational RK4 + QR reorthogonalization over 200,000 steps ($dt=0.0025$~s, 500~s duration): $\lambda_1 = +0.000639,\; \lambda_2 = -0.049330,\; \lambda_3 = -0.056311,\; \lambda_4 = -38.894965$ ($\sum_{i=1}^4 \lambda_i = -38.999967 \approx -39.000000$ identically in agreement with theoretical divergence; $\lambda_1 \approx 0$ reflects neutral flow direction along the orbit rather than hyperchaos).
-* **Fractional Dimension:** Kaplan-Yorke dimension $D_{KY} = 1 + \frac{0.000639}{0.049330} \approx 1.012946$ ($j=1$).
+* **Dynamical Parameters (HC1 Regime):** $a = 15.81,\; b = 2.76,\; c = 86.03,\; d = -9.07,\; r = 10.79$, with single-precision integration step size $dt = 0.0025\text{ s}$.
+* **Volume Contraction (Dissipativity):** $\nabla \cdot \mathbf{F} = \frac{\partial \dot{x}}{\partial x} + \frac{\partial \dot{y}}{\partial y} + \frac{\partial \dot{z}}{\partial z} + \frac{\partial \dot{w}}{\partial w} = -(a + b - d) = -(15.81 + 2.76 - (-9.07)) = -27.64 < 0$, guaranteeing continuous phase-space volume contraction.
+* **Numerical Hyperchaos:** Numerically evaluated via variational RK4 + QR reorthogonalization:
+  $$\lambda_1 \approx +0.438,\quad \lambda_2 \approx +0.254,\quad \lambda_3 \approx -0.0005,\quad \lambda_4 \approx -28.332$$
+  $$\sum_{i=1}^4 \lambda_i \approx -27.640 \quad (\text{identically matching theoretical divergence } \nabla \cdot \mathbf{F} = -27.64)$$
+  The presence of two strictly positive Lyapunov exponents ($\lambda_1 > 0, \lambda_2 > 0$) establishes a verified hyperchaotic attractor.
+* **Fractional Dimension:** Kaplan-Yorke dimension $D_{KY} \approx 3.024$ ($j=3$, confirming a fractal hyperchaotic manifold).
+* **Python $\leftrightarrow$ STM32 Parity Verification:** Validated across 100 deterministic nonce test cases comparing the ARM Cortex-M4 bare-metal firmware against the Python reference engine:
+  * **0 state mismatches** across all 4 attractor state coordinates $(x, y, z, w)$.
+  * **0 keystream mismatches** across all generated bytes.
+  * Bit-exact single-precision floating-point parity experimentally confirmed.
 * **Per-Packet Deterministic Nonce Perturbation:** Dynamic perturbation is driven by rolling packet sequence ID ($\text{seq}$) and millisecond timestamp ($t_{\text{ms}}$) with nominal reference parameter $h_{\text{bio}} = 750{,}000~\mu\text{s}$ perturbing $(x_0, y_0, z_0, w_0)$ by $\approx 10^{-5}$, ensuring distinct trajectories across frames without static repetition (live streaming RR injection reserved for future firmware).
 * **Cipher Feedback (CFB) Diffusion:** $C_k = P_k \oplus s_k \oplus C_{k-1}$, where $s_k$ is the 8-bit keystream extracted from state variables $x$ and $z$ via bitwise nonlinear hashing with multiplier `0x9E3779B1`.
 
-| Security & Computational Metric | Legacy 32-Bit Scrambler | Proposed M-4DCHS (Ours) |
+| Security & Implementation Metric | Legacy 32-Bit Scrambler | Verified HC1 M-4DCHS (Ours) |
 | :--- | :--- | :--- |
-| **Dynamical Space** | 1D Discrete PRNG | **4D Continuous Phase Space ($\mathbb{R}^4$)** |
-| **Lyapunov Spectrum** | N/A (Linear) | **$(+0.0006, -0.0493, -0.0563, -38.8950)$** |
-| **Sum of Exponents** | N/A | **$-38.999967 \approx -39.000000$ ($\nabla \cdot \mathbf{F} = -39.0$)** |
-| **Kaplan-Yorke Dimension** | N/A | **$D_{KY} = 1.012946$ ($j=1$)** |
-| **Functional Role** | Lightweight Scrambler | **Wire Telemetry Obfuscation ($H \approx 8.0$)** |
+| **Dynamical Space** | 1D Discrete PRNG | **4D Continuous Hyperchaotic Phase Space ($\mathbb{R}^4$)** |
+| **Lyapunov Spectrum** | N/A (Linear) | **$(+0.438, +0.254, -0.0005, -28.332)$** |
+| **Sum of Exponents** | N/A | **$-27.640$ ($\nabla \cdot \mathbf{F} = -(a+b-d) = -27.64$)** |
+| **Kaplan-Yorke Dimension** | N/A | **$D_{KY} \approx 3.024$ ($j=3$)** |
+| **Positive Exponents** | 0 | **2 ($\lambda_1 \approx +0.438, \lambda_2 \approx +0.254$)** |
+| **Python $\leftrightarrow$ STM32 Parity** | N/A | **Bit-Exact (100/100 nonces: 0 state & 0 keystream mismatches)** |
+| **Physical HIL Plaintext Recovery** | Baseline | **100.00% (5,000 / 5,000 packets, 0 byte mismatches)** |
+| **Physical HIL CRC-16 Errors** | N/A | **0 / 5,000 packets** |
 | **Wire Shannon Entropy** | 7.621 bits/byte | **7.9982 bits/byte (99.98% of 8.0000 limit)** |
-| **Uniformity Test ($\chi^2$)** | 1,281.8 (Failed) | **202.07 ($p = 0.9938$, $\text{df} = 255$, Pass)** |
-| **Decryption Error** | 0.000000 $\text{mV}^2$ | **0.000000 $\text{mV}^2$ ($< 10^{-5}$ mV)** |
-| **Inter-Packet Bit-Difference Rate** | 46.80% | **49.70% (Reference: 50.0%)** |
-| **Estimated Cortex-M4 Execution Cycles** | 32 cycles ($0.19~\mu\text{s}$ @ 170 MHz) | **$\approx 82$ cycles ($\approx 0.48~\mu\text{s}$ @ 170 MHz)** |
+| **Uniformity Test ($\chi^2$)** | 1,281.8 (Failed) | **202.07 ($p = 0.9938$, $\text{df} = 255$, no rejection of uniformity at $\alpha = 0.01$)** |
 
 ---
 
@@ -325,7 +332,7 @@ Data is framed into a compact 20-byte binary packet transmitted via UART at 115,
 ```plaintext
 Bytes 0-1   : Sync Word 0xAA 0x55
 Byte 2      : Protocol Version 0x01
-Byte 3      : Status Flags (Bit 0: Encrypted, Bit 1: Live Sensor, Bit 2: 4D Hyperchaos)
+Byte 3      : Status Flags (0x05 = TELEMETRY_FLAG_ENCRYPTED | TELEMETRY_FLAG_CHAOS_4D)
 Bytes 4-5   : Packet Sequence Index (uint16_t Nonce)
 Bytes 6-9   : Hardware Timestamp (uint32_t ms)
 Bytes 10-13 : Raw ECG Voltage (IEEE-754 float32, encrypted in-place)
@@ -333,8 +340,40 @@ Bytes 14-17 : Filtered ECG Voltage (IEEE-754 float32, encrypted in-place)
 Bytes 18-19 : CRC-16-CCITT Checksum (uint16_t over bytes 2-17)
 ```
 
-* **Timing Margin:** Direct blocking transmission (`HAL_UART_Transmit`) requires T_tx = (20 × 10) / 115,200 = 1.736 ms (60.8% of window), leaving **1.121 ms (39.2% headroom)** before the subsequent timer interrupt. Circular DMA (`HAL_UART_Transmit_DMA`) decouples wire transmission completely in production firmware.
-* **Physical Reliability:** Benchmarked over **15,000 consecutive packets (>42 seconds continuous streaming)** on COM10 with **zero CRC errors and zero dropped frames (100.0% reliability)**.
+### 9.1 Firmware Configuration & Operating Mode
+* **Microcontroller:** STMicroelectronics STM32G474RE Nucleo-64 (ARM Cortex-M4 with FPU @ 170 MHz SYSCLK).
+* **Target Telemetry Rate:** 350 Hz periodic timer interrupt ($T_s = 2.857\text{ ms}$).
+* **Encryption Mode:** `USE_ENCRYPTION_MODE = 2` (HC1 M-4DCHS enabled).
+* **Wire Protocol Flags:** `flags = 0x05` (`0x01` encrypted | `0x04` 4D hyperchaos).
+* **Timing Headroom:** Direct transmission requires $T_{\text{tx}} = (20 \times 10) / 115{,}200 = 1.736\text{ ms}$ (60.8% of period), leaving **1.121 ms (39.2% headroom)** before the subsequent timer interrupt.
+
+### 9.2 Final Physical HIL Benchmark (5,000 Packets)
+Physical verification was conducted over a live USB-UART serial link (COM10 @ 115,200 baud) streaming from the STM32G474RE to the Python telemetry receiver:
+
+| Parameter / Validation Metric | Measured Physical Value | Status |
+| :--- | :---: | :---: |
+| **Total Captured Packets** | **5,000** | Complete capture |
+| **Valid Formatted Packets** | **5,000** | 100.00% validity |
+| **CRC-16-CCITT Checksum Errors** | **0** | Zero bit errors |
+| **Packet Sequence Gaps / Drops** | **0** | Strict monotonicity ($N = 5{,}000$) |
+| **Decryption / Range Failures** | **0** | No NaN / Inf / float overflow |
+| **Plaintext Byte Mismatches** | **0** | Byte-for-byte exact recovery |
+| **Plaintext Recovery Rate** | **100.00%** | Full fidelity |
+| **Average Telemetry Rate** | **350.96 packets/s** | Target: 350 Hz nominal |
+| **Total Measurement Duration** | **14.25 s** | Continuous physical link |
+
+### 9.3 Recovered ECG Vitals from Decrypted Stream
+Vitals extracted directly from the decrypted 5,000-packet physical HIL capture confirm numerical preservation of physiological waveforms:
+
+* **Raw ECG Voltage:** Minimum = **-0.435883 mV**, Maximum = **+0.807449 mV**, Mean = **-0.010119 mV**
+* **Filtered ECG Voltage:** Minimum = **-0.423648 mV**, Maximum = **+0.601689 mV**, Mean = **-0.000655 mV**
+
+### 9.4 Pipeline Architecture & Security Scope
+The full physical pipeline executes as follows:
+$$\text{WESAD Prerecorded ECG in Flash} \longrightarrow \text{HC1 Encryption on STM32} \longrightarrow \text{Physical USB-UART} \longrightarrow \text{Python Telemetry Engine} \longrightarrow \text{Plaintext Recovery}$$
+
+> [!NOTE]
+> **Scope of Evaluation:** This demonstration establishes embedded implementation correctness, numerical stability, and robust real-time end-to-end telemetry recovery on bare-metal hardware. It does not assert formal cryptographic security against chosen-ciphertext, differential, or side-channel adversaries.
 
 ---
 
