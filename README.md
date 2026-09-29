@@ -21,7 +21,9 @@
 ## Visual Project Showcase
 
 <p align="center">
-  <img src="results/figures/FINAL_Project_Dashboard.png" width="100%" alt="Master Project Dashboard" />
+  <a href="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/results/figures/FINAL_Project_Dashboard.png" target="_blank">
+    <img src="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/results/figures/FINAL_Project_Dashboard.png" width="100%" alt="Master Project Dashboard" />
+  </a>
   <br>
   <em><b>Figure 1: Master Research Benchmark Dashboard.</b> End-to-end WESAD study: (A) Four-stage model progression & feature ablation; (B) Subject-specific stress detection rates across all 15 subjects; (C) Calibrated 15-fold LOSO confusion matrix (TN: 273, FP: 12, FN: 22, TP: 138); (D) Cross-validated ROC curve (AUC = 0.9494); (E) Validated performance scorecard; (F) Test window distribution across subjects (N = 445).</em>
 </p>
@@ -29,11 +31,17 @@
 <table align="center" width="100%">
   <tr>
     <td align="center" width="50%">
-      <img src="paper/figures/FIG_Hardware_Testbed_Composite.png" width="100%" alt="Physical STM32 Hardware Testbed" /><br />
+      <a href="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_Hardware_Testbed_Composite.png" target="_blank">
+        <img src="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_Hardware_Testbed_Composite.png" width="100%" alt="Physical STM32 Hardware Testbed" />
+      </a>
+      <br />
       <em><b>Figure 2(a): Physical STM32 Edge Hardware Testbed.</b> NUCLEO-G474RE (170 MHz ARM Cortex-M4) testbed streaming real-time filtered and hyperchaotic encrypted ECG over physical USB-UART (COM10 @ 115,200 baud).</em>
     </td>
     <td align="center" width="50%">
-      <img src="paper/figures/FIG_M4D_Attractor_3D.png" width="100%" alt="4D Coupled Nonlinear Attractor" /><br />
+      <a href="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_M4D_Attractor_3D.png" target="_blank">
+        <img src="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_M4D_Attractor_3D.png" width="100%" alt="4D Coupled Nonlinear Attractor" />
+      </a>
+      <br />
       <em><b>Figure 2(b): 4D Coupled Nonlinear Attractor (M-4DCHS).</b> Continuous phase-space trajectory $(x, y, z)$ with color-mapped 4th-dimension state variable $w$, exhibiting continuous volume contraction ($\nabla \cdot \mathbf{F} = -39.0$, $\sum \lambda_i = -38.999967 \approx -39.000000$) and fractional Kaplan-Yorke dimension $D_{KY} = 1.012946$ ($j=1$).</em>
     </td>
   </tr>
@@ -42,11 +50,17 @@
 <table align="center" width="100%">
   <tr>
     <td align="center" width="50%">
-      <img src="paper/figures/FIG_Dashboard_SinglePage_M4D_Decrypted.png" width="100%" alt="Authorized Terminal View" /><br />
+      <a href="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_Dashboard_SinglePage_M4D_Decrypted.png" target="_blank">
+        <img src="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_Dashboard_SinglePage_M4D_Decrypted.png" width="100%" alt="Authorized Terminal View" />
+      </a>
+      <br />
       <em><b>Figure 3(a): Authorized Monitoring Terminal View (Decrypted Telemetry).</b> Clinical dashboard displaying real-time descrambled Lead-II ECG from prerecorded WESAD replay, model-estimated stress score at the exploratory $\tau = 0.35$ operating point, live HRV biomarker cards, and client-side Three.js WebGL (60 FPS) 3D continuous phase-space monitor.</em>
     </td>
     <td align="center" width="50%">
-      <img src="paper/figures/FIG_Dashboard_M4D_Eavesdropper.png" width="100%" alt="Adversarial Intercept View" /><br />
+      <a href="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_Dashboard_M4D_Eavesdropper.png" target="_blank">
+        <img src="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_Dashboard_M4D_Eavesdropper.png" width="100%" alt="Adversarial Intercept View" />
+      </a>
+      <br />
       <em><b>Figure 3(b): Adversarial Wire Intercept View (Eavesdropper Mode).</b> Physical UART wiretap without decryption keys: raw high-entropy scrambled ciphertext ($H = 7.9982$ bits/byte), zero resolvable QRS fiducials, and shielded biometric cards.</em>
     </td>
   </tr>
