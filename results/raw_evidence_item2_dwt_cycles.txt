@@ -1,0 +1,17 @@
+======================================================================
+STM32G474RE HC1 RK4 DWT->CYCCNT HARDWARE MEASUREMENT REPORT
+======================================================================
+Target Hardware:           STMicroelectronics NUCLEO-G474RE (ARM Cortex-M4 @ 170 MHz)
+Clock Frequency:           170 MHz
+Measurement Method:        DWT->CYCCNT Hardware Cycle Counter
+
+--- HC1 Pure RK4 Integration Step (1,000 Trials) ---
+  Min Cycles:              177 (1.041 us)
+  Mean Cycles:             177 (1.041 us)
+  Max Cycles:              203 (1.194 us)
+
+--- Full Keystream Byte (RK4 + Nonlinear Hash, 1,000 Trials) ---
+  Min Cycles:              224 (1.318 us)
+  Mean Cycles:             224 (1.318 us)
+  Max Cycles:              284 (1.671 us)
+======================================================================

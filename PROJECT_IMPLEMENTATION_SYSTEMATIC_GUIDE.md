@@ -276,7 +276,7 @@ $$S_0 = \text{SECRET\_KEY} \oplus (\text{seq\_id} \cdot 0\text{x}45D9F3B) \oplus
 
 $$\text{IV}_0 = \text{CHAOS\_INIT\_IV} \oplus (\text{seq\_id} \ \&\ 0\text{xFF})$$
 
-where `SECRET_KEY = 0x9E3779B9` and `CHAOS_INIT_IV = 0x5A`.
+where `SECRET_KEY = 0x9E3779B1` and `CHAOS_INIT_IV = 0x5A`.
 
 The 8 biometric payload bytes (raw float + filtered float) undergo Cipher Block Chaining (CBC):
 $$C_i = P_i \oplus (S_n \ \&\ 0\text{xFF}) \oplus C_{i-1} \quad \text{(Scrambling)}$$

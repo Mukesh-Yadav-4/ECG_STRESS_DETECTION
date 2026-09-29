@@ -52,7 +52,7 @@ def compute_crc16(data: bytes) -> int:
     return crc
 
 
-CHAOS_SECRET_KEY = 0x9E3779B9
+CHAOS_SECRET_KEY = 0x9E3779B1
 CHAOS_INIT_IV = 0x5A
 CHAOS_WEYL_CONST = 0x61C88647
 

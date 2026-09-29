@@ -1,0 +1,26 @@
+{
+  "item": 4,
+  "claim": "Actual Python<->C HC1 telemetry round-trip / parity check",
+  "verdict": "FAIL",
+  "evaluated_packets": 10000,
+  "total_evaluated_bytes": 200000,
+  "byte_for_byte_parity": false,
+  "differing_bytes": 9377,
+  "differing_packets": 1709,
+  "first_difference_byte_index": 17,
+  "c_encrypt_to_python_decrypt": {
+    "mse_filtered_ecg_mV2": NaN,
+    "max_abs_error_filtered_ecg_mV": NaN,
+    "max_abs_error_raw_ecg_mV": 1.3111588027172147e+38,
+    "mae_filtered_ecg_mV": NaN,
+    "reconstruction_lossless": false
+  },
+  "python_encrypt_to_c_decrypt": {
+    "mse_filtered_ecg_mV2": NaN,
+    "max_abs_error_filtered_ecg_mV": NaN,
+    "max_abs_error_raw_ecg_mV": 1.3111588027172147e+38,
+    "mae_filtered_ecg_mV": NaN,
+    "all_c_crcs_valid": true,
+    "reconstruction_lossless": false
+  }
+}

@@ -1,0 +1,29 @@
+===========================================================================
+4D COUPLED NONLINEAR SYSTEM: NUMERICAL LYAPUNOV SPECTRUM BENCHMARK
+===========================================================================
+Parameters: a=15.81, b=2.76, c=86.03, d=-9.07, r=10.79
+Theoretical Divergence: -27.640000
+
+PRIMARY REFERENCE RUN (dt=0.0025s, T=500s, 200,000 steps):
+  Numerical Exponents: [0.4198776488949535, 0.2639345789309041, -0.0012367396318808297, -28.322564342232017]
+  Sum of Exponents   : -27.639989
+  Absolute Error     : 1.114596e-05
+  Sorted Exponents:
+    lambda_1 = +0.419878  [Neutral flow direction]
+    lambda_2 = +0.263935  [Contracting]
+    lambda_3 = -0.001237  [Contracting]
+    lambda_4 = -28.322564  [Strongly contracting]
+  Kaplan-Yorke Dimension D_KY = 3.024100 (j=3)
+
+---------------------------------------------------------------------------
+ROBUSTNESS & CONVERGENCE SWEEP:
+  Step size dt=0.005               | lambda=[+0.5282, +0.2994, -0.0021, -28.4652] | Sum=-27.639799 | D_KY=3.0290
+  Step size dt=0.0025              | lambda=[+0.4313, +0.2608, -0.0023, -28.3298] | Sum=-27.639989 | D_KY=3.0243
+  Step size dt=0.00125             | lambda=[+0.4729, +0.2995, -0.0019, -28.4105] | Sum=-27.639999 | D_KY=3.0271
+  Evaluation duration T=200.0s     | lambda=[+0.4286, +0.2361, -0.0042, -28.3004] | Sum=-27.639989 | D_KY=3.0233
+  Evaluation duration T=500.0s     | lambda=[+0.4199, +0.2639, -0.0012, -28.3226] | Sum=-27.639989 | D_KY=3.0241
+  Evaluation duration T=1000.0s    | lambda=[+0.4384, +0.2537, -0.0005, -28.3317] | Sum=-27.639989 | D_KY=3.0244
+  Initial Condition IC_A [1, 1, 1, 1] | lambda=[+0.4182, +0.2557, -0.0024, -28.3115] | Sum=-27.639989 | D_KY=3.0237
+  Initial Condition IC_B [2, -1, 5, 0] | lambda=[+0.4476, +0.2789, +0.0013, -28.3678] | Sum=-27.639989 | D_KY=3.0257
+  Initial Condition IC_C [-2, 3, 10, -5] | lambda=[+0.4272, +0.2982, -0.0033, -28.3620] | Sum=-27.639989 | D_KY=3.0255
+===========================================================================

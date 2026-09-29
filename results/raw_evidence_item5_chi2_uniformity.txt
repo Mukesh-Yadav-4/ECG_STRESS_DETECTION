@@ -1,0 +1,17 @@
+===========================================================================
+HC1 CHI-SQUARE UNIFORMITY GOODNESS-OF-FIT VERIFICATION REPORT
+===========================================================================
+  item                            : 5
+  claim                           : Verify HC1 chi-square result and word as no rejection of uniformity at alpha=0.01 rather than simply passes
+  verdict                         : PASS
+  total_ciphertext_bytes          : 80000
+  degrees_of_freedom              : 255
+  significance_level_alpha        : 0.01
+  chi_square_statistic            : 302.0288
+  chi_square_p_value              : 0.023
+  shannon_entropy_bits_per_byte   : 7.9973
+  theoretical_max_entropy         : 8.0
+  entropy_uniformity_ratio_pct    : 99.97
+  hypothesis_test_result          : no rejection of uniformity at alpha=0.01
+  exact_wording                   : no rejection of uniformity at alpha=0.01 (chi2 = 302.03, p = 0.0230, df = 255)
+===========================================================================

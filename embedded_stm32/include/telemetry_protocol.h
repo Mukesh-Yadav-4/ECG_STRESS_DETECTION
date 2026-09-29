@@ -63,7 +63,7 @@ void telemetry_pack(telemetry_packet_t *pkt, uint16_t seq_id, uint32_t timestamp
 bool telemetry_verify_frame(const telemetry_packet_t *pkt);
 
 /* ================= 32-BIT CHAOTIC STREAM CIPHER (MARSAGLIA / WEYL) ================= */
-#define CHAOS_SECRET_KEY  0x9E3779B9U
+#define CHAOS_SECRET_KEY  0x9E3779B1U
 #define CHAOS_INIT_IV     0x5AU
 #define CHAOS_WEYL_CONST  0x61C88647U
 
@@ -82,12 +82,12 @@ void telemetry_encrypt_packet(telemetry_packet_t *pkt);
  */
 void telemetry_decrypt_packet(telemetry_packet_t *pkt);
 
-/* ================= NOVEL 4D COUPLED HYPERCHAOTIC CIPHER (M-4DCHS) ================= */
-#define M4D_PARAM_A      35.0f
-#define M4D_PARAM_B      3.0f
-#define M4D_PARAM_C      28.0f
-#define M4D_PARAM_D      (-1.0f)
-#define M4D_PARAM_R      5.0f
+/* ================= NOVEL 4D COUPLED HYPERCHAOTIC CIPHER (M-4DCHS - HC1 REGIME) ================= */
+#define M4D_PARAM_A      15.81f
+#define M4D_PARAM_B      2.76f
+#define M4D_PARAM_C      86.03f
+#define M4D_PARAM_D      (-9.07f)
+#define M4D_PARAM_R      10.79f
 #define M4D_DT           0.0025f
 
 typedef struct {

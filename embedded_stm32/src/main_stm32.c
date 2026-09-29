@@ -117,16 +117,48 @@ int main(void)
     }
 }
 
+volatile uint32_t g_millis = 0;
+volatile uint32_t g_tick_count = 0;
+
 /**
- * @brief TIM2 Period Elapsed Callback (Fires at 350 Hz / 700 Hz)
+ * @brief TIM2 Global Interrupt Handler (350 Hz periodic sampling)
  */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+void TIM2_IRQHandler(void)
 {
-    if (htim->Instance == TIM2)
+    if (TIM2_SR & 0x01UL)
     {
+        TIM2_SR &= ~0x01UL;
+
+        g_tick_count++;
+
+        /* Toggle User Green LED (LD2, PA5) every 175 ticks (heartbeat blink ~1 Hz) */
+        if ((g_tick_count % 175) == 0)
+        {
+            GPIOA_ODR ^= (1UL << 5);
+        }
+
         g_timer_tick_flag = 1;
     }
 }
+
+/**
+ * @brief System initialization called from startup assembly before main.
+ */
+void SystemInit(void)
+{
+    /* Enable CP10 and CP11 Full Access for ARM Cortex-M4 Hardware FPU */
+    SCB_CPACR |= ((3UL << 20) | (3UL << 22));
+}
+
+/**
+ * @brief SysTick Interrupt Handler - Standard 1 ms timebase (1000 Hz) for HAL_GetTick()
+ */
+void SysTick_Handler(void)
+{
+    g_millis++;
+}
+
+
 
 /**
  * @brief System Clock Configuration: 170 MHz SYSCLK via PLL

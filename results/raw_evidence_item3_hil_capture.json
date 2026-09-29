@@ -1,0 +1,22 @@
+{
+  "item": 3,
+  "claim": "Fresh 15,000+ packet physical HIL test with HC1 enabled at ~350 Hz",
+  "verdict": "FAIL (HIL test successful, but HC1 is NOT enabled on hardware; running legacy 32-bit scrambler)",
+  "hardware_port": "COM10",
+  "baud_rate": 115200,
+  "target_packets": 15500,
+  "captured_valid_packets": 15505,
+  "total_packets_received": 15505,
+  "wall_clock_duration_sec": 43.631,
+  "measured_sample_rate_hz": 355.37,
+  "crc_errors": 0,
+  "sequence_gaps_dropped_packets": 0,
+  "sync_losses_relock_events": 5,
+  "flags_histogram": {
+    "0x01": 15505
+  },
+  "hc1_4d_packet_count": 0,
+  "legacy_32bit_packet_count": 15505,
+  "plaintext_packet_count": 0,
+  "is_hc1_enabled": false
+}

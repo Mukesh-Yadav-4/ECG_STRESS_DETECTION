@@ -1,0 +1,43 @@
+{
+  "item": 2,
+  "claim": "Measure HC1 RK4 execution cost on actual STM32G474RE using DWT->CYCCNT at 170 MHz",
+  "verdict": "MEASURED (Hardware DWT benchmark executed on STM32G474RE; actual cost measured)",
+  "hardware_target": "STMicroelectronics NUCLEO-G474RE (ARM Cortex-M4 @ 170 MHz)",
+  "instrumentation_method": "ARM CoreDebug DEMCR TRCENA + DWT CYCCNT (zero software overhead)",
+  "measurement_clock_hz": 170000000,
+  "rk4_step_bench": {
+    "num_trials": 1000,
+    "min_cycles": 177,
+    "mean_cycles": 177,
+    "max_cycles": 203,
+    "min_time_us_170mhz": 1.041,
+    "mean_time_us_170mhz": 1.041,
+    "max_time_us_170mhz": 1.194
+  },
+  "full_keystream_byte_bench": {
+    "num_trials": 1000,
+    "min_cycles": 224,
+    "mean_cycles": 224,
+    "max_cycles": 284,
+    "min_time_us_170mhz": 1.318,
+    "mean_time_us_170mhz": 1.318,
+    "max_time_us_170mhz": 1.671
+  },
+  "raw_mcu_output": [
+    "=======================================================",
+    "STM32G474RE HC1 RK4 DWT->CYCCNT HARDWARE BENCHMARK",
+    "Core: ARM Cortex-M4 @ 170 MHz (Hardware FPU Enabled)",
+    "=======================================================",
+    "RK4 Step (1000 trials):",
+    "Min  Cycles: 177 (1.041 us @ 170 MHz)",
+    "Mean Cycles: 177 (1.041 us @ 170 MHz)",
+    "Max  Cycles: 203 (1.194 us @ 170 MHz)",
+    "Full Keystream Byte (1000 trials):",
+    "Min  Cycles: 224 (1.317 us @ 170 MHz)",
+    "Mean Cycles: 224 (1.317 us @ 170 MHz)",
+    "Max  Cycles: 284 (1.670 us @ 170 MHz)",
+    "=======================================================",
+    "DWT_BENCHMARK_DONE"
+  ],
+  "original_firmware_restored": true
+}

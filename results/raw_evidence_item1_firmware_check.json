@@ -1,0 +1,110 @@
+{
+  "item": 1,
+  "claim": "Current STM32 firmware has HC1 M-4DCHS enabled and physical HIL test is using HC1, not legacy 32-bit scrambler",
+  "verdict": "PASS",
+  "packets_captured": 100,
+  "valid_packets": 100,
+  "crc_errors": 0,
+  "dropped_packets": 0,
+  "flags_observed": [
+    "0x05"
+  ],
+  "is_4d_chaos_flag_set": true,
+  "active_cipher_mode": "4D_MEMRISTIVE",
+  "firmware_binary": "embedded_stm32/STM32G474_HC1_Telemetry.bin",
+  "hardware_target": "STMicroelectronics NUCLEO-G474RE on COM10 @ 115200 baud",
+  "hardware_clock_mhz": 170,
+  "sampling_rate_hz": 350,
+  "sample_packets": [
+    {
+      "seq_id": 33806,
+      "flags": "0x05",
+      "is_4d_chaos": true,
+      "timestamp_ms": 121736,
+      "plain_raw_mV": 0.088577,
+      "plain_filt_mV": 0.049478,
+      "cipher_filt_norm": 0.068476
+    },
+    {
+      "seq_id": 33807,
+      "flags": "0x05",
+      "is_4d_chaos": true,
+      "timestamp_ms": 121739,
+      "plain_raw_mV": 0.087021,
+      "plain_filt_mV": 0.0,
+      "cipher_filt_norm": 0.962899
+    },
+    {
+      "seq_id": 33808,
+      "flags": "0x05",
+      "is_4d_chaos": true,
+      "timestamp_ms": 121742,
+      "plain_raw_mV": 0.085007,
+      "plain_filt_mV": 0.060325,
+      "cipher_filt_norm": 1.332229
+    },
+    {
+      "seq_id": 33809,
+      "flags": "0x05",
+      "is_4d_chaos": true,
+      "timestamp_ms": 121748,
+      "plain_raw_mV": 0.090317,
+      "plain_filt_mV": 0.065303,
+      "cipher_filt_norm": 0.637488
+    },
+    {
+      "seq_id": 33810,
+      "flags": "0x05",
+      "is_4d_chaos": true,
+      "timestamp_ms": 121751,
+      "plain_raw_mV": 0.093842,
+      "plain_filt_mV": 0.06822,
+      "cipher_filt_norm": 0.201165
+    },
+    {
+      "seq_id": 33811,
+      "flags": "0x05",
+      "is_4d_chaos": true,
+      "timestamp_ms": 121753,
+      "plain_raw_mV": 0.090866,
+      "plain_filt_mV": 0.069149,
+      "cipher_filt_norm": 1.30049
+    },
+    {
+      "seq_id": 33812,
+      "flags": "0x05",
+      "is_4d_chaos": true,
+      "timestamp_ms": 121759,
+      "plain_raw_mV": 0.085373,
+      "plain_filt_mV": 0.06863,
+      "cipher_filt_norm": -0.429669
+    },
+    {
+      "seq_id": 33813,
+      "flags": "0x05",
+      "is_4d_chaos": true,
+      "timestamp_ms": 121762,
+      "plain_raw_mV": 0.09343,
+      "plain_filt_mV": 0.066867,
+      "cipher_filt_norm": 0.2558
+    },
+    {
+      "seq_id": 33814,
+      "flags": "0x05",
+      "is_4d_chaos": true,
+      "timestamp_ms": 121765,
+      "plain_raw_mV": 0.098923,
+      "plain_filt_mV": 0.063935,
+      "cipher_filt_norm": -0.693184
+    },
+    {
+      "seq_id": 33815,
+      "flags": "0x05",
+      "is_4d_chaos": true,
+      "timestamp_ms": 121771,
+      "plain_raw_mV": 0.096863,
+      "plain_filt_mV": 0.060493,
+      "cipher_filt_norm": -0.300231
+    }
+  ]
+}

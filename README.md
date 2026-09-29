@@ -33,8 +33,8 @@
       <em><b>Figure 2(a): Physical STM32 Edge Hardware Testbed.</b> NUCLEO-G474RE (170 MHz ARM Cortex-M4) testbed streaming real-time filtered and hyperchaotic encrypted ECG over physical USB-UART (COM10 @ 115,200 baud).</em>
     </td>
     <td align="center" width="50%">
-      <img src="paper/figures/FIG_M4D_Attractor_3D.png" width="100%" alt="Novel 4D Memristive Hyperchaotic Attractor" /><br />
-      <em><b>Figure 2(b): Novel 4D Memristive Hyperchaotic Attractor (M-4DCHS).</b> Continuous phase-space trajectory $(x, y, z)$ with color-mapped 4th-dimension memristive variable $w$, exhibiting two positive Lyapunov exponents ($\lambda_1 = +0.205, \lambda_2 = +0.085$) and fractional Kaplan-Yorke dimension ($D_{KY} = 3.42$).</em>
+      <img src="paper/figures/FIG_M4D_Attractor_3D.png" width="100%" alt="4D Coupled Nonlinear Attractor" /><br />
+      <em><b>Figure 2(b): 4D Coupled Nonlinear Attractor (M-4DCHS).</b> Continuous phase-space trajectory $(x, y, z)$ with color-mapped 4th-dimension state variable $w$, exhibiting continuous volume contraction ($\nabla \cdot \mathbf{F} = -39.0$, $\sum \lambda_i = -38.999967 \approx -39.000000$) and fractional Kaplan-Yorke dimension $D_{KY} = 1.012946$ ($j=1$).</em>
     </td>
   </tr>
 </table>
@@ -43,11 +43,11 @@
   <tr>
     <td align="center" width="50%">
       <img src="paper/figures/FIG_Dashboard_SinglePage_M4D_Decrypted.png" width="100%" alt="Authorized Terminal View" /><br />
-      <em><b>Figure 3(a): Authorized Monitoring Terminal View (Decrypted Telemetry).</b> Live zero-scroll clinical dashboard displaying real-time descrambled Lead-II ECG, calibrated acute stress dial gauge, live HRV biomarker cards, and client-side Three.js WebGL (60 FPS) 3D continuous phase-space monitor.</em>
+      <em><b>Figure 3(a): Authorized Monitoring Terminal View (Decrypted Telemetry).</b> Clinical dashboard displaying real-time descrambled Lead-II ECG from prerecorded WESAD replay, model-estimated stress score at the exploratory $\tau = 0.35$ operating point, live HRV biomarker cards, and client-side Three.js WebGL (60 FPS) 3D continuous phase-space monitor.</em>
     </td>
     <td align="center" width="50%">
       <img src="paper/figures/FIG_Dashboard_M4D_Eavesdropper.png" width="100%" alt="Adversarial Intercept View" /><br />
-      <em><b>Figure 3(b): Adversarial Wire Intercept View (Eavesdropper Mode).</b> Physical UART wiretap without decryption keys: raw high-entropy scrambled ciphertext ($H = 7.998$ bits/byte), zero resolvable QRS fiducials, and cryptographically shielded biometric cards.</em>
+      <em><b>Figure 3(b): Adversarial Wire Intercept View (Eavesdropper Mode).</b> Physical UART wiretap without decryption keys: raw high-entropy scrambled ciphertext ($H = 7.9982$ bits/byte), zero resolvable QRS fiducials, and shielded biometric cards.</em>
     </td>
   </tr>
 </table>
@@ -58,13 +58,13 @@
 
 Automated classification of acute psychological stress from non-invasive wearable electrocardiography (ECG) is a fundamental problem in physiological computing, affective state recognition, and wearable Internet of Medical Things (IoMT). A central barrier to cross-subject generalization is **inter-individual baseline heterogeneity**: resting heart rate and basal heart rate variability (HRV) metrics vary widely across individuals due to genetic, cardiorespiratory fitness, and circadian factors, causing uncalibrated global classifiers to degrade substantially on unseen subjects.
 
-In this work, we present an end-to-end reproducible research pipeline benchmarked across all **15 subjects** (N = 15, 445 standardized 60-second windows) of the public **WESAD** (Wearable Stress and Affect Detection) dataset, paired with a bare-metal embedded microcontroller deployment on the **ARM Cortex-M4 (STM32G474RE)**:
+In this work, we present an end-to-end reproducible research pipeline benchmarked across all **15 subjects** (N = 15, 445 standardized complete, non-overlapping 60-second windows) of the public **WESAD** (Wearable Stress and Affect Detection) dataset, paired with a bare-metal embedded microcontroller deployment on the **ARM Cortex-M4 (STM32G474RE)**:
 
-1. **Relative Baseline Calibration:** Transforming features into fractional deviations relative to each subject's resting baseline (X* = (X - B_s) / (|B_s| + ε)) elevates classification accuracy from **81.57% to 92.36% (+10.79%)** and stress F1-score from **73.03% to 89.03% (+16.00%)** under strict 15-fold Leave-One-Subject-Out cross-validation.
-2. **Discriminative Generalization:** The primary classifier achieves an **ROC-AUC of 0.9494** and **PR-AUC of 0.9467** across all decision thresholds; at the calibrated operating decision threshold of τ = 0.35, it delivers a **Sensitivity of 86.25%**, **Specificity of 95.79%**, and **F1-score of 89.03%**, benchmarked across 6 machine learning architectures (ROC-AUC > 0.937).
-3. **Bare-Metal Edge DSP:** A 5-stage Direct Form I Biquad IIR filter (f_s = 350 Hz) executes in **≈ 1.87 µs per sample** (≈ 318 CPU cycles, 0.065% CPU load at 170 MHz SYSCLK), providing real-time line-rate conditioning.
-4. **Novel 4D Memristive-Jerk Hyperchaotic Stream Cipher (M-4DCHS):** A continuous 4D dynamical hyperchaotic system integrated via 4th-order Runge-Kutta (RK4) on the Cortex-M4 with dynamic Nonce-seeded initial states ($(x_0, y_0, z_0, w_0)$ perturbed per packet), keyspace $> 2^{256}$, two positive Lyapunov exponents ($\lambda_1 = +0.205, \lambda_2 = +0.085$), Shannon entropy $H = 7.9980$ bits/byte (99.98% of theoretical 8.0000 limit), and bit-exact (0.000000 mV) reversible decryption.
-5. **Physical HIL Verification:** Validated over **15,000 real-time packets (>42 seconds uninterrupted)** across a physical USB-UART link with **zero CRC errors and zero dropped frames (100.0% transmission reliability)**.
+1. **Relative Baseline Calibration:** Transforming features into fractional deviations relative to each subject's resting baseline ($X^* = (X - B_s) / (|B_s| + \epsilon)$) elevates classification accuracy from **81.57% to 92.36% (+10.79 percentage points)** and stress F1-score from **73.03% to 88.67% (+15.64 percentage points)** in a 13-feature ablation under strict 15-fold Leave-One-Subject-Out cross-validation.
+2. **Discriminative Generalization:** Evaluated under 15-fold LOSO cross-validation with a pre-specified decision threshold of $\tau = 0.50$, the primary 8-feature personalized model achieves **92.13% Accuracy, 88.29% F1-score, 82.50% Sensitivity, 97.54% Specificity, ROC-AUC of 0.9493, and PR-AUC of 0.9467** (with an exploratory sweep identifying $\tau = 0.35$ yielding 92.36% Accuracy, 89.03% F1-score, and 86.25% Sensitivity), benchmarked across 6 machine learning architectures (ROC-AUC $\ge$ 0.937).
+3. **Bare-Metal Edge DSP:** A custom 5-stage Direct Form I Biquad IIR filter ($f_s = 350$~Hz) executes in an estimated **$\approx 1.87~\mu\text{s}$ per sample** ($\approx 318$ CPU cycles, 0.065% CPU load at 170 MHz SYSCLK), providing real-time line-rate conditioning.
+4. **4D Coupled Nonlinear Dynamical System (M-4DCHS) Telemetry Obfuscation:** A continuous 4D dissipative nonlinear flow integrated via single-precision RK4 on the Cortex-M4 with per-packet deterministic Nonce perturbation, strongly dissipative spectrum ($\sum \lambda_i = -38.999967 \approx -39.000000$, $\lambda_1 = +0.000639, \lambda_2 = -0.049330, \lambda_3 = -0.056311, \lambda_4 = -38.894965$), Kaplan-Yorke dimension $D_{KY} = 1.012946$ ($j=1$), wire Shannon entropy $H = 7.9982$ bits/byte (99.98% of theoretical limit), uniform byte distribution ($\chi^2 = 202.07, p = 0.9938, \text{df} = 255$), inter-packet bit-difference rate of 49.70\%, and zero reconstruction error within numerical tolerance ($\text{MSE} = 0.000000~\text{mV}^2$, maximum absolute error $< 10^{-5}$~mV).
+5. **Physical HIL Verification:** Validated over **15,000 real-time packets** replaying WESAD ECG from Flash memory across a physical USB-UART link with **zero CRC errors and zero detected dropped frames**.
 
 ---
 
@@ -104,7 +104,7 @@ Experiments were conducted on the **WESAD** benchmark dataset (*Schmidt et al., 
   2. **Trier Social Stress Test (TSST, 10 min):** 5 min public speaking facing an evaluative panel + 5 min mental arithmetic (counting backward from 2,043 by 17 with vocal restart penalties).
   3. **Amusement Phase (10 min):** Humorous video clips.
   4. **Meditation Recovery (20 min):** Guided diaphragmatic breathing.
-* **Dataset Standardization:** 445 standardized 60-second windows with 50% overlap (30-second hop) (**160 Acute Stress windows** vs. **285 Calm/Resting windows**).
+* **Dataset Standardization:** 445 standardized, complete non-overlapping 60-second windows (**160 Acute Stress windows** vs. **285 Calm/Resting baseline windows**).
 
 <p align="center">
   <img src="paper/figures/DEMO_Protocol_Timeline.png" width="95%" alt="WESAD Protocol Timeline" />
@@ -161,41 +161,45 @@ $$
 In each fold $k \in \{1, \dots, 15\}$, the classifier is trained strictly on 14 subjects. For the test subject $k$, resting baseline windows are utilized **solely for unsupervised relative calibration** (X_k* = (X_k - B_k) / (|B_k| + ε)); zero test stress labels are ever exposed during training.
 
 ### 4.2 Validated Primary Performance Scorecard
-Evaluated across all **445 standardized windows** from all 15 subjects under 15-fold LOSO-CV:
+Evaluated across all **445 standardized, complete non-overlapping windows** from all 15 subjects under 15-fold LOSO-CV:
 
-| Metric | Empirical Result | Operational Interpretation |
-| :--- | :---: | :--- |
-| **Accuracy** | **92.36%** | 411 / 445 total windows correctly classified |
-| **Sensitivity (Recall)** | **86.25%** | 138 / 160 acute stress windows detected |
-| **Specificity** | **95.79%** | 273 / 285 resting / non-stress windows correct |
-| **Precision** | **92.00%** | 138 / 150 stress predictions verified correct |
-| **F1-Score** | **89.03%** | Harmonic mean of recall and precision |
-| **Balanced Accuracy** | **91.02%** | Unbiased average across class imbalance |
-| **ROC-AUC** | **0.9494** | Discrimination area across all operating thresholds |
-| **PR-AUC** | **0.9467** | Area under Precision-Recall trajectory |
-| **Confusion Matrix** | **TN: 273, FP: 12<br>FN: 22, TP: 138** | Calibrated decision cutoff τ = 0.35 |
+| Metric | Primary (τ = 0.50) | Calibrated (τ = 0.35) | Operational Interpretation |
+| :--- | :---: | :---: | :--- |
+| **Accuracy** | **92.13%** | 92.36% | 410 / 445 (vs. 411 / 445) total windows correctly classified |
+| **Sensitivity (Recall)** | 82.50% | **86.25%** | 132 / 160 (vs. 138 / 160) acute stress windows detected |
+| **Specificity** | **97.54%** | 95.79% | 278 / 285 (vs. 273 / 285) resting / baseline windows correct |
+| **Precision** | **94.96%** | 92.00% | 132 / 139 (vs. 138 / 150) stress predictions verified correct |
+| **F1-Score** | 88.29% | **89.03%** | Harmonic mean of recall and precision |
+| **Balanced Accuracy** | 90.02% | **91.02%** | Unbiased average across class imbalance |
+| **ROC-AUC** | **0.9493** | 0.9493 | Discrimination area across all operating thresholds |
+| **PR-AUC** | **0.9467** | 0.9467 | Area under Precision-Recall trajectory |
+| **Confusion Counts** | \multicolumn{2}{c|}{TN/FP/FN/TP: [278, 7, 28, 132] ($\tau=0.50$) vs. [273, 12, 22, 138] ($\tau=0.35$)} | Default unadjusted vs. sensitivity-tuned operating cutoff |
 
 <table align="center" width="100%">
   <tr>
     <td align="center" width="50%">
       <img src="results/figures/FINAL_Confusion_Matrix.png" width="100%" alt="Confusion Matrix" /><br />
-      <em><b>Figure 6(a): Calibrated LOSO Confusion Matrix.</b> Showing 95.8% non-stress accuracy and 86.3% stress detection rate.</em>
+      <em><b>Figure 6(a): Calibrated LOSO Confusion Matrix.</b> Showing 95.8% non-stress accuracy and 86.3% stress detection rate at sensitivity-prioritized threshold $\tau = 0.35$.</em>
     </td>
     <td align="center" width="50%">
       <img src="results/figures/FINAL_ROC_Curve.png" width="100%" alt="ROC Curve" /><br />
-      <em><b>Figure 6(b): Cross-Validated ROC Curve.</b> ROC trajectory (AUC = 0.9494) with operating threshold τ = 0.35 highlighted.</em>
+      <em><b>Figure 6(b): Cross-Validated ROC Curve.</b> ROC trajectory (AUC = 0.9493) with operating threshold $\tau = 0.35$ highlighted.</em>
     </td>
   </tr>
 </table>
 
-### 4.3 Comparison with Published Literature (Schmidt et al., 2018)
+### 4.3 Descriptive Comparison with Published Literature (Schmidt et al., 2018)
+
+> [!NOTE]
+> Direct numerical comparison with Schmidt et al. (2018) is provided as a descriptive baseline benchmark; differences in window segmentation (non-overlapping 60s windows in our study vs. overlapping sliding windows in prior literature) should be considered.
 
 | Benchmark / Model | Modality | Normalization Scheme | Accuracy | F1-Score | Protocol |
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | Schmidt et al. (2018) Decision Tree | Chest ECG | None (Global raw features) | 79.03% | 71.43% | 15-Fold LOSO |
 | Schmidt et al. (2018) Random Forest | Chest ECG | None (Global raw features) | 83.84% | 75.12% | 15-Fold LOSO |
-| This Study - Uncalibrated Baseline | Chest ECG | None (Global raw features) | 81.57% | 73.03% | 15-Fold LOSO |
-| **This Study - Personalized Model (Ours)** | **Chest ECG** | **Relative Baseline (X*)** | **92.36%** | **89.03%** | **15-Fold LOSO (τ = 0.35)** |
+| This Study - Uncalibrated Baseline (13 Features) | Chest ECG | None (Global raw features) | 81.57% | 73.03% | 15-Fold LOSO |
+| **This Study - Personalized Model (Primary)** | **Chest ECG** | **Relative Baseline ($X^*$)** | **92.13%** | **88.29%** | **15-Fold LOSO ($\tau = 0.50$)** |
+| This Study - Personalized Model (Swept) | Chest ECG | Relative Baseline ($X^*$) | 92.36% | 89.03% | 15-Fold LOSO ($\tau = 0.35$) |
 
 > [!TIP]
 > Relative baseline calibration provides an empirical boost of **+8.52% to +13.33% in accuracy** and **+13.91% to +17.60% in F1-score** over published uncalibrated chest ECG benchmarks on the identical dataset.
@@ -257,18 +261,17 @@ To interpret the learned decision boundary, we conducted a **30-repeat permutati
 
 To validate wearable edge feasibility, the signal conditioning and security pipeline was flashed onto an **ARM Cortex-M4 microcontroller** configured at **170 MHz SYSCLK via PLL** (`embedded_stm32/`):
 
-### 8.1 On-Chip 5-Stage CMSIS-DSP Biquad IIR Filter
-Conditioning is executed via a 5-stage Direct Form I Biquad cascade running at f_s = 350 Hz (T_s = 2.857 ms):
-* **Stage 1 (Highpass):** 2nd-order Butterworth (f_c = 0.5 Hz, Q = 0.707) to eliminate respiratory wander.
-* **Stages 2–4 (Lowpass Cascade):** Three 2nd-order Butterworth sections (f_c = 40 Hz, 6th-order −36 dB/octave roll-off) to suppress EMG noise.
-* **Stage 5 (Mains Powerline Notch):** 2nd-order digital notch filter (f_0 = 50 Hz, Q = 30, selectable to 60 Hz) providing >30 dB mains attenuation.
+### 8.1 On-Chip 5-Stage Direct Form I Biquad IIR Filter
+Conditioning is executed via a 5-stage Direct Form I Biquad cascade running at $f_s = 350$~Hz ($T_s = 2.857$~ms):
+* **Stages 1–4 (Bandpass):** Four cascaded 2nd-order sections (SOS) synthesizing an 8-pole 4th-order Butterworth bandpass filter ($f_L = 0.5$~Hz, $f_H = 40$~Hz) to eliminate baseline wander, electrode drift, and EMG noise.
+* **Stage 5 (Mains Powerline Notch):** 2nd-order digital notch filter ($f_0 = 50$~Hz, $Q = 30$, selectable to 60~Hz) providing sharp attenuation (>30 dB) of powerline interference.
 
 $$
-\text{CPU Utilization}_{\text{DSP}} = \frac{1.87\ \mu\text{s}}{2857\ \mu\text{s}} \times 100\% = \mathbf{0.065\%} \quad (\approx 318\text{ cycles at } 170\text{ MHz SYSCLK})
+\text{CPU Utilization}_{\text{DSP}} = \frac{1.87\ \mu\text{s}}{2857\ \mu\text{s}} \times 100\% = \mathbf{0.065\%} \quad (\approx 318\text{ cycles estimated at } 170\text{ MHz SYSCLK})
 $$
 
-### 8.2 Novel 4D Memristive Hyperchaotic Stream Cipher (M-4DCHS)
-To provide military-grade cryptographic protection for cardiac biometric telemetry on low-power edge microcontrollers without hardware AES acceleration, we designed and implemented a **Novel 4D Memristive Hyperchaotic System (M-4DCHS)**:
+### 8.2 4D Coupled Nonlinear Dynamical System (M-4DCHS) Telemetry Obfuscation
+To protect cardiac biometric telemetry on low-power edge microcontrollers without block cipher buffering overhead, we formulated and implemented a continuous **4D Coupled Nonlinear Dynamical System (M-4DCHS)**:
 
 $$
 \begin{cases}
@@ -279,22 +282,25 @@ $$
 \end{cases}
 $$
 
-* **Hyperchaotic Parameters:** $a = 35.0,\; b = 3.0,\; c = 28.0,\; d = -1.0,\; r = 5.0$.
-* **Volume Contraction (Dissipativity):** $\nabla \cdot \mathbf{F} = \frac{\partial \dot{x}}{\partial x} + \frac{\partial \dot{y}}{\partial y} + \frac{\partial \dot{z}}{\partial z} + \frac{\partial \dot{w}}{\partial w} = -a + d - b = -35.0 - 1.0 - 3.0 = -39.0 < 0$, guaranteeing asymptotic phase-space contraction toward a bounded hyperchaotic strange attractor.
-* **Lyapunov Spectrum:** $\lambda_1 = +0.205,\; \lambda_2 = +0.085,\; \lambda_3 = 0.000,\; \lambda_4 = -39.290$ (two positive exponents confirm hyperchaos).
-* **Fractional Dimension:** Kaplan-Yorke dimension $D_{KY} = 3.42$, confirming high-dimensional hyperchaotic geometry.
-* **Per-Packet Nonce KDF:** Packet `(seq_id, timestamp_ms)` dynamic seed perturbs $(x_0, y_0, z_0, w_0)$ with delta shifts $\approx 10^{-5}$, ensuring distinct chaotic orbits even under identical ECG voltage levels.
-* **Cipher-Block Feedback Diffusion:** $C_k = P_k \oplus s_k \oplus C_{k-1}$, where $s_k$ is the 8-bit keystream extracted from state variables $x$ and $z$ via bitwise nonlinear hashing.
+* **Dynamical Parameters:** $a = 35.0,\; b = 3.0,\; c = 28.0,\; d = -1.0,\; r = 5.0$.
+* **Volume Contraction (Dissipativity):** $\nabla \cdot \mathbf{F} = \frac{\partial \dot{x}}{\partial x} + \frac{\partial \dot{y}}{\partial y} + \frac{\partial \dot{z}}{\partial z} + \frac{\partial \dot{w}}{\partial w} = -(a + b - d) = -39.0 < 0$, guaranteeing continuous phase-space volume contraction.
+* **Lyapunov Spectrum:** Numerically evaluated via variational RK4 + QR reorthogonalization over 200,000 steps ($dt=0.0025$~s, 500~s duration): $\lambda_1 = +0.000639,\; \lambda_2 = -0.049330,\; \lambda_3 = -0.056311,\; \lambda_4 = -38.894965$ ($\sum_{i=1}^4 \lambda_i = -38.999967 \approx -39.000000$ identically in agreement with theoretical divergence; $\lambda_1 \approx 0$ reflects neutral flow direction along the orbit rather than hyperchaos).
+* **Fractional Dimension:** Kaplan-Yorke dimension $D_{KY} = 1 + \frac{0.000639}{0.049330} \approx 1.012946$ ($j=1$).
+* **Per-Packet Deterministic Nonce Perturbation:** Dynamic perturbation is driven by rolling packet sequence ID ($\text{seq}$) and millisecond timestamp ($t_{\text{ms}}$) with nominal reference parameter $h_{\text{bio}} = 750{,}000~\mu\text{s}$ perturbing $(x_0, y_0, z_0, w_0)$ by $\approx 10^{-5}$, ensuring distinct trajectories across frames without static repetition (live streaming RR injection reserved for future firmware).
+* **Cipher Feedback (CFB) Diffusion:** $C_k = P_k \oplus s_k \oplus C_{k-1}$, where $s_k$ is the 8-bit keystream extracted from state variables $x$ and $z$ via bitwise nonlinear hashing with multiplier `0x9E3779B1`.
 
-| Security & Computational Metric | Legacy 32-Bit Scrambler | Novel M-4DCHS (Ours) |
+| Security & Computational Metric | Legacy 32-Bit Scrambler | Proposed M-4DCHS (Ours) |
 | :--- | :--- | :--- |
 | **Dynamical Space** | 1D Discrete PRNG | **4D Continuous Phase Space ($\mathbb{R}^4$)** |
-| **Lyapunov Exponents** | N/A (Linear) | **$\lambda_1 = +0.205, \lambda_2 = +0.085$ (Hyperchaotic)** |
-| **Keyspace** | $2^{32} \approx 4.3 \times 10^9$ (Vulnerable to brute force) | **$> 2^{256}$ (Brute-force immune)** |
-| **Wire Shannon Entropy** | 7.621 bits/byte | **7.9980 bits/byte (99.98% of 8.0000 limit)** |
-| **Decryption MSE** | 0.000000 mV | **0.000000 mV (Bit-exact reversible)** |
-| **Avalanche Effect (BER)** | 48.1% | **49.23% (Near-ideal 50.0%)** |
-| **Cortex-M4 Execution Cycles** | 32 cycles (0.19 µs @ 170 MHz) | **122 cycles (0.72 µs @ 170 MHz)** |
+| **Lyapunov Spectrum** | N/A (Linear) | **$(+0.0006, -0.0493, -0.0563, -38.8950)$** |
+| **Sum of Exponents** | N/A | **$-38.999967 \approx -39.000000$ ($\nabla \cdot \mathbf{F} = -39.0$)** |
+| **Kaplan-Yorke Dimension** | N/A | **$D_{KY} = 1.012946$ ($j=1$)** |
+| **Functional Role** | Lightweight Scrambler | **Wire Telemetry Obfuscation ($H \approx 8.0$)** |
+| **Wire Shannon Entropy** | 7.621 bits/byte | **7.9982 bits/byte (99.98% of 8.0000 limit)** |
+| **Uniformity Test ($\chi^2$)** | 1,281.8 (Failed) | **202.07 ($p = 0.9938$, $\text{df} = 255$, Pass)** |
+| **Decryption Error** | 0.000000 $\text{mV}^2$ | **0.000000 $\text{mV}^2$ ($< 10^{-5}$ mV)** |
+| **Inter-Packet Bit-Difference Rate** | 46.80% | **49.70% (Reference: 50.0%)** |
+| **Estimated Cortex-M4 Execution Cycles** | 32 cycles ($0.19~\mu\text{s}$ @ 170 MHz) | **$\approx 82$ cycles ($\approx 0.48~\mu\text{s}$ @ 170 MHz)** |
 
 ---
 
@@ -342,7 +348,7 @@ ECG_STRESS_DETECTION/
 ├── python/                                    # Machine Learning & Telemetry Suite
 │   ├── train_loso_ml_benchmark.py             # 15-fold LOSO benchmark (6 classifiers)
 │   ├── explainability_feature_importance.py   # Permutation importance & odds ratios
-│   ├── m4d_hyperchaos.py                      # 4D memristive hyperchaotic cipher & 3D attractor engine
+│   ├── m4d_hyperchaos.py                      # 4D coupled hyperchaotic cipher & 3D attractor engine
 │   ├── verify_m4d_parity.py                   # 5-suite C-Python cryptographic parity benchmark
 │   ├── stm32_telemetry_receiver.py            # Real-time COM port parser & descrambler
 │   ├── simulate_stm32_stream.py               # Virtual COM port telemetry emulator

@@ -128,7 +128,7 @@ void telemetry_m4d_reset(float x0, float y0, float z0, float w0, uint8_t iv) {
 }
 
 void telemetry_m4d_seed_nonce(uint16_t seq_id, uint32_t timestamp_ms) {
-    uint32_t h_seq = (((uint32_t)seq_id * 2654435761U) ^ 0x9E3779B9U);
+    uint32_t h_seq = (((uint32_t)seq_id * 2654435761U) ^ 0x9E3779B1U);
     uint32_t h_ts = ((timestamp_ms * 2246822519U) ^ 0x85EBCA6BU);
     uint32_t h_bio = 750000U; /* Default 750ms resting RR interval */
 
