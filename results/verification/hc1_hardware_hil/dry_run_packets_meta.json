@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-10-01T23:11:50",
+  "port": "DRY_RUN_SYNTHETIC",
+  "baud": 115200,
+  "dry_run": true,
+  "target_packets": 10000,
+  "captured_packets": 10000,
+  "captured_bytes": 200000,
+  "capture_elapsed_sec": 1.386,
+  "hardware_timestamp_span_ms": 28568,
+  "calculated_sampling_rate_hz": 350.01,
+  "sampling_rate_classification": "PASS",
+  "sampling_rate_pass": true,
+  "sync_losses": 0,
+  "crc_errors": 0,
+  "sequence_gaps": 0,
+  "dropped_packets": 0,
+  "required_flags": "0x05",
+  "flags_histogram": {
+    "0x05": 10000
+  },
+  "all_flags_match_required": true,
+  "raw_binary_path": "C:\\Users\\YASH\\Desktop\\projects\\RESEARCH PROJECTS\\ECG_STRESS_DETECTION\\results\\verification\\hc1_hardware_hil\\dry_run_packets.bin"
+}

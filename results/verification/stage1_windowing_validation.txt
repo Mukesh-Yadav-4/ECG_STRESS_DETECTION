@@ -1,0 +1,74 @@
+================================================================================
+STAGE 1: STATIC DATA AND WINDOWING VALIDATION REPORT
+================================================================================
+Timestamp: 2026-10-01T20:25:27.487263
+Project: C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION
+Source Data File: results/WESAD_HRV_features_expanded.csv
+Baseline Feature File: results/WESAD_HRV_features.csv
+MATLAB Source Reference: matlab/02_preprocessing/TEN_process_all_subjects.m
+
+--------------------------------------------------------------------------------
+1. SUMMARY METRICS & GROUND TRUTH COMPARISON
+--------------------------------------------------------------------------------
+Subjects:              Expected: 15        | Observed: 15 (['S10', 'S11', 'S13', 'S14', 'S15', 'S16', 'S17', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9']) -> PASS
+Total Windows:         Expected: 445       | Observed: 445 -> PASS
+Baseline Windows:      Expected: 285       | Observed: 285 -> PASS
+Stress Windows:        Expected: 160       | Observed: 160 -> PASS
+Window Duration:       Expected: 60s       | Source Code: Fs = 700 Hz, window_duration = 60s, samples_per_window = 42,000 -> PASS
+Window Overlap:        Expected: 0%        | Source Code: start_idx = segment_start + (w - 1)*samples_per_window -> PASS
+Window Hop / Step:     Expected: 60s       | Source Code: hop = samples_per_window = 42,000 samples (60s) -> PASS
+Duplicate Rows:        Expected: 0         | Observed: 0 -> PASS
+Missing / NaN Values:  Expected: 0         | Observed: 0 -> PASS
+Subject-Cond-Win Uniq: Expected: 445 unique| Observed: 445 -> PASS
+
+--------------------------------------------------------------------------------
+2. FEATURE COLUMN SCHEMAS
+--------------------------------------------------------------------------------
+Expanded 13-Feature Set: Expected 13 features | Observed: True (['MeanHR', 'MedianHR', 'StdHR', 'MinHR', 'MaxHR', 'MeanRR', 'MedianRR', 'SDNN', 'RMSSD', 'pNN50', 'RR_CV', 'RR_IQR', 'HR_IQR']) -> PASS
+Core 8-Feature Set:      Expected 8 features  | Observed: True (['MeanHR', 'SDNN', 'RMSSD', 'pNN50', 'MeanRR', 'RR_CV', 'RR_IQR', 'HR_IQR']) -> PASS
+WESAD_HRV_features.csv:  Observed columns: ['Subject', 'Condition', 'Window', 'MeanHR', 'SDNN', 'RMSSD', 'pNN50'] (4 core features + metadata) -> PASS
+
+--------------------------------------------------------------------------------
+3. PER-SUBJECT WINDOW BREAKDOWN
+--------------------------------------------------------------------------------
+Subject    | Baseline   | Stress     | Total     
+--------------------------------------------------
+S10        |     19     |     12     |     31    
+S11        |     19     |     11     |     30    
+S13        |     19     |     11     |     30    
+S14        |     19     |     11     |     30    
+S15        |     19     |     11     |     30    
+S16        |     19     |     11     |     30    
+S17        |     19     |     12     |     31    
+S2         |     19     |     10     |     29    
+S3         |     19     |     10     |     29    
+S4         |     19     |     10     |     29    
+S5         |     19     |     10     |     29    
+S6         |     19     |     10     |     29    
+S7         |     19     |     10     |     29    
+S8         |     19     |     11     |     30    
+S9         |     19     |     10     |     29    
+--------------------------------------------------
+TOTAL      |    285     |    160     |    445    
+
+--------------------------------------------------------------------------------
+4. CODE IMPLEMENTATION EVIDENCE
+--------------------------------------------------------------------------------
+From matlab/02_preprocessing/TEN_process_all_subjects.m:
+  Line 68-70:
+    Fs = 700;                  % WESAD chest ECG sampling rate
+    window_duration = 60;      % seconds
+    samples_per_window = Fs * window_duration;   % 42,000 samples
+  Line 188-205 (Baseline loop):
+    number_of_windows = floor(segment_length / samples_per_window);
+    for w = 1:number_of_windows
+        start_idx = segment_start + (w - 1) * samples_per_window;
+        end_idx   = start_idx + samples_per_window - 1;
+  Line 253-270 (Stress loop):
+    number_of_windows = floor(segment_length / samples_per_window);
+    for w = 1:number_of_windows
+        start_idx = segment_start + (w - 1) * samples_per_window;
+        end_idx   = start_idx + samples_per_window - 1;
+
+Conclusion: Exactly non-overlapping windows (0% overlap, 60s step).
+STAGE 1 STATUS: PASS

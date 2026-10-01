@@ -1,0 +1,76 @@
+================================================================================
+STAGE 2: MACHINE-LEARNING REPRODUCIBILITY REPORT
+================================================================================
+Timestamp: 2026-10-01T20:27:02.526605
+Benchmark Script: python/train_loso_ml_benchmark.py
+Canonical Results: C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\results\ML_Model_Benchmark_LOSO.csv
+Rerun Results: C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\results\verification\ml_rerun\ML_Model_Benchmark_LOSO.csv
+
+--------------------------------------------------------------------------------
+1. CANONICAL BENCHMARK COMPARISON (ALL 6 MODELS @ TAU = 0.50)
+--------------------------------------------------------------------------------
+Model                  | Metric         | Canonical  | Rerun      | Delta    | Status
+--------------------------------------------------------------------------------
+Logistic Regression    | Accuracy (%)   | 92.13      | 92.13      | 0.0000   | PASS  
+Logistic Regression    | F1-Score (%)   | 88.29      | 88.29      | 0.0000   | PASS  
+Logistic Regression    | Sensitivity/Recall (%) | 82.5       | 82.5       | 0.0000   | PASS  
+Logistic Regression    | Specificity (%) | 97.54      | 97.54      | 0.0000   | PASS  
+Logistic Regression    | ROC-AUC        | 0.9493     | 0.9493     | 0.0000   | PASS  
+Logistic Regression    | PR-AUC         | 0.9467     | 0.9467     | 0.0000   | PASS  
+MLP Neural Net         | Accuracy (%)   | 91.69      | 91.69      | 0.0000   | PASS  
+MLP Neural Net         | F1-Score (%)   | 87.87      | 87.87      | 0.0000   | PASS  
+MLP Neural Net         | Sensitivity/Recall (%) | 83.75      | 83.75      | 0.0000   | PASS  
+MLP Neural Net         | Specificity (%) | 96.14      | 96.14      | 0.0000   | PASS  
+MLP Neural Net         | ROC-AUC        | 0.9375     | 0.9375     | 0.0000   | PASS  
+MLP Neural Net         | PR-AUC         | 0.9327     | 0.9327     | 0.0000   | PASS  
+SVM (RBF Kernel)       | Accuracy (%)   | 91.46      | 91.46      | 0.0000   | PASS  
+SVM (RBF Kernel)       | F1-Score (%)   | 87.42      | 87.42      | 0.0000   | PASS  
+SVM (RBF Kernel)       | Sensitivity/Recall (%) | 82.5       | 82.5       | 0.0000   | PASS  
+SVM (RBF Kernel)       | Specificity (%) | 96.49      | 96.49      | 0.0000   | PASS  
+SVM (RBF Kernel)       | ROC-AUC        | 0.9524     | 0.9524     | 0.0000   | PASS  
+SVM (RBF Kernel)       | PR-AUC         | 0.9441     | 0.9441     | 0.0000   | PASS  
+Random Forest          | Accuracy (%)   | 90.34      | 90.34      | 0.0000   | PASS  
+Random Forest          | F1-Score (%)   | 85.9       | 85.9       | 0.0000   | PASS  
+Random Forest          | Sensitivity/Recall (%) | 81.88      | 81.88      | 0.0000   | PASS  
+Random Forest          | Specificity (%) | 95.09      | 95.09      | 0.0000   | PASS  
+Random Forest          | ROC-AUC        | 0.9426     | 0.9426     | 0.0000   | PASS  
+Random Forest          | PR-AUC         | 0.9301     | 0.9301     | 0.0000   | PASS  
+Extra Trees            | Accuracy (%)   | 89.89      | 89.89      | 0.0000   | PASS  
+Extra Trees            | F1-Score (%)   | 84.43      | 84.43      | 0.0000   | PASS  
+Extra Trees            | Sensitivity/Recall (%) | 76.25      | 76.25      | 0.0000   | PASS  
+Extra Trees            | Specificity (%) | 97.54      | 97.54      | 0.0000   | PASS  
+Extra Trees            | ROC-AUC        | 0.9494     | 0.9494     | 0.0000   | PASS  
+Extra Trees            | PR-AUC         | 0.9391     | 0.9391     | 0.0000   | PASS  
+HistGradientBoosting   | Accuracy (%)   | 89.21      | 89.21      | 0.0000   | PASS  
+HistGradientBoosting   | F1-Score (%)   | 84.31      | 84.31      | 0.0000   | PASS  
+HistGradientBoosting   | Sensitivity/Recall (%) | 80.62      | 80.62      | 0.0000   | PASS  
+HistGradientBoosting   | Specificity (%) | 94.04      | 94.04      | 0.0000   | PASS  
+HistGradientBoosting   | ROC-AUC        | 0.9459     | 0.9459     | 0.0000   | PASS  
+HistGradientBoosting   | PR-AUC         | 0.9375     | 0.9375     | 0.0000   | PASS  
+
+--------------------------------------------------------------------------------
+2. PRIMARY RESEARCH MODEL: LOGISTIC REGRESSION (DETAILED BREAKDOWN)
+--------------------------------------------------------------------------------
+Pre-specified Primary Operating Point: tau = 0.50
+  Accuracy:      Expected: 92.13% | Observed: 92.13% (410/445)
+  F1-Score:      Expected: 88.29% | Observed: 88.29%
+  Sensitivity:   Expected: 82.50% | Observed: 82.5% (132/160 Stress)
+  Specificity:   Expected: 97.54% | Observed: 97.54% (278/285 Calm)
+  Precision:     Expected: 94.96% | Observed: 94.96% (132/139)
+  ROC-AUC:       Expected: 0.9493 | Observed: 0.9493
+  PR-AUC:        Expected: 0.9467 | Observed: 0.9467
+  Confusion:     TP=132, FP=7, TN=278, FN=28
+
+Exploratory Operating Point: tau = 0.35 (Sensitivity-Prioritized)
+  Accuracy:      Expected: 92.36% | Observed: 92.36% (411/445)
+  F1-Score:      Expected: 89.03% | Observed: 89.1%
+  Sensitivity:   Expected: 86.25% | Observed: 86.88% (138/160 Stress)
+  Specificity:   Expected: 95.79% | Observed: 95.44% (273/285 Calm)
+  Precision:     Expected: 92.62% | Observed: 91.45% (138/149)
+  Confusion:     TP=139, FP=13, TN=272, FN=21
+
+--------------------------------------------------------------------------------
+3. VERIFICATION OUTCOME
+--------------------------------------------------------------------------------
+All 6 machine learning models replicated with numerical parity (delta < 0.05).
+STAGE 2 STATUS: PASS

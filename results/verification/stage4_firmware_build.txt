@@ -1,0 +1,62 @@
+================================================================================
+STAGE 4: CANONICAL STM32 FIRMWARE BUILD VERIFICATION REPORT
+================================================================================
+Timestamp:                    2026-10-01T20:35:32
+Firmware Tree:                embedded_stm32/
+Target MCU:                   STMicroelectronics STM32G474RET6 (ARM Cortex-M4 @ 170 MHz)
+Target Architecture:          Cortex-M4 + FPU Single-Precision (fpv4-sp-d16)
+Toolchain:                    GNU Tools for STM32 (14.3.rel1) / arm-none-eabi-gcc 14.3.1
+Toolchain Path:               C:\ST\STM32CubeIDE_2.2.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740\tools\bin
+
+--------------------------------------------------------------------------------
+1. COMPILER CONFIGURATION & MACROS
+--------------------------------------------------------------------------------
+Source Files:
+  - embedded_stm32/src/main_stm32.c
+  - embedded_stm32/src/ecg_dsp_filter.c
+  - embedded_stm32/src/telemetry_protocol.c
+  - embedded_stm32/src/wesad_test_samples.c
+  - embedded_stm32/src/syscalls.c
+  - embedded_stm32/src/sysmem.c
+  - embedded_stm32/src/startup_stm32g474retx.s
+
+Verified Macro Definitions in main_stm32.c:
+  - USE_ENCRYPTION_MODE:       2 (Mode 2: 4D Memristive Hyperchaos M-4DJHS) -> VERIFIED
+  - USE_LIVE_AD8232_ADC:       0 (WESAD dataset replay from internal Flash) -> VERIFIED
+  - ECG_SAMPLE_RATE_HZ:        350 Hz -> VERIFIED
+
+Verified Telemetry Packet Flags:
+  - Code reference:            flags |= (TELEMETRY_FLAG_ENCRYPTED | TELEMETRY_FLAG_CHAOS_4D)
+  - TELEMETRY_FLAG_ENCRYPTED:  0x01
+  - TELEMETRY_FLAG_CHAOS_4D:   0x04
+  - Active Wire Flags:         0x05 (0x01 | 0x04) -> VERIFIED
+
+Compiler Flags (CFLAGS):
+  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -O2 -ffp-contract=off -Wall -fdata-sections -ffunction-sections -Iembedded_stm32/include
+
+Linker Flags (LDFLAGS):
+  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Tembedded_stm32/STM32G474RETX_FLASH.ld -Wl,--gc-sections -specs=nano.specs -specs=nosys.specs -lc -lm -lnosys
+
+--------------------------------------------------------------------------------
+2. COMPILATION RESULT & ARTIFACT METRICS
+--------------------------------------------------------------------------------
+Compilation Exit Code:        0 (Clean build, zero errors)
+Compiler Warnings/Errors:     0
+Target ELF:                   results/verification/STM32G474_HC1_Telemetry_verified.elf
+Target Binary Image:          results/verification/STM32G474_HC1_Telemetry_verified.bin
+Binary Size:                  11,316 Bytes
+Bit-Exact Parity with Repo:   MATCH (100% identical byte-for-byte with embedded_stm32/STM32G474_HC1_Telemetry.bin)
+
+Memory Footprint (arm-none-eabi-size):
+   text       data        bss        dec        hex    filename
+  11296         20       1768      13084       331c    results/verification/STM32G474_HC1_Telemetry_verified.elf
+
+Flash Memory Allocation:      11,316 Bytes / 524,288 Bytes (2.16% of 512 KB Flash)
+SRAM Memory Allocation:        1,788 Bytes / 131,072 Bytes (1.36% of 128 KB SRAM)
+Hardware Flashing Status:     SKIPPED (Hardware was not touched or flashed)
+
+--------------------------------------------------------------------------------
+3. VERDICT
+--------------------------------------------------------------------------------
+STAGE 4 STATUS: PASS
+================================================================================

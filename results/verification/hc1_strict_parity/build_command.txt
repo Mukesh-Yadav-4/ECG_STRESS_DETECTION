@@ -1,0 +1,18 @@
+===============================================================================
+HC1 STRICT SINGLE-PRECISION C PARITY HARNESS BUILD COMMAND
+===============================================================================
+Timestamp:          2026-10-01T21:21:53.045106
+Host Architecture:  Windows AMD64 (64bit)
+Processor:          Intel64 Family 6 Model 142 Stepping 12, GenuineIntel
+Compiler Path:      C:\MinGW\bin\gcc.EXE
+Compiler Version:   gcc.exe (MinGW.org GCC-6.3.0-1) 6.3.0
+Strict FPU Flags:   -msse2 -mfpmath=sse -ffp-contract=off
+Rationale:          Forces strict IEEE-754 32-bit single-precision scalar FPU
+                    operations, preventing x87 80-bit extended-precision mantissa
+                    drift and matching ARM Cortex-M4 single-precision hardware FPU.
+-------------------------------------------------------------------------------
+Exact Command Line:
+C:\MinGW\bin\gcc.EXE -O2 -msse2 -mfpmath=sse -ffp-contract=off -Wall -IC:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\embedded_stm32\include C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\embedded_stm32\src\telemetry_protocol.c C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\results\verification\hc1_strict_parity\c_parity_harness.c -o C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\results\verification\hc1_strict_parity\c_parity_harness.exe
+-------------------------------------------------------------------------------
+DISCLAIMER: This test validates software simulation parity between the Python telemetry implementation and the host-compiled C firmware (compiled with IEEE-754 single-precision SSE instructions: -msse2 -mfpmath=sse -ffp-contract=off matching the ARM Cortex-M4 single-precision FPU). It does not constitute or claim physical over-the-air/UART hardware validation on a physical STM32 microcontroller board.
+===============================================================================

@@ -1,0 +1,47 @@
+================================================================================
+STAGE 5: STREAMLIT CLINICAL DASHBOARD SMOKE TEST REPORT
+================================================================================
+Timestamp:                    2026-10-01T20:37:38.333985
+Dashboard File:               demo/app.py
+Sample Data File:             demo/sample_data/ecg_samples.npz
+
+--------------------------------------------------------------------------------
+1. OFFLINE SAMPLE DATASET LOADING
+--------------------------------------------------------------------------------
+Sample data loaded successfully from: C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\demo\sample_data\ecg_samples.npz
+Dataset arrays present: ['S2_Baseline_raw', 'S2_Baseline_filt', 'S2_Baseline_peaks', 'S2_Stress_raw', 'S2_Stress_filt', 'S2_Stress_peaks', 'S3_Baseline_raw', 'S3_Baseline_filt', 'S3_Baseline_peaks', 'S3_Stress_raw', 'S3_Stress_filt', 'S3_Stress_peaks', 'S10_Baseline_raw', 'S10_Baseline_filt', 'S10_Baseline_peaks', 'S10_Stress_raw', 'S10_Stress_filt', 'S10_Stress_peaks', 'S17_Baseline_raw', 'S17_Baseline_filt', 'S17_Baseline_peaks', 'S17_Stress_raw', 'S17_Stress_filt', 'S17_Stress_peaks']
+  • S2_Baseline_raw: 21,000 samples (60.0s @ 350 Hz)
+  • S2_Stress_raw:   21,000 samples (60.0s @ 350 Hz)
+Data Loading: PASS
+
+--------------------------------------------------------------------------------
+2. VIRTUAL TELEMETRY & HRV INFERENCE ENGINE (BACKEND)
+--------------------------------------------------------------------------------
+  • Mode 0 [Plaintext                   ]: Wire Flag = 0x0 (Expected 0x0) -> PASS
+  • Mode 1 [Legacy 32-bit Scrambler     ]: Wire Flag = 0x1 (Expected 0x1) -> PASS
+  • Mode 2 [HC1 / M-4DCHS 4D Hyperchaos ]: Wire Flag = 0x5 (Expected 0x5) -> PASS
+  • Ingested Buffer Length:          3,500 samples (10.0s)
+  • Wire Ciphertext Shannon Entropy: 7.2497 bits/byte
+  • Extracted 8 HRV Metrics:         {'MeanHR': 78.2, 'SDNN': 41.33, 'RMSSD': 37.72, 'pNN50': 9.1, 'MeanRR': 0.769, 'RR_CV': 0.0537, 'RR_IQR': 0.063, 'HR_IQR': 6.3, 'NumBeats': 13}
+  • Stress Probability (tau=0.35):   6.15% (Label: CALM (0))
+Backend Engine: PASS
+
+--------------------------------------------------------------------------------
+3. STREAMLIT APP SERVER INITIALIZATION & HEALTH CHECK
+--------------------------------------------------------------------------------
+Starting Streamlit server on port 8599...
+Streamlit health endpoint responded: HTTP 200 OK (Server active)
+Main dashboard HTML bundle rendered and fetched successfully.
+Terminating Streamlit test process cleanly...
+Streamlit process terminated.
+
+--------------------------------------------------------------------------------
+4. VERIFICATION VERDICT
+--------------------------------------------------------------------------------
+Offline Sample Data Loading:     PASS
+ECG Plots & HRV Display Backend: PASS
+Virtual Telemetry Modes Check:   PASS
+Encryption Mode Labels:          PASS (Mode 0: Plaintext, Mode 1: Legacy, Mode 2: HC1)
+Streamlit Web Dashboard Launch:  PASS
+STAGE 5 STATUS:                  PASS
+================================================================================

@@ -1,0 +1,55 @@
+{
+  "timestamp": "2026-10-01T23:22:53.127893",
+  "final_hil_verdict": "PASS",
+  "is_dry_run": true,
+  "parity_disclaimer": "DRY-RUN SANITY CHECK: This test evaluated synthetic loopback packets. A dry-run PASS is strictly a software and toolchain sanity check and does NOT constitute physical hardware validation or physical STM32 HC1 parity.",
+  "reference_vector_info": {
+    "source_signal": "WESAD Subject S2 Baseline condition (2,100 samples)",
+    "modulo_repetition_rule": "expected_raw[i] = raw_ecg_2100[i % 2100]; expected_filt[i] = runtime_filt_10k[i]",
+    "raw_ecg_2100_sha256": "106fbd7d56a678c10aa60541b697326de3a761456dded54c3e1fa6443eb866db",
+    "runtime_filt_10k_sha256": "d4e252a8536377ace9140c303f0fee43339cc589ad1fbb271d70623fa65f32d8",
+    "golden_filt_2100_sha256": "6976019e5aa5601d7966d020ac9642cca3854f102e69f60c0c5427fb1df0b8cd"
+  },
+  "evaluation_criteria": {
+    "exactly_10000_packets_captured": true,
+    "all_flags_are_0x05": true,
+    "zero_crc_errors": true,
+    "zero_sequence_gaps": true,
+    "sample_rate_is_345_to_355_hz": true,
+    "no_nan_or_infinity_values": true,
+    "decryption_succeeds": true,
+    "raw_parity_meets_tolerance": true,
+    "filtered_parity_meets_tolerance": true,
+    "qrs_peak_retention_fidelity": true
+  },
+  "stream_statistics": {
+    "total_packets": 10000,
+    "total_wire_bytes": 200000,
+    "flag_violations": 0,
+    "crc_errors": 0,
+    "sequence_gaps": 0,
+    "calculated_sampling_rate_hz": 350.01,
+    "sampling_rate_classification": "PASS"
+  },
+  "reconstruction_error": {
+    "max_abs_error_raw_mV": 0.0,
+    "max_abs_error_filt_mV": 0.0,
+    "mean_absolute_error_raw_mV": 0.0,
+    "mean_absolute_error_filt_mV": 0.0,
+    "mean_squared_error_raw_mV2": 0.0,
+    "mean_squared_error_filt_mV2": 0.0,
+    "declared_tolerance_mV": 1e-05,
+    "nan_detected": false,
+    "inf_detected": false
+  },
+  "cryptographic_metrics": {
+    "shannon_entropy_bits_per_byte": 7.9979393217608585,
+    "entropy_uniformity_percent": 99.97424152201073,
+    "chi_square_stat": 228.2176,
+    "chi_square_p_value": 0.8850112463436354,
+    "chi_square_uniformity_pass": true,
+    "plaintext_correlation": 0.9896113755946558,
+    "ciphertext_correlation": 0.0012572339521992155,
+    "correlation_leakage_pass": true
+  }
+}

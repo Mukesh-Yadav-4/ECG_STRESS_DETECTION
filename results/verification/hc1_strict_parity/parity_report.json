@@ -1,0 +1,71 @@
+{
+  "timestamp": "2026-10-01T21:21:55.554785",
+  "verdict": "PASS",
+  "hardware_parity_disclaimer": "DISCLAIMER: This test validates software simulation parity between the Python telemetry implementation and the host-compiled C firmware (compiled with IEEE-754 single-precision SSE instructions: -msse2 -mfpmath=sse -ffp-contract=off matching the ARM Cortex-M4 single-precision FPU). It does not constitute or claim physical over-the-air/UART hardware validation on a physical STM32 microcontroller board.",
+  "host_environment": {
+    "system": "Windows",
+    "machine": "AMD64",
+    "architecture": "64bit",
+    "processor": "Intel64 Family 6 Model 142 Stepping 12, GenuineIntel",
+    "compiler_path": "C:\\MinGW\\bin\\gcc.EXE",
+    "compiler_version": "gcc.exe (MinGW.org GCC-6.3.0-1) 6.3.0",
+    "strict_fpu_flags": [
+      "-O2",
+      "-msse2",
+      "-mfpmath=sse",
+      "-ffp-contract=off",
+      "-Wall"
+    ]
+  },
+  "required_checks": {
+    "zero_differing_bytes": true,
+    "zero_differing_packets": true,
+    "no_nans": true,
+    "no_infinities": true,
+    "lossless_c_to_python_round_trip": true,
+    "lossless_python_to_c_round_trip": true,
+    "all_crcs_valid": true
+  },
+  "evaluated_packets": 10000,
+  "total_evaluated_bytes": 200000,
+  "wire_parity": {
+    "byte_for_byte_identity": true,
+    "differing_bytes": 0,
+    "differing_packets": 0,
+    "first_difference_index": null
+  },
+  "c_encrypt_to_python_decrypt": {
+    "all_crc_valid": true,
+    "max_abs_error_raw_mV": 0.0,
+    "max_abs_error_filtered_mV": 0.0,
+    "mae_filtered_mV": 0.0,
+    "mse_filtered_mV2": 0.0,
+    "nan_detected": false,
+    "inf_detected": false,
+    "reconstruction_lossless": true
+  },
+  "python_encrypt_to_c_decrypt": {
+    "all_crc_valid": true,
+    "max_abs_error_raw_mV": 0.0,
+    "max_abs_error_filtered_mV": 0.0,
+    "mae_filtered_mV": 0.0,
+    "mse_filtered_mV2": 0.0,
+    "nan_detected": false,
+    "inf_detected": false,
+    "reconstruction_lossless": true
+  },
+  "statistical_metrics": {
+    "hash_constant": "0x9E3779B1",
+    "shannon_entropy_bits_per_byte": 7.997328117791117,
+    "entropy_uniformity_ratio_percent": 99.96660147238896,
+    "chi_square_stat": 298.0544,
+    "chi_square_p_value": 0.03304723674983037,
+    "chi_square_uniformity_pass": true,
+    "adjacent_correlation_plain": 0.9903515697449206,
+    "adjacent_correlation_cipher": -0.002113794071521847,
+    "correlation_check_pass": true,
+    "inter_packet_bit_diff_rate_percent": 49.28125,
+    "bit_diffusion_pass": true,
+    "qrs_peak_retention_pass": true
+  }
+}

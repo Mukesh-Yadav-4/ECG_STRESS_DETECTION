@@ -16,7 +16,10 @@
   * Each feature is transformed into a fractional deviation relative to the subject's resting baseline ($B_s$):
     $$X^* = \frac{X - B_s}{|B_s| + \epsilon}, \quad \text{with } \epsilon = 10^{-6}$$
   * Evaluated strictly under **15-Fold Leave-One-Subject-Out Cross-Validation (LOSO-CV)**.
-  * Boosts classification accuracy from **81.57% to 92.36% (+10.79%)** and stress F1-score from **73.03% to 89.03% (+16.00%)**.
+  * Boosts classification accuracy from **81.57% to 92.13% (+10.56%)** and stress F1-score from **73.03% to 88.29% (+15.26%)** at primary $\tau = 0.50$.
+  * Exploratory threshold ($\tau = 0.35$) reaches **92.36% accuracy**:
+    * **Python canonical pipeline:** 92.36% accuracy, 89.10% F1, 86.88% sensitivity, 95.44% specificity.
+    * **MATLAB historical pipeline:** 92.36% accuracy, 89.03% F1, 86.25% sensitivity, 95.79% specificity.
 
 ---
 
@@ -113,6 +116,9 @@
 ## 4. Machine Learning & Benchmarking Results
 
 ### 4.1 Strict 15-Fold LOSO-CV Protocol
+* **Canonical ML Source of Truth:** Python ([`python/train_loso_ml_benchmark.py`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/python/train_loso_ml_benchmark.py)), generating [`results/ML_Model_Benchmark_LOSO.csv`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/ML_Model_Benchmark_LOSO.csv) and [`results/ML_Predictions_LOSO.csv`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/ML_Predictions_LOSO.csv).
+* **MATLAB Status:** Secondary/historical classifier implementation using custom unregularized gradient descent. Its τ=0.35 metrics differ slightly from the Python implementation because the optimization and regularization methods differ.
+* **Live Dashboard Model:** Pooled deployment inference engine with threshold τ=0.35, streaming safety floors, feature clipping, and optional subject-specific baseline calibration. It is not the same as the 15-fold LOSO evaluation model.
 * In each fold $k$, all data from subject $S_k$ is withheld.
 * Model and scaler train strictly on the other 14 subjects.
 * For the test subject, resting baseline windows establish $B_{S_k}$; no stress labels are ever leaked during training.
@@ -121,8 +127,9 @@
 
 | Model Architecture | Accuracy | Balanced Acc | Stress F1 | Sensitivity (Recall) | Specificity | Precision | ROC-AUC | PR-AUC |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Calibrated Logistic Reg. ($\tau = 0.35$)** | **92.36%** | **91.02%** | **89.03%** | **86.25%** | 95.79% | 92.00% | 0.9494 | 0.9467 |
-| **Logistic Regression ($\tau = 0.50$)** | 92.13% | 90.02% | 88.29% | 82.50% | **97.54%** | **94.96%** | 0.9493 | **0.9467** |
+| **Logistic Regression (Primary $\tau = 0.50$)** | 92.13% | 90.02% | 88.29% | 82.50% | **97.54%** | **94.96%** | 0.9493 | **0.9467** |
+| **Logistic Reg. (Python canonical, $\tau = 0.35$)** | **92.36%** | **91.16%** | **89.10%** | **86.88%** | 95.44% | 91.45% | 0.9493 | 0.9467 |
+| *Logistic Reg. (MATLAB historical, $\tau = 0.35$)* | *92.36%* | *91.02%* | *89.03%* | *86.25%* | *95.79%* | *92.00%* | *0.9494* | *0.9467* |
 | **MLP Neural Net (32, 16)** | 91.69% | 89.95% | 87.87% | 83.75% | 96.14% | 92.41% | 0.9375 | 0.9327 |
 | **SVM (RBF Kernel)** | 91.46% | 89.50% | 87.42% | 82.50% | 96.49% | 92.96% | **0.9524** | 0.9441 |
 | **Random Forest (100 Trees)** | 90.34% | 88.48% | 85.90% | 81.88% | 95.09% | 90.34% | 0.9426 | 0.9301 |
@@ -165,7 +172,7 @@
    * Two positive Lyapunov exponents: $\lambda_1 \approx +0.438, \lambda_2 \approx +0.254$; Kaplan-Yorke dimension $D_{KY} \approx 3.024$.
    * Single-precision RK4 numerical integration on ARM Cortex-M4.
    * Per-packet Nonce perturbation + Cipher Feedback (CFB) diffusion.
-   * Parity: **Bit-exact identity between C firmware and Python receiver** (100/100 nonces verified).
+   * Parity: **HC1 Python/C parity is currently failed and unverified; the latest test produced cross-language mismatches and NaN reconstruction values.**
 2. **Mode 1: 32-Bit Discrete Stream Scrambler**
    * Marsaglia Xorshift32 + Golden Ratio Weyl sequence ($+0\text{x}61C88647$) + CBC diffusion.
    * Execution cost: 32 clock cycles ($\approx 2.0\ \mu\text{s}$ at 16 MHz).
@@ -290,11 +297,11 @@ flash_firmware.bat
 | **Cohort** | 15 WESAD subjects ($S2 - S17$) |
 | **Analysis Windows** | 445 standardized 60s windows (160 stress, 285 calm) |
 | **Validation** | Strict 15-fold Leave-One-Subject-Out (LOSO-CV) |
-| **Primary Accuracy** | **92.36%** ($\tau = 0.35$) / **92.13%** ($\tau = 0.50$) |
-| **Stress F1-Score** | **89.03%** ($\tau = 0.35$) / **88.29%** ($\tau = 0.50$) |
-| **ROC-AUC / PR-AUC** | **0.9494** / **0.9467** |
-| **Sensitivity / Specificity** | **86.25%** / **95.79%** |
-| **Accuracy Gain from Baseline Calibration** | **+10.79%** ($81.57\% \rightarrow 92.36\%$) |
+| **Primary Accuracy** | **92.13%** ($\tau = 0.50$, primary) / **92.36%** ($\tau = 0.35$, exploratory) |
+| **Stress F1-Score** | Primary ($\tau = 0.50$): **88.29%**<br>• Python canonical ($\tau = 0.35$): **89.10%**<br>• MATLAB historical ($\tau = 0.35$): **89.03%** |
+| **ROC-AUC / PR-AUC** | **0.9493** / **0.9467** |
+| **Sensitivity / Specificity** | Primary ($\tau = 0.50$): **82.50%** / **97.54%**<br>• Python canonical ($\tau = 0.35$): **86.88%** / **95.44%**<br>• MATLAB historical ($\tau = 0.35$): **86.25%** / **95.79%** |
+| **Accuracy Gain from Baseline Calibration** | **+10.56%** ($81.57\% \rightarrow 92.13\%$ at $\tau = 0.50$) / **+10.79%** ($81.57\% \rightarrow 92.36\%$ at $\tau = 0.35$) |
 | **Microcontroller** | ARM Cortex-M4 (STM32G474RE @ 16 MHz HSI / 170 MHz PLL) |
 | **Sampling Rate / Telemetry Cadence** | 350 Hz ($T_s = 2.857\text{ ms}$) |
 | **Filter Execution Time** | $1.87\ \mu\text{s}$ per sample at 170 MHz (0.065% CPU load) |

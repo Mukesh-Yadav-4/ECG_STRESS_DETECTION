@@ -1,0 +1,46 @@
+===============================================================================
+PYTHON <-> C HC1 TELEMETRY STRICT PARITY VERIFICATION REPORT
+===============================================================================
+Timestamp:                    2026-10-01T21:21:55.554785
+Verdict:                      PASS
+Host Architecture:            Windows AMD64 (64bit)
+Compiler:                     gcc.exe (MinGW.org GCC-6.3.0-1) 6.3.0
+Strict FPU Flags:             -msse2 -mfpmath=sse -ffp-contract=off
+-------------------------------------------------------------------------------
+Evaluated Packets:            10,000
+Total Evaluated Bytes:        200,000 Bytes (20B / packet)
+Byte-for-Byte Wire Parity:    MATCH (100% Bit-Exact Identity)
+Differing Bytes:              0
+Differing Packets:            0
+First Difference Byte Index:  None (Bit-Exact)
+-------------------------------------------------------------------------------
+--- C Encrypt -> Python Decrypt Round-Trip ---
+  All CRC-16 Valid:           True
+  Max Absolute Error (Raw):   0.000000000 mV
+  Max Absolute Error (Filt):  0.000000000 mV
+  Mean Absolute Error (MAE):  0.000000000 mV
+  Mean Squared Error (MSE):   0.000000000000 mV^2
+  NaN Detected:               False
+  Inf Detected:               False
+  Reconstruction Lossless:    True
+-------------------------------------------------------------------------------
+--- Python Encrypt -> C Decrypt Round-Trip ---
+  All CRC-16 Valid in C:      True
+  Max Absolute Error (Raw):   0.000000000 mV
+  Max Absolute Error (Filt):  0.000000000 mV
+  Mean Absolute Error (MAE):  0.000000000 mV
+  Mean Squared Error (MSE):   0.000000000000 mV^2
+  NaN Detected:               False
+  Inf Detected:               False
+  Reconstruction Lossless:    True
+-------------------------------------------------------------------------------
+--- Statistical & Chaos Metrics ---
+  Hash Multiplier:            0x9E3779B1 (PASS)
+  Shannon Entropy:            7.9973 bits/byte (99.97% of 8.0)
+  Chi-Square Goodness-of-Fit: chi^2=298.05, p=0.0330 (PASS)
+  Autocorrelation Plain vs C: r_plain=0.9904, r_cipher=-0.0021 (PASS)
+  Inter-Packet Bit Diffusion: 49.28% (PASS)
+  QRS Peak Retention:         100.0% Exact Alignment (PASS)
+===============================================================================
+DISCLAIMER: This test validates software simulation parity between the Python telemetry implementation and the host-compiled C firmware (compiled with IEEE-754 single-precision SSE instructions: -msse2 -mfpmath=sse -ffp-contract=off matching the ARM Cortex-M4 single-precision FPU). It does not constitute or claim physical over-the-air/UART hardware validation on a physical STM32 microcontroller board.
+===============================================================================

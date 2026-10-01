@@ -1,0 +1,23 @@
+{
+  "created_at": "2026-10-01T21:45:00",
+  "artifact_name": "firmware_replay_reference",
+  "sample_rate_hz": 350,
+  "source_signal": "WESAD Subject S2 Baseline condition (S2_Baseline_raw, S2_Baseline_filt)",
+  "source_files": [
+    "embedded_stm32/include/wesad_test_samples.h",
+    "embedded_stm32/src/wesad_test_samples.c",
+    "embedded_stm32/src/main_stm32.c",
+    "demo/sample_data/ecg_samples.npz"
+  ],
+  "sample_counts": {
+    "embedded_array_length": 2100,
+    "benchmark_duration_seconds": 6.0,
+    "simulated_runtime_capture_packets": 10000
+  },
+  "modulo_repetition_rule": "expected_raw[i] = raw_ecg_2100[i % 2100]; expected_filt[i] = runtime_filt_10k[i]",
+  "sha256_checksums": {
+    "raw_ecg_2100_float32": "106fbd7d56a678c10aa60541b697326de3a761456dded54c3e1fa6443eb866db",
+    "golden_filt_2100_float32": "6976019e5aa5601d7966d020ac9642cca3854f102e69f60c0c5427fb1df0b8cd",
+    "runtime_filt_10k_float32": "d4e252a8536377ace9140c303f0fee43339cc589ad1fbb271d70623fa65f32d8"
+  }
+}

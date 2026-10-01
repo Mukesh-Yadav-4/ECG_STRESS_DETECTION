@@ -2,14 +2,14 @@
 
 ## 1. Executive Summary
 
-This consistency audit provides an evidence-based assessment of the **ECG Stress Detection** project, evaluating source code, hardware firmware, machine learning pipelines, and documentation. The project addresses automated detection of acute psychological stress from single-lead electrocardiography (Lead-II ECG) using the public **WESAD** dataset ($N=15$). Its core scientific innovation is **Subject-Specific Relative Baseline Calibration** ($X^* = (X - B_s) / (|B_s| + \epsilon)$) evaluated under **15-Fold Leave-One-Subject-Out Cross-Validation (LOSO-CV)**, which resolves inter-individual resting autonomic heterogeneity and elevates classification accuracy from 81.57% to 92.36% (+10.79%) and F1-score from 73.03% to 89.03% (+16.00%).
+This consistency audit provides an evidence-based assessment of the **ECG Stress Detection** project, evaluating source code, hardware firmware, machine learning pipelines, and documentation. The project addresses automated detection of acute psychological stress from single-lead electrocardiography (Lead-II ECG) using the public **WESAD** dataset ($N=15$). Its core scientific innovation is **Subject-Specific Relative Baseline Calibration** ($X^* = (X - B_s) / (|B_s| + \epsilon)$) evaluated under **15-Fold Leave-One-Subject-Out Cross-Validation (LOSO-CV)**, which resolves inter-individual resting autonomic heterogeneity and elevates classification accuracy from 81.57% to 92.13% (+10.56% at primary $\tau=0.50$, F1: 73.03% $\rightarrow$ 88.29%); exploratory $\tau = 0.35$ reaches 92.36% accuracy (Python canonical: 89.10% F1; MATLAB historical: 89.03% F1).
 
 The engineering pipeline couples this physiological model with a bare-metal ARM Cortex-M4 microcontroller deployment (**STM32G474RE**) featuring an on-chip **5-stage Direct Form I Biquad IIR filter** ($1.87\ \mu\text{s}$ latency at 170 MHz) and lightweight telemetry obfuscation via a **4-Dimensional Coupled Hyperchaotic System (HC1 M-4DCHS)** streaming 20-byte binary packets over UART at 115,200 baud.
 
 **Key Findings:** While the core scientific data pipeline (445 non-overlapping 60s windows) and primary ML benchmark are mathematically sound and reproducible, significant inconsistencies exist across documentation, firmware versions, and archived evidence:
 1. **Window Segmentation Contradiction:** Secondary execution guides claim 50% overlap (30s hop), whereas the actual codebase, dataset, and paper strictly implement 0% overlap (non-overlapping 60s windows).
 2. **Divergent Firmware Trees:** Two separate STM32 projects exist: `embedded_stm32/` (170 MHz PLL, TIM2, HC1 M-4DCHS mode, flag `0x05`) versus `STM32G474_ECG_Telemetry/` (16 MHz HSI, SysTick, legacy 32-bit scrambler, flag `0x01`). The systematic guide refers to an obsolete external path and describes the 16 MHz tree.
-3. **Stale Parity Failure Artifact:** `results/raw_evidence_item4_parity_check.json` records a `FAIL` verdict with 9,377 byte mismatches from an older pre-fix test, directly contradicting paper and README claims of 100% bit-exact parity.
+3. **Stale Parity Failure Artifact:** `results/raw_evidence_item4_parity_check.json` records a `FAIL` verdict with 9,377 byte mismatches; HC1 Python/C parity is currently failed and unverified; the latest test produced cross-language mismatches and NaN reconstruction values.
 4. **Physical HIL Verification Discrepancy:** The 15,505-packet endurance test on COM10 was captured while running the legacy 32-bit scrambler (`flags = 0x01`), conflicting with the paper's claim that 5,000 packets were verified with active HC1 hyperchaos (`flags = 0x05`).
 5. **Numerical Statistic Discrepancy:** `README.md` reports $\chi^2 = 202.07$ ($p = 0.9938$), whereas raw evidence and the manuscript report $\chi^2 = 302.03$ ($p = 0.0230$).
 
@@ -56,9 +56,15 @@ $$X^* = \frac{X - B_s}{|B_s| + \epsilon}, \quad \text{with } \epsilon = 10^{-6}$
 * **Leakage Safeguard:** Zero test stress windows are exposed during centroid calculation.
 
 ### 3.4 Canonical Machine Learning Validation Protocol
+* **Canonical Machine-Learning Source of Truth:**
+  - Script: [`python/train_loso_ml_benchmark.py`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/python/train_loso_ml_benchmark.py)
+  - Benchmark Table: [`results/ML_Model_Benchmark_LOSO.csv`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/ML_Model_Benchmark_LOSO.csv)
+  - Out-of-Fold Predictions: [`results/ML_Predictions_LOSO.csv`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/ML_Predictions_LOSO.csv)
+* **Secondary/Historical Classifier (MATLAB):** Secondary/historical classifier implementation using custom unregularized gradient descent. Its τ=0.35 metrics differ slightly from the Python implementation because the optimization and regularization methods differ.
+* **Live Dashboard Inference Engine (`demo/app.py` / `stm32_telemetry_receiver.py`):** Pooled deployment inference engine with threshold τ=0.35, streaming safety floors, feature clipping, and optional subject-specific baseline calibration. It is not the same as the 15-fold LOSO evaluation model.
 * **Validation Strategy:** Strict **15-Fold Leave-One-Subject-Out Cross-Validation (LOSO-CV)**.
 * **Leakage Safeguard:** `StandardScaler` is fitted strictly on the 14 training subjects per fold and applied out-of-fold to the held-out subject.
-* **Classifier Configuration:** Logistic Regression with $L2$ regularization ($C = 1.0$, `lbfgs` / `liblinear` solver, `max_iter=1000`).
+* **Classifier Configuration:** Logistic Regression with $L2$ regularization ($C = 1.0$, `liblinear` solver, `max_iter=1000`).
 
 ### 3.5 Operating Thresholds & Reported Performance
 * **Pre-specified Default Operating Point ($\tau = 0.50$):** Unbiased, out-of-fold primary benchmark:
@@ -71,12 +77,20 @@ $$X^* = \frac{X - B_s}{|B_s| + \epsilon}, \quad \text{with } \epsilon = 10^{-6}$
   * ROC-AUC: **0.9493** | PR-AUC: **0.9467**
   * Confusion Matrix $[TN, FP, FN, TP]$: $[278, 7, 28, 132]$
 * **Exploratory Sensitivity-Prioritized Operating Point ($\tau = 0.35$):** Post-hoc sweep across pooled predictions:
-  * Accuracy: **92.36%** (411 / 445 windows)
-  * Stress F1-Score: **89.03%**
-  * Sensitivity (Recall): **86.25%** (138 / 160 stress windows, +6 stress windows caught)
-  * Specificity: **95.79%** (273 / 285 calm windows, -5 baseline windows lost)
-  * Precision: **92.00%**
-  * Confusion Matrix $[TN, FP, FN, TP]$: $[273, 12, 22, 138]$
+  * **Python canonical pipeline:**
+    * Accuracy: **92.36%** (411 / 445 windows)
+    * Stress F1-Score: **89.10%**
+    * Sensitivity (Recall): **86.88%** (139 / 160 stress windows, +7 stress windows caught)
+    * Specificity: **95.44%** (272 / 285 calm windows)
+    * Precision: **91.45%** (139 / 152)
+    * Confusion Matrix $[TN, FP, FN, TP]$: $[272, 13, 21, 139]$
+  * **MATLAB historical pipeline:**
+    * Accuracy: **92.36%** (411 / 445 windows)
+    * Stress F1-Score: **89.03%**
+    * Sensitivity (Recall): **86.25%** (138 / 160 stress windows, +6 stress windows caught)
+    * Specificity: **95.79%** (273 / 285 calm windows, -5 baseline windows lost)
+    * Precision: **92.00%** (138 / 150)
+    * Confusion Matrix $[TN, FP, FN, TP]$: $[273, 12, 22, 138]$
 
 ---
 
@@ -154,7 +168,7 @@ $$X^* = \frac{X - B_s}{|B_s| + \epsilon}, \quad \text{with } \epsilon = 10^{-6}$
 ### 5.3 Conflicting Parity Results
 * `results/raw_evidence_item4_parity_check.json` records a **FAIL** on 10,000 packets with 9,377 byte mismatches and NaN error.
 * `README.md` and `paper/main.tex` claim **100% bit-exact parity** (0 mismatches across 100 test nonces).
-* *Root Cause:* Git commit `ca87d16e` synchronized float32 casting between Python and C, resolving the de-sync, but the older failed test artifact was not regenerated before committing.
+* *Root Cause:* A prior commit attempted to address float32 synchronization, but the latest independent parity rerun still fails.
 
 ---
 
@@ -164,7 +178,7 @@ $$X^* = \frac{X - B_s}{|B_s| + \epsilon}, \quad \text{with } \epsilon = 10^{-6}$
 | :---: | :---: | :--- | :--- | :--- | :--- | :---: |
 | **DOC-01** | **Critical** | [`EXECUTION_GUIDE.md#L22,L117`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/EXECUTION_GUIDE.md#L22), [`PROJECT_IMPLEMENTATION_SYSTEMATIC_GUIDE.md#L87`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/PROJECT_IMPLEMENTATION_SYSTEMATIC_GUIDE.md#L87) vs [`TEN_process_all_subjects.m#L188-L204`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/matlab/02_preprocessing/TEN_process_all_subjects.m#L188-L204), [`README.md#L75`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/README.md#L75) | Guides claim 60s windows with **50% overlap (30s hop)**. Code and paper state **0% overlap (non-overlapping 60s windows)**. | **0% Overlap (non-overlapping 60s windows)** | Loop in `TEN_process_all_subjects.m` steps by `samples_per_window` (60s). Total windows = 445 ($15 \times 19 = 285$ baseline + 160 stress). If 50% overlap were used, window count would be $\approx 890$. | **Verified** |
 | **DOC-02** | **Critical** | [`PROJECT_IMPLEMENTATION_SYSTEMATIC_GUIDE.md#L4,L196-L205`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/PROJECT_IMPLEMENTATION_SYSTEMATIC_GUIDE.md#L4) vs [`embedded_stm32/src/main_stm32.c#L21-L22`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/embedded_stm32/src/main_stm32.c#L21-L22), [`README.md#L5,L79`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/README.md#L5) | Guide states MCU runs on **16 MHz HSI** using **32-bit scrambler** (`USE_CHAOTIC_ENCRYPTION 1`) at invalid path `C:\...\STM32_PROJECTS\...`. Code and README state **170 MHz PLL**, **HC1 M-4DCHS** (`USE_ENCRYPTION_MODE 2`) in `embedded_stm32/`. | **`embedded_stm32/` @ 170 MHz PLL, HC1 M-4DCHS (`USE_ENCRYPTION_MODE 2`)** | `embedded_stm32/STM32G474_HC1_Telemetry.bin` is the production binary flashed by root `flash_firmware.bat` and verified in `raw_evidence_item1`. | **Contradictory** |
-| **DOC-03** | **High** | [`results/raw_evidence_item4_parity_check.json#L4-L8`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/raw_evidence_item4_parity_check.json#L4-L8) vs [`README.md#L80,L320`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/README.md#L80), [`paper/main.tex#L430`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/paper/main.tex#L430) | Raw evidence artifact records `"verdict": "FAIL"` with 9,377 byte mismatches. Paper and README claim 100% bit-exact parity across 100 nonces. | **Bit-exact parity confirmed after float32 KDF fix; regenerate evidence artifact.** | Commit `ca87d16e` enforced exact float32 casting in `m4d_hyperchaos.py` and `telemetry_protocol.c`, but the failed artifact was left un-regenerated. | **Contradictory** |
+| **DOC-03** | **High** | [`results/raw_evidence_item4_parity_check.json#L4-L8`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/raw_evidence_item4_parity_check.json#L4-L8) vs [`README.md#L80,L320`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/README.md#L80), [`paper/main.tex#L430`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/paper/main.tex#L430) | Raw evidence artifact records `"verdict": "FAIL"` with 9,377 byte mismatches. Paper and README claim 100% bit-exact parity across 100 nonces. | **HC1 Python/C parity is currently failed and unverified; the latest test produced cross-language mismatches and NaN reconstruction values.** | A prior commit attempted to address float32 synchronization, but the latest independent parity rerun still fails. | **Contradictory** |
 | **DOC-04** | **High** | [`results/raw_evidence_item3_hil_capture.txt#L6-L21`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/raw_evidence_item3_hil_capture.txt#L6-L21) vs [`README.md#L81,L350-L364`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/README.md#L81), [`paper/main.tex#L494-L525`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/paper/main.tex#L494) | `raw_evidence_item3` records 15,505 packets on COM10 running legacy scrambler (`flags = 0x01`, `is_hc1_enabled: False`). Paper and README claim 5,000 physical packets with active HC1 (`flags = 0x05`). | **Archive both runs: document 15,505 packets as legacy physical link test and 5,000 packets as HC1 physical test.** | `raw_evidence_item1` confirmed HC1 streaming `0x05` on COM10 for 100 packets; a dedicated 5,000-packet HC1 raw JSON needs to be retained. | **Contradictory** |
 | **DOC-05** | **High** | [`README.md#L323-L324`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/README.md#L323-L324) vs [`results/raw_evidence_item5_chi2_uniformity.txt#L10`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/raw_evidence_item5_chi2_uniformity.txt#L10), [`paper/main.tex#L453`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/paper/main.tex#L453) | `README.md` reports $\chi^2 = 202.07$ ($p = 0.9938$) and $H = 7.9982$. Raw evidence and paper report $\chi^2 = 302.03$ ($p = 0.0230$) and $H = 7.9973$. | **$\chi^2 = 302.03, p = 0.0230, \text{df}=255, H = 7.9973\text{ bits/byte}$** | Measured directly by `scipy.stats.chisquare` in `raw_evidence_item5_chi2_uniformity.json` across 80,000 bytes. Synchronized in `paper/main.tex`. | **Verified** |
 | **DOC-06** | **Medium** | [`README.md#L14`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/README.md#L14) vs [`paper/`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/paper/) directory | `README.md` badge links to `paper/..._Edge_IoMT.pdf` (without version suffix). Only `_v2.pdf` and `_v3.pdf` exist on disk, causing a broken 404 link. | **Link to `paper/Personalized_ECG_HRV_Stress_Detection_LOSO_STM32_4D_Hyperchaotic_Telemetry_v3.pdf`** | File existence check on local disk. | **Verified** |
@@ -179,7 +193,7 @@ $$X^* = \frac{X - B_s}{|B_s| + \epsilon}, \quad \text{with } \epsilon = 10^{-6}$
 
 1. **Window Segmentation Contradiction (50% Overlap vs. 0% Overlap):** `EXECUTION_GUIDE.md` and `PROJECT_IMPLEMENTATION_SYSTEMATIC_GUIDE.md` claim 50% overlap, directly contradicting the MATLAB processing code (`TEN_process_all_subjects.m`), the 445-row dataset, the audit report, and the paper.
 2. **Divergent Firmware Trees & Invalid External Path:** `embedded_stm32/` (170 MHz PLL, HC1 M-4DCHS `0x05`) coexists with `STM32G474_ECG_Telemetry/` (16 MHz HSI, legacy scrambler `0x01`). The systematic guide directs users to an external non-existent path.
-3. **Stale Parity Failure Artifact in `results/`:** `raw_evidence_item4_parity_check.json` contains a `FAIL` verdict with 9,377 mismatches, contradicting the paper's claim of 100% bit-exact parity across test nonces.
+3. **Stale Parity Failure Artifact in `results/`:** `raw_evidence_item4_parity_check.json` contains a `FAIL` verdict with 9,377 mismatches; HC1 Python/C parity is currently failed and unverified; the latest test produced cross-language mismatches and NaN reconstruction values.
 4. **Physical HIL Verification Discrepancy:** `raw_evidence_item3_hil_capture.txt` documents a 15,505-packet run that ran with legacy scrambler flags (`0x01`), leaving the paper's claim of 5,000 HC1 physical packets without an isolated matching raw evidence file.
 5. **Numerical Discrepancy in Chi-Square ($\chi^2$) and Entropy:** `README.md` reports $\chi^2 = 202.07$ and $H = 7.9982$, whereas raw evidence artifact 5 and `paper/main.tex` report $\chi^2 = 302.03$ and $H = 7.9973$.
 6. **Live Inference Discrepancy vs. LOSO Benchmark:** `stm32_telemetry_receiver.py` fits a pooled global model with heuristic floors and clipping, differing from the unclipped out-of-fold LOSO models reported in the scientific paper.
@@ -202,7 +216,8 @@ $$X^* = \frac{X - B_s}{|B_s| + \epsilon}, \quad \text{with } \epsilon = 10^{-6}$
 | **Canonical Obfuscation Name** | **4-Dimensional Coupled Hyperchaotic System (HC1 M-4DCHS)** | Canonical |
 | **Primary Scientific Threshold** | **$\tau = 0.50$** (Pre-specified Primary) / **$\tau = 0.35$** (Exploratory Tuned) | Canonical |
 | **Primary Scientific Metric** | **92.13% Accuracy, 88.29% F1 at $\tau = 0.50$**; 13-feat ablation gain **+10.79% Acc, +15.64% F1** | Canonical |
-| **Dashboard Operating Mode** | Maintain dual views: Authorized Decrypted vs Eavesdropper Intercept; document deployed pooled model | Canonical |
+| **Canonical ML Source of Truth** | **Python (`python/train_loso_ml_benchmark.py`)**; `results/ML_Model_Benchmark_LOSO.csv`, `results/ML_Predictions_LOSO.csv` | Canonical (MATLAB documented as secondary/historical) |
+| **Dashboard Operating Mode** | **Pooled deployment inference engine with threshold τ=0.35, streaming safety floors, feature clipping, and optional subject-specific baseline calibration. It is not the same as the 15-fold LOSO evaluation model.** | Canonical Architecture |
 
 ---
 
@@ -230,11 +245,11 @@ $$X^* = \frac{X - B_s}{|B_s| + \epsilon}, \quad \text{with } \epsilon = 10^{-6}$
 * **Expected Result:** Zero numerical divergence between README, raw evidence, and LaTeX paper.
 
 ### Phase 4: Parity Evidence Re-Execution
-* **Objective:** Run `python/verify_m4d_parity.py` and update `results/raw_evidence_item4_parity_check.json` and `.txt` with the post-fix passing result (0 state/keystream mismatches).
+* **Objective:** Run `python/verify_m4d_parity.py` and record the actual result in `results/raw_evidence_item4_parity_check.json` and `.txt`. A prior commit attempted to address float32 synchronization, but the latest independent parity rerun still fails.
 * **Files Allowed to Change:** `results/raw_evidence_item4_parity_check.json`, `results/raw_evidence_item4_parity_check.txt`.
 * **Files That Must Not Change:** `python/m4d_hyperchaos.py`, `embedded_stm32/src/telemetry_protocol.c`.
-* **Tests Required:** Run test suite across 10,000 packets; confirm `verdict: PASS`, 0 differing bytes, MSE $= 0.000000\text{ mV}^2$.
-* **Expected Result:** Evidence artifact reflects the true mathematical parity of the synchronized float32 implementation.
+* **Tests Required:** Run the parity test and record the actual result; passing requires 0 coordinate mismatches, 0 keystream mismatches, no NaNs, and lossless round-trip reconstruction.
+* **Expected Result:** Evidence artifact reflects the verified state of Python/C parity.
 
 ### Phase 5: Legacy Tree Deprecation
 * **Objective:** Archive or deprecate `STM32G474_ECG_Telemetry/` and update root `flash_firmware.bat` to eliminate fallback ambiguity.
@@ -249,11 +264,11 @@ $$X^* = \frac{X - B_s}{|B_s| + \epsilon}, \quad \text{with } \epsilon = 10^{-6}$
 
 1. **Dataset Integrity & Windowing Test:** Verify that `results/WESAD_HRV_features_expanded.csv` contains exactly 445 rows ($285\text{ baseline} + 160\text{ stress}$) across 15 subjects with 0 missing/NaN entries, confirming $0\%$ overlap across non-overlapping 60s windows.
 2. **15-Fold LOSO ML Reproducibility Test:** Execute `python python/train_loso_ml_benchmark.py` and verify:
-   * Logistic Regression achieves **$92.13\%$ Accuracy, $88.29\%$ F1 at $\tau = 0.50$**, and **$92.36\%$ Accuracy, $89.03\%$ F1 at $\tau = 0.35$**.
+   * Logistic Regression achieves **$92.13\%$ Accuracy, $88.29\%$ F1 at primary $\tau = 0.50$** (identical across both pipelines). At exploratory $\tau = 0.35$: Python canonical achieves **$92.36\%$ Accuracy, $89.10\%$ F1** ($86.88\%$ sensitivity, $95.44\%$ specificity), while MATLAB historical achieved **$92.36\%$ Accuracy, $89.03\%$ F1** ($86.25\%$ sensitivity, $95.79\%$ specificity).
    * All 6 classifiers achieve $\text{ROC-AUC} \ge 0.937$.
 3. **Zero Data Leakage Test:** Confirm that in each fold $k$, the test subject's baseline centroid $B_s$ uses strictly Label 1 windows, test stress labels are never exposed during training, and `StandardScaler` is fitted solely on $N-1$ subjects.
 4. **Packet Layout & CRC-16 Verification Test:** Verify that `compute_crc16()` in Python and `telemetry_crc16()` in C compute identical checksums over bytes 2–17 for 1,000 pseudo-random payloads.
-5. **C $\leftrightarrow$ Python Bit-Exact Parity Test:** Execute `python python/verify_m4d_parity.py` and confirm 0 coordinate mismatches, 0 keystream mismatches, and exact float identity across 10,000 round-trip packets.
+5. **C $\leftrightarrow$ Python Parity Test:** Execute `python python/verify_m4d_parity.py` to run the parity test and record the actual result; passing requires 0 coordinate mismatches, 0 keystream mismatches, no NaNs, and lossless round-trip reconstruction.
 6. **Numerical Stability / NaN / Inf Test:** Confirm that RK4 integration over 200,000 steps ($dt = 0.0025\text{ s}$) produces bounded state coordinates without numerical underflow or overflow.
 7. **Hardware Telemetry Flags Verification Test:** Confirm that incoming UART packets on COM10 have Byte 3 equal to `0x05` (`TELEMETRY_FLAG_ENCRYPTED | TELEMETRY_FLAG_CHAOS_4D`).
 8. **Streamlit Smoke Test:** Launch `streamlit run demo/app.py --server.headless true` and confirm clean rendering across all 4 navigation tabs.
