@@ -19,7 +19,7 @@ This document provides the definitive, step-by-step instructions for reproducing
         [ MATLAB DSP & FEATURE PIPELINE ]       [ PYTHON ML BENCHMARK ]
         - 0.5–40 Hz 4th-order Butterworth       - 15-Fold LOSO Validation
         - Pan-Tompkins & MAD Peak Detection     - 6 ML Models (inc. MLP)
-        - 60s Sliding Windows (50% Overlap)     - Feature Importance / Odds Ratios
+        - Non-overlapping 60s windows (60s hop)     - Feature Importance / Odds Ratios
         - 8 Core Autonomic HRV Metrics          - ROC-AUC / PR-AUC Evaluation
         - Subject Baseline Normalization (Δx)   - Streamlit Web Dashboard
                     │                                       │
@@ -114,7 +114,7 @@ pip install -r requirements.txt
 ---
 
 ### Step 2: Multi-Subject DSP & Feature Extraction (MATLAB)
-> **Goal:** Filter raw ECG, detect R-peaks, enforce physiological interval gating, extract 8 core HRV metrics across 60-second sliding windows (30s step), and calculate subject-specific relative baseline calibration.
+> **Goal:** Filter raw ECG, detect R-peaks, enforce physiological interval gating, extract 8 core HRV metrics from non-overlapping 60-second windows with a 60-second hop, and calculate subject-specific relative baseline calibration.
 
 * **Script:** [`matlab/02_preprocessing/TEN_process_all_subjects.m`](matlab/02_preprocessing/TEN_process_all_subjects.m)
 * **Execution (MATLAB Command Window):**

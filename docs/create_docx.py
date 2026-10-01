@@ -121,7 +121,7 @@ def create_docx():
         ├──> MATLAB DSP & Feature Pipeline:
         │     • 0.5–40 Hz 4th-order zero-phase Butterworth filtering (filtfilt)
         │     • Pan-Tompkins & MAD-adaptive R-peak detection (refractory lockout = 350 ms)
-        │     • 60-second sliding windows with 50% overlap (30s step) -> 445 windows
+        │     • Non-overlapping 60-second windows with a 60-second hop -> 445 windows
         │     • 8 Core HRV Metrics + Subject-Specific Relative Calibration (Δx)
         │     • Master 6-Panel Research Dashboard & 300 DPI Medical Figures
         └──> Python ML Benchmark & Deployment:

@@ -104,3 +104,8 @@ scratch_test.py
 # =========================================================
 local_teacher_experiments/
 local_teacher_experiments/**
+teacher_project_b/
+teacher_project_b/**
+STM32G474_ECG_Telemetry/
+STM32G474_ECG_Telemetry/**
+

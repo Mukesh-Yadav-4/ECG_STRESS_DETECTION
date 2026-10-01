@@ -55,7 +55,7 @@ flowchart LR
 ### Phase 1: Data Acquisition & Clinical Signal Processing <kbd>COMPLETED</kbd>
 - [x] Extracted raw 700 Hz Lead-II ECG and condition labels from raw WESAD files (`extract_ecg_labels.py`).
 - [x] Implemented baseline wander elimination and high-frequency noise removal using a 4th-order Butterworth bandpass filter (0.5–40 Hz) and 50 Hz notch filter.
-- [x] Designed 60-second sliding windows (50% overlap) with Pan-Tompkins R-peak detection and Median Absolute Deviation (MAD) adaptive thresholding.
+- [x] Designed non-overlapping 60-second windows with a 60-second hop with Pan-Tompkins R-peak detection and Median Absolute Deviation (MAD) adaptive thresholding.
 - [x] Extracted **8 Core Autonomic HRV Metrics**:
   - `MeanHR` (Mean heart rate in BPM)
   - `RMSSD` (Root mean square of successive RR differences — primary vagal marker)

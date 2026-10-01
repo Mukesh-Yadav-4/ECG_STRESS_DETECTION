@@ -84,7 +84,7 @@ This project implements a complete, edge-to-cloud **Cyber-Physical Internet of M
   - `Baseline`: 20-minute quiet resting period in sitting/reading position.
   - `Stress`: Trier Social Stress Test (TSST), combining public speaking and mental arithmetic challenges under interpersonal evaluation.
   - `Amusement`: Passive video-watching relaxation period.
-* **Standardized Epochs**: 445 standardized 60-second windows with 50% overlap ($N = 285$ Baseline/Calm, $N = 160$ Stress).
+* **Standardized Epochs**: 445 standardized, non-overlapping 60-second windows with a 60-second hop ($N = 285$ Baseline/Calm, $N = 160$ Stress).
 
 ### 2.2 Digital Pre-Processing
 1. **Offline Preprocessing (MATLAB & Python Training)**:

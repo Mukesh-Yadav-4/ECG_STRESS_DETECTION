@@ -230,7 +230,7 @@ HTML_CONTENT = """<!DOCTYPE html>
         [ MATLAB DSP & FEATURE SUITE ]          [ PYTHON ML BENCHMARK ]
         - 0.5–40 Hz 4th-order Butterworth       - 15-Fold LOSO Validation
         - Pan-Tompkins & MAD Peak Detection     - 6 ML Models (inc. MLP)
-        - 60s Sliding Windows (50% Overlap)     - Feature Importance / Odds Ratios
+        - Non-overlapping 60-second windows with a 60-second hop     - Feature Importance / Odds Ratios
         - 8 Core Autonomic HRV Metrics          - ROC-AUC / PR-AUC Evaluation
         - Subject Baseline Normalization (Δx)   - Streamlit Web Dashboard
                     │                                       │
@@ -279,7 +279,7 @@ setup_project</code></pre>
     <span class="step-title">Step 2: Multi-Subject DSP & Feature Extraction</span>
     <span class="step-tag tag-matlab">MATLAB</span>
   </div>
-  <p>Applies a zero-phase 4th-order Butterworth bandpass (0.5–40 Hz), estimates the noise floor via Median Absolute Deviation (MAD), enforces 350 ms refractory lockout, extracts 60s windows with 50% overlap, gates intervals to 300–1500 ms (40–200 BPM), and extracts 8 core HRV metrics normalized against resting baseline.</p>
+  <p>Applies a zero-phase 4th-order Butterworth bandpass (0.5–40 Hz), estimates the noise floor via Median Absolute Deviation (MAD), enforces 350 ms refractory lockout, extracts non-overlapping 60-second windows with a 60-second hop, gates intervals to 300–1500 ms (40–200 BPM), and extracts 8 core HRV metrics normalized against resting baseline.</p>
   <pre><code>TEN_process_all_subjects</code></pre>
   <div><strong>Output:</strong> <code>results/WESAD_HRV_features_expanded.csv</code> (445 standardized windows across 15 subjects).</div>
 </div>
