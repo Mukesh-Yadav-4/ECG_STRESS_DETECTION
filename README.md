@@ -24,28 +24,28 @@
 ## Visual Project Showcase
 
 <p align="center">
-  <a href="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/results/figures/FINAL_Project_Dashboard.png" target="_blank">
-    <img src="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/results/figures/FINAL_Project_Dashboard.png" width="100%" alt="Master Project Dashboard" />
+  <a href="results/figures/FINAL_Project_Dashboard.png" target="_blank">
+    <img src="results/figures/FINAL_Project_Dashboard.png" width="100%" alt="Master Project Dashboard" />
   </a>
   <br>
-  <em><b>Figure 1: Master Research Benchmark Dashboard.</b> End-to-end WESAD study: (A) Four-stage model progression & feature ablation; (B) Subject-specific stress detection rates across all 15 subjects; (C) Calibrated 15-fold LOSO confusion matrix (TN: 278, FP: 7, FN: 28, TP: 132 at primary $\tau=0.50$); (D) Cross-validated ROC curve ($\text{ROC-AUC} = 0.9493$); (E) Validated performance scorecard; (F) Test window distribution across subjects ($N = 445$).</em>
+  <em><b>Figure 1: Master Research Benchmark Dashboard.</b> End-to-end WESAD study: (A) Four-stage model progression and feature ablation; (B) Subject-specific stress detection rates across all 15 subjects; (C) Calibrated 15-fold LOSO confusion matrix (TN: 278, FP: 7, FN: 28, TP: 132 at primary &tau; = 0.50); (D) Cross-validated ROC curve (ROC-AUC = 0.9493); (E) Validated performance scorecard; (F) Test window distribution across subjects (N = 445).</em>
 </p>
 
 <table align="center" width="100%">
   <tr>
     <td align="center" width="50%">
-      <a href="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_Hardware_Testbed_Composite.png" target="_blank">
-        <img src="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_Hardware_Testbed_Composite.png" width="100%" alt="Physical STM32 Hardware Testbed" />
+      <a href="paper/ieee_ecg_stress_detection/figures/FIG_Hardware_Testbed_Composite.png" target="_blank">
+        <img src="paper/ieee_ecg_stress_detection/figures/FIG_Hardware_Testbed_Composite.png" width="100%" alt="Physical STM32 Hardware Testbed" />
       </a>
       <br />
       <em><b>Figure 2(a): Physical STM32 Edge Hardware Testbed.</b> NUCLEO-G474RE (170 MHz ARM Cortex-M4) testbed streaming real-time filtered and hyperchaotic encrypted ECG over physical USB-UART (COM10 @ 115,200 baud).</em>
     </td>
     <td align="center" width="50%">
-      <a href="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_M4D_Attractor_3D.png" target="_blank">
-        <img src="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_M4D_Attractor_3D.png" width="100%" alt="4D Coupled Hyperchaotic Attractor" />
+      <a href="paper/ieee_ecg_stress_detection/figures/FIG_M4D_Attractor_3D.png" target="_blank">
+        <img src="paper/ieee_ecg_stress_detection/figures/FIG_M4D_Attractor_3D.png" width="100%" alt="4D Coupled Hyperchaotic Attractor" />
       </a>
       <br />
-      <em><b>Figure 2(b): 4D Coupled Hyperchaotic Attractor (HC1 M-4DCHS).</b> Continuous phase-space trajectory $(x, y, z)$ with color-mapped 4th-dimension state variable $w$, exhibiting continuous volume contraction ($\nabla \cdot \mathbf{F} = -27.64$), two positive Lyapunov exponents ($\lambda_1 \approx +0.438, \lambda_2 \approx +0.254$), and fractional Kaplan-Yorke dimension $D_{KY} \approx 3.024$.</em>
+      <em><b>Figure 2(b): 4D Coupled Hyperchaotic Attractor (HC1 M-4DCHS).</b> Continuous phase-space trajectory (x, y, z) with color-mapped 4th-dimension state variable w, exhibiting continuous volume contraction (div(F) = -27.64), two positive Lyapunov exponents (&lambda;₁ &approx; +0.438, &lambda;₂ &approx; +0.254), and fractional Kaplan-Yorke dimension D_KY &approx; 3.024.</em>
     </td>
   </tr>
 </table>
@@ -53,18 +53,18 @@
 <table align="center" width="100%">
   <tr>
     <td align="center" width="50%">
-      <a href="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_Dashboard_SinglePage_M4D_Decrypted.png" target="_blank">
-        <img src="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_Dashboard_SinglePage_M4D_Decrypted.png" width="100%" alt="Authorized Terminal View" />
+      <a href="paper/ieee_ecg_stress_detection/figures/FIG_Dashboard_SinglePage_M4D_Decrypted.png" target="_blank">
+        <img src="paper/ieee_ecg_stress_detection/figures/FIG_Dashboard_SinglePage_M4D_Decrypted.png" width="100%" alt="Authorized Monitoring View" />
       </a>
       <br />
       <em><b>Figure 3(a): Authorized Monitoring Terminal View (Decrypted Telemetry).</b> Interactive dashboard displaying real-time descrambled Lead-II ECG from prerecorded WESAD replay, model-estimated stress score, live HRV biomarker cards, and client-side Three.js WebGL (60 FPS) 3D continuous phase-space monitor.</em>
     </td>
     <td align="center" width="50%">
-      <a href="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_Dashboard_M4D_Eavesdropper.png" target="_blank">
-        <img src="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_Dashboard_M4D_Eavesdropper.png" width="100%" alt="Adversarial Intercept View" />
+      <a href="paper/ieee_ecg_stress_detection/figures/FIG_Dashboard_M4D_Eavesdropper.png" target="_blank">
+        <img src="paper/ieee_ecg_stress_detection/figures/FIG_Dashboard_M4D_Eavesdropper.png" width="100%" alt="Adversarial Intercept View" />
       </a>
       <br />
-      <em><b>Figure 3(b): Adversarial Wire Intercept View (Eavesdropper Mode).</b> Physical UART wiretap without decryption keys: raw high-entropy scrambled ciphertext ($H = 7.9977$ bits/byte), zero resolvable QRS fiducials, and shielded biometric cards.</em>
+      <em><b>Figure 3(b): Adversarial Wire Intercept View (Eavesdropper Mode).</b> Physical UART wiretap without decryption keys: raw high-entropy scrambled ciphertext (Shannon entropy H = 7.9977 bits/byte), zero resolvable QRS fiducials, and shielded biometric cards.</em>
     </td>
   </tr>
 </table>
@@ -75,12 +75,12 @@
 
 Automated classification of acute psychological stress from non-invasive wearable electrocardiography (ECG) is a fundamental problem in physiological computing, affective state recognition, and wearable Internet of Medical Things (IoMT). A primary challenge in clinical and wearable translation is **inter-individual autonomic baseline heterogeneity**: resting heart rate and basal heart rate variability (HRV) metrics vary widely across individuals due to genetics, cardiorespiratory fitness, and circadian cycles. Global classifiers trained on raw, uncalibrated features suffer high false-alarm rates when deployed on unseen subjects.
 
-In this work, we present an end-to-end, reproducible research pipeline evaluated across all **15 subjects** ($N = 15$, 445 standardized complete, non-overlapping 60-second windows) of the public **WESAD** (Wearable Stress and Affect Detection) cohort, paired with a bare-metal edge embedded microcontroller deployment on the **ARM Cortex-M4 (STM32G474RE)**:
+In this work, we present an end-to-end, reproducible research pipeline evaluated across all **15 subjects** (N = 15, 445 standardized complete, non-overlapping 60-second windows) of the public **WESAD** (Wearable Stress and Affect Detection) cohort, paired with a bare-metal edge embedded microcontroller deployment on the **ARM Cortex-M4 (STM32G474RE)**:
 
-1. **Relative Baseline Calibration ($\Delta x$):** Transforming features into relative fractional deviations relative to each subject's resting baseline ($X^* = (X - B_s) / (|B_s| + \epsilon)$) drives an empirical **+10.79 percentage-point leap in classification accuracy** (81.57% to 92.36%) and a **+15.64 percentage-point leap in stress F1-score** (73.03% to 88.67%) under strict 15-fold Leave-One-Subject-Out (LOSO) cross-validation.
-2. **Authoritative Primary Benchmark ($\tau = 0.50$):** Under strict 15-fold LOSO cross-validation, the primary L2-regularized Logistic Regression model achieves **92.13% Accuracy, 88.29% F1-score, 82.50% Sensitivity, 97.54% Specificity, ROC-AUC of 0.9493, and PR-AUC of 0.9467**, providing an exceptionally high specificity with only **7 false alarms** across the entire 15-subject cohort (278/285 calm windows correct).
-3. **Exploratory Clinical Screening ($\tau = 0.35$):** For sensitivity-prioritized screening applications, lowering the decision threshold to $\tau = 0.35$ elevates stress sensitivity to **86.25%--86.88%** (capturing 6 additional acute stress episodes) while maintaining **92.36% Accuracy**.
-4. **Bare-Metal Edge DSP:** A custom 5-stage Direct Form I Biquad IIR filter cascade (0.5--40 Hz bandpass + 50 Hz powerline notch at $f_s = 350$~Hz) executes in **$1.87~\mu\text{s}$ per sample** ($\approx 318$ CPU cycles, 0.065% CPU load at 170 MHz SYSCLK).
+1. **Relative Baseline Calibration (&Delta;x):** Transforming features into relative fractional deviations relative to each subject's resting baseline ($X^* = (X - B_s) / (|B_s| + \epsilon)$) drives an empirical **+10.79 percentage-point leap in classification accuracy** (81.57% to 92.36%) and a **+15.64 percentage-point leap in stress F1-score** (73.03% to 88.67%) under strict 15-fold Leave-One-Subject-Out (LOSO) cross-validation.
+2. **Authoritative Primary Benchmark (&tau; = 0.50):** Under strict 15-fold LOSO cross-validation, the primary L2-regularized Logistic Regression model achieves **92.13% Accuracy, 88.29% F1-score, 82.50% Sensitivity, 97.54% Specificity, ROC-AUC of 0.9493, and PR-AUC of 0.9467**, providing an exceptionally high specificity with only **7 false alarms** across the entire 15-subject cohort (278/285 calm windows correct).
+3. **Exploratory Clinical Screening (&tau; = 0.35):** For sensitivity-prioritized screening applications, lowering the decision threshold to &tau; = 0.35 elevates stress sensitivity to **86.25%--86.88%** (capturing 6 additional acute stress episodes) while maintaining **92.36% Accuracy**.
+4. **Bare-Metal Edge DSP:** A custom 5-stage Direct Form I Biquad IIR filter cascade (0.5--40 Hz bandpass + 50 Hz powerline notch at f_s = 350 Hz) executes in **1.87 &mu;s per sample** (&approx; 318 CPU cycles, 0.065% CPU load at 170 MHz SYSCLK).
 5. **Physical Hardware-in-the-Loop (HIL) Validation:** Validated over **10,000 consecutive physical packets (200,000 wire bytes)** streamed across a physical USB-UART interface at 350.02 Hz from an STM32G474RE, achieving **zero sequence gaps (0.0% packet loss), zero CRC errors, and 0.0 mV signal reconstruction error** sequence-aligned with the canonical firmware replay reference.
 
 ---
@@ -128,18 +128,18 @@ Experiments were conducted using the benchmark **WESAD** physiological dataset (
 * **Dataset Standardization:** Exactly **445 standardized, complete non-overlapping 60-second windows** (**160 Acute Stress windows** vs. **285 Calm / Resting baseline windows**).
 
 <p align="center">
-  <img src="paper/figures/DEMO_Protocol_Timeline.png" width="95%" alt="WESAD Protocol Timeline" />
+  <img src="paper/ieee_ecg_stress_detection/figures/DEMO_Protocol_Timeline.png" width="95%" alt="WESAD Protocol Timeline" />
   <br>
   <em><b>Figure 4: Experimental Protocol Timeline.</b> Continuous physiological session showing transitions through Baseline, TSST Acute Stress, Amusement, and Meditation recovery phases.</em>
 </p>
 
 ---
 
-## Verified Primary Results (Authoritative Operating Point: $\tau = 0.50$)
+## Verified Primary Results (Authoritative Operating Point: &tau; = 0.50)
 
-The pre-specified decision threshold of $\mathbf{\tau = 0.50}$ represents the authoritative primary research benchmark. Under 15-fold Leave-One-Subject-Out cross-validation, the model achieves state-of-the-art discrimination while prioritizing specificity to prevent false-alarm fatigue in wearable monitoring.
+The pre-specified decision threshold of **&tau; = 0.50** represents the authoritative primary research benchmark. Under 15-fold Leave-One-Subject-Out cross-validation, the model achieves state-of-the-art discrimination while prioritizing specificity to prevent false-alarm fatigue in wearable monitoring.
 
-### Primary Performance Scorecard ($\tau = 0.50$)
+### Primary Performance Scorecard (&tau; = 0.50)
 
 | Evaluation Metric | Value | Operational Meaning & Confusion Counts |
 | :--- | :---: | :--- |
@@ -151,22 +151,22 @@ The pre-specified decision threshold of $\mathbf{\tau = 0.50}$ represents the au
 | **Balanced Accuracy** | **90.02%** | Unbiased mean of sensitivity (82.50%) and specificity (97.54%) |
 | **ROC-AUC** | **0.9493** | Continuous discrimination area across all thresholds |
 | **PR-AUC** | **0.9467** | Area under Precision-Recall curve |
-| **Confusion Matrix** | \multicolumn{2}{c|}{\textbf{True Positives: 132} \| \textbf{False Positives: 7} \| \textbf{True Negatives: 278} \| \textbf{False Negatives: 28}} |
+| **Confusion Counts** | **TP: 132 \| FP: 7 \| TN: 278 \| FN: 28** | 410 correct predictions, 35 errors |
 
 <table align="center" width="100%">
   <tr>
     <td align="center" width="50%">
-      <img src="results/figures/FINAL_Confusion_Matrix.png" width="100%" alt="Confusion Matrix at tau=0.50" /><br />
-      <em><b>Figure 5(a): Primary Confusion Matrix ($\tau = 0.50$).</b> 97.54% specificity (278/285 calm windows) and 82.50% sensitivity (132/160 acute stress windows) with only 7 false alarms across the entire 15-subject cohort.</em>
+      <img src="paper/ieee_ecg_stress_detection/figures/FINAL_Confusion_Matrix.png" width="100%" alt="Confusion Matrix at tau=0.50" /><br />
+      <em><b>Figure 5(a): Primary Confusion Matrix (&tau; = 0.50).</b> 97.54% specificity (278/285 calm windows) and 82.50% sensitivity (132/160 acute stress windows) with only 7 false alarms across the entire 15-subject cohort.</em>
     </td>
     <td align="center" width="50%">
-      <img src="results/figures/FINAL_ROC_Curve.png" width="100%" alt="ROC Curve" /><br />
-      <em><b>Figure 5(b): Cross-Validated ROC Curve ($\text{ROC-AUC} = 0.9493$).</b> Showing primary benchmark ($\tau = 0.50$, blue) and exploratory clinical-screening point ($\tau = 0.35$, red).</em>
+      <img src="paper/ieee_ecg_stress_detection/figures/FINAL_ROC_Curve.png" width="100%" alt="ROC Curve" /><br />
+      <em><b>Figure 5(b): Cross-Validated ROC Curve (ROC-AUC = 0.9493).</b> Showing primary benchmark (&tau; = 0.50, blue marker) and exploratory clinical-screening point (&tau; = 0.35, red marker).</em>
     </td>
   </tr>
 </table>
 
-### Multi-Model Comparative Leaderboard (15-Fold LOSO at $\tau = 0.50$)
+### Multi-Model Comparative Leaderboard (15-Fold LOSO at &tau; = 0.50)
 
 Six machine learning architectures were benchmarked under identical 15-fold LOSO cross-validation with subject-specific baseline normalization:
 
@@ -180,18 +180,18 @@ Six machine learning architectures were benchmarked under identical 15-fold LOSO
 | **HistGradientBoosting** | 89.21 | 87.33 | 80.62 | 94.04 | 88.36 | 84.31 | 0.9459 | 0.9375 |
 
 <p align="center">
-  <img src="results/figures/ML_Model_Benchmark_Bars.png" width="95%" alt="ML Benchmark Bars" />
+  <img src="paper/ieee_ecg_stress_detection/figures/ML_Model_Benchmark_Bars.png" width="95%" alt="ML Benchmark Bars" />
   <br>
   <em><b>Figure 6: Multi-Model Benchmark Comparison.</b> Performance across all six classifiers under 15-fold LOSO cross-validation on unseen test participants.</em>
 </p>
 
 ---
 
-## Exploratory Clinical Screening Benchmark ($\tau = 0.35$)
+## Exploratory Clinical Screening Benchmark (&tau; = 0.35)
 
-For clinical-screening applications where missing an acute stress episode carries a higher penalty than a false alarm, lowering the decision threshold to **$\tau = 0.35$** functions as an exploratory sensitivity-prioritized operating point:
+For clinical-screening applications where missing an acute stress episode carries a higher penalty than a false alarm, lowering the decision threshold to **&tau; = 0.35** functions as an exploratory sensitivity-prioritized operating point:
 
-| Metric | Primary Benchmark ($\tau = 0.50$) | MATLAB Pipeline ($\tau = 0.35$) | Python Pipeline ($\tau = 0.35$) |
+| Metric | Primary Benchmark (&tau; = 0.50) | MATLAB Pipeline (&tau; = 0.35) | Python Pipeline (&tau; = 0.35) |
 | :--- | :---: | :---: | :---: |
 | **Operating Role** | **Authoritative Benchmark** | **Exploratory Screening** | **Exploratory Screening** |
 | **Total Correct Windows** | **410 / 445** (92.13%) | **411 / 445** (92.36%) | **411 / 445** (92.36%) |
@@ -205,8 +205,8 @@ For clinical-screening applications where missing an acute stress episode carrie
 | **False Negatives (FN)** | 28 | **22** | **21** |
 
 > [!NOTE]
-> **Implementation Rationale for the 1-Sample Difference at $\tau = 0.35$:**  
-> The 1-sample difference between the MATLAB and Python implementations at $\tau = 0.35$ (138 vs. 139 True Positives, and 12 vs. 13 False Positives) arises from algorithmic solver differences: MATLAB utilizes unregularized gradient descent, whereas Python uses L2-regularized coordinate descent (`liblinear`). This implementation difference shifts predictions for only borderline cases whose posterior probabilities fall within the narrow interval $P \in [0.345, 0.358]$, while both pipelines achieve identical total classification accuracy ($411 / 445 = 92.36\%$).
+> **Implementation Rationale for the 1-Sample Difference at &tau; = 0.35:**
+> The 1-sample difference between the MATLAB and Python implementations at &tau; = 0.35 (138 vs. 139 True Positives, and 12 vs. 13 False Positives) arises from algorithmic solver differences: MATLAB utilizes unregularized gradient descent, whereas Python uses L2-regularized coordinate descent (`liblinear`). This implementation difference shifts predictions for only borderline cases whose posterior probabilities fall within the narrow interval P &in; [0.345, 0.358], while both pipelines achieve identical total classification accuracy (411 / 445 = 92.36%).
 
 ---
 
@@ -215,17 +215,17 @@ For clinical-screening applications where missing an acute stress episode carrie
 To interpret the learned decision boundary, a 30-repeat permutation importance analysis was executed per fold ($15 \times 30 = 450$ trials per feature) alongside standardized logistic regression odds ratios ($e^{w_i}$):
 
 <p align="center">
-  <img src="results/figures/ML_Feature_Importance_Permutation.png" width="95%" alt="Feature Importance and Odds Ratios" />
+  <img src="paper/ieee_ecg_stress_detection/figures/ML_Feature_Importance_Permutation.png" width="95%" alt="Feature Importance and Odds Ratios" />
   <br>
   <em><b>Figure 7: Permutation Importance & Odds Ratios.</b> (Left) Test ROC-AUC degradation upon feature permutation; (Right) Standardized odds ratios indicating the physiological direction and magnitude of predictive weights.</em>
 </p>
 
-* **Vagal Suppression ($\Delta\text{RMSSD}$ and $\Delta\text{pNN50}$):** Dominate predictive importance ($\text{OR} < 0.40$), indicating rapid withdrawal of parasympathetic vagal modulation during TSST cognitive challenge.
-* **Cardiac Acceleration ($\Delta\text{MeanHR}$):** Strongly elevates stress odds ($\text{OR} > 2.80$, $\Delta\text{AUC} = 0.065$), matching sympathetic chronotropic arousal.
-* **Cohort Generalization:** The model achieves $\ge 90\%$ stress recall in 11 of 15 subjects, and 100% recall in 8 subjects (S3, S4, S5, S8, S11, S14, S16, S17). Subject S2 exhibited blunted autonomic reactivity ($\Delta\text{MeanHR} \approx 0$\,BPM), behaving as an autonomic non-responder.
+* **Vagal Suppression (&Delta;RMSSD and &Delta;pNN50):** Dominate predictive importance (OR < 0.40), indicating rapid withdrawal of parasympathetic vagal modulation during TSST cognitive challenge.
+* **Cardiac Acceleration (&Delta;MeanHR):** Strongly elevates stress odds (OR > 2.80, &Delta;AUC = 0.065), matching sympathetic chronotropic arousal.
+* **Cohort Generalization:** The model achieves &ge; 90% stress recall in 11 of 15 subjects, and 100% recall in 8 subjects (S3, S4, S5, S8, S11, S14, S16, S17). Subject S2 exhibited blunted autonomic reactivity (&Delta;MeanHR &approx; 0 BPM), behaving as an autonomic non-responder.
 
 <p align="center">
-  <img src="results/figures/FINAL_Subject_Stress_Detection.png" width="95%" alt="Subject Stress Detection Rates" />
+  <img src="paper/ieee_ecg_stress_detection/figures/FINAL_Subject_Stress_Detection.png" width="95%" alt="Subject Stress Detection Rates" />
   <br>
   <em><b>Figure 8: Subject-Specific Recall Breakdown.</b> 14 of 15 subjects achieve successful stress detection. Subject S2 represents an idiosyncratic physiological non-responder with blunted heart rate reactivity.</em>
 </p>
@@ -244,6 +244,12 @@ To prove real-world embedded feasibility, the pipeline was deployed on an **ARM 
 └──────────────┴──────────────┴──────────────┴──────────────┴────────────────────────┴────────────────────────┴──────────────────┘
 ```
 
+<p align="center">
+  <img src="paper/ieee_ecg_stress_detection/figures/FIG_Physical_HIL_10k_Validation.png" width="95%" alt="Physical HIL 10,000 Packets Validation" />
+  <br>
+  <em><b>Figure 9: Physical HIL Telemetry Validation Across 10,000 Over-the-Wire Packets.</b> (a) Monotonic sequence continuity (11,428 to 21,427, zero gaps); (b) Transmission pacing distribution (2.857 &plusmn; 0.002 ms); (c) Bit-exact signal reconstruction error (0.0 mV raw and filtered after sequence alignment); (d) Wire statistical distribution checks (H = 7.9977 b/B, &chi;&sup2; = 257.79, p = 0.4394, zero CRC errors).</em>
+</p>
+
 ### Verified Physical HIL Metrics (10,000 Packets)
 
 The physical testbed executed on the STM32G474RE board produced exactly **10,000 physical telemetry packets (200,000 wire bytes)**:
@@ -257,13 +263,13 @@ The physical testbed executed on the STM32G474RE board produced exactly **10,000
 | **Packet Sequence Continuity** | **11,428 to 21,427** | Monotonically strictly increasing |
 | **Sequence Drops / Gaps** | **0 (0.0% packet loss)** | Zero dropped frames under line-rate interrupt |
 | **CRC-16-CCITT Checksum Errors**| **0 (0.0% transmission error)** | Perfect wire transport integrity |
-| **Effective Telemetry Throughput**| **350.02 Packets/s** | Target: 350.00 Hz nominal ($T_s = 2.857$\,ms) |
-| **Raw ECG Reconstruction Error** | **0.0 mV** ($\text{MSE} = 0.000\,\text{mV}^2$) | Bit-exact identity after sequence-aligned comparison |
-| **Filtered ECG Reconstruction Error**| **0.0 mV** ($\text{MSE} = 0.000\,\text{mV}^2$) | Bit-exact identity after sequence-aligned comparison |
+| **Effective Telemetry Throughput**| **350.02 Packets/s** | Target: 350.00 Hz nominal (Ts = 2.857 ms) |
+| **Raw ECG Reconstruction Error** | **0.0 mV** (MSE = 0.000 mV&sup2;) | Bit-exact identity after sequence-aligned comparison |
+| **Filtered ECG Reconstruction Error**| **0.0 mV** (MSE = 0.000 mV&sup2;) | Bit-exact identity after sequence-aligned comparison |
 | **QRS Peak Retention** | **39 / 39 Peaks Preserved (100%)** | Zero fiducial morphological distortion |
-| **Wire Shannon Entropy** | **7.9977 Bits/Byte** | 99.97% of theoretical maximum ($8.0000$\,b/B) |
-| **Chi-Square Uniformity ($\chi^2$)**| $\chi^2 = 257.79,\; p = 0.4394$ | Passes null hypothesis of uniform byte distribution |
-| **Plain vs. Cipher Correlation**| $r_{\text{plain}} = +0.9892 \rightarrow r_{\text{cipher}} = +0.0012$ | Complete loss of linear correlation |
+| **Wire Shannon Entropy** | **7.9977 Bits/Byte** | 99.97% of theoretical maximum (8.0000 b/B) |
+| **Chi-Square Uniformity (&chi;&sup2;)**| &chi;&sup2; = 257.79, p = 0.4394 | Passes null hypothesis of uniform byte distribution |
+| **Plain vs. Cipher Correlation**| r_plain = +0.9892 &rarr; r_cipher = +0.0012 | Complete loss of linear correlation |
 
 ---
 
@@ -275,7 +281,7 @@ The physical testbed executed on the STM32G474RE board produced exactly **10,000
 >
 > **HC1 DOES NOT PROVIDE FORMAL CRYPTOGRAPHIC SECURITY:**
 > * It does **not** provide semantic security, chosen-plaintext (CPA) security, or chosen-ciphertext (CCA) security.
-> * High Shannon entropy ($7.9977$\,b/B) and Chi-square uniformity ($p = 0.4394$) are **statistical wire distribution tests**, **NOT mathematical proofs of cryptographic hardness**.
+> * High Shannon entropy (7.9977 b/B) and Chi-square uniformity (p = 0.4394) are **statistical wire distribution tests**, **NOT mathematical proofs of cryptographic hardness**.
 > * In clinical, commercial, or production medical deployments, formal standardized authenticated encryption (such as **AES-128-GCM, NIST SP 800-38D**) must be utilized.
 
 ---
@@ -314,7 +320,7 @@ pip install -r requirements.txt
 # Executes 15-fold LOSO cross-validation across all 6 classifiers
 python python/train_loso_ml_benchmark.py
 ```
-*Outputs: Evaluates 445 out-of-fold windows, reproduces the primary $\tau = 0.50$ benchmark (92.13% Accuracy, 88.29% F1), and saves `results/ML_Model_Benchmark_LOSO.csv`.*
+*Outputs: Evaluates 445 out-of-fold windows, reproduces the primary &tau; = 0.50 benchmark (92.13% Accuracy, 88.29% F1), and saves `results/ML_Model_Benchmark_LOSO.csv`.*
 
 ### 3. Verify Strict Host C-to-Python Single-Precision Parity
 
