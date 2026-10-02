@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Canonical Feature Schema for WESAD ECG Stress Detection",
+  "description": "Formal schema and physiological specifications for the canonical 445-window feature dataset derived from WESAD chest Lead-II ECG.",
+  "dataset_file": "results/WESAD_HRV_features_expanded.csv",
+  "sha256": "0405170bb05f4b597d8ec46eea47c2fbb474144fc5f3fcfbd5027b04c70ac2a7",
+  "type": "object",
+  "total_records": 445,
+  "subject_count": 15,
+  "subjects": ["S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11", "S13", "S14", "S15", "S16", "S17"],
+  "classes": {
+    "Baseline": {
+      "count": 285,
+      "percentage": 64.045,
+      "label_numeric": 0
+    },
+    "Stress": {
+      "count": 160,
+      "percentage": 35.955,
+      "label_numeric": 1
+    }
+  },
+  "windowing": {
+    "duration_seconds": 60.0,
+    "hop_seconds": 60.0,
+    "overlap_percent": 0.0,
+    "raw_sampling_rate_hz": 700
+  },
+  "core_personalized_subset": [
+    "MeanHR",
+    "SDNN",
+    "RMSSD",
+    "pNN50",
+    "MeanRR",
+    "RR_CV",
+    "RR_IQR",
+    "HR_IQR"
+  ],
+  "columns": {
+    "metadata": {
+      "Subject": {
+        "type": "string",
+        "description": "WESAD participant identifier (15 healthy adults: S2-S11, S13-S17; S1 and S12 excluded by study protocol).",
+        "enum": ["S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11", "S13", "S14", "S15", "S16", "S17"]
+      },
+      "Condition": {
+        "type": "string",
+        "description": "Experimental protocol condition label (Baseline = seated neutral reading, Stress = Trier Social Stress Test TSST).",
+        "enum": ["Baseline", "Stress"]
+      },
+      "Window": {
+        "type": "integer",
+        "description": "Sequential window index within the condition for that subject.",
+        "minimum": 1,
+        "maximum": 19
+      }
+    },
+    "physiological_features": {
+      "MeanHR": {
+        "type": "number",
+        "unit": "beats per minute (BPM)",
+        "in_core_subset": true,
+        "description": "Arithmetic mean of instantaneous heart rate across the 60-second window, HR_i = 60 / RR_i.",
+        "minimum": 53.125,
+        "maximum": 148.258,
+        "null_count": 0
+      },
+      "MedianHR": {
+        "type": "number",
+        "unit": "beats per minute (BPM)",
+        "in_core_subset": false,
+        "description": "Median of instantaneous heart rate across the 60-second window.",
+        "minimum": 50.725,
+        "maximum": 150.538,
+        "null_count": 0
+      },
+      "StdHR": {
+        "type": "number",
+        "unit": "beats per minute (BPM)",
+        "in_core_subset": false,
+        "description": "Standard deviation of instantaneous heart rate.",
+        "minimum": 2.198,
+        "maximum": 26.923,
+        "null_count": 0
+      },
+      "MinHR": {
+        "type": "number",
+        "unit": "beats per minute (BPM)",
+        "in_core_subset": false,
+        "description": "Minimum instantaneous heart rate observed within the window.",
+        "minimum": 40.0,
+        "maximum": 136.364,
+        "null_count": 0
+      },
+      "MaxHR": {
+        "type": "number",
+        "unit": "beats per minute (BPM)",
+        "in_core_subset": false,
+        "description": "Maximum instantaneous heart rate observed within the window.",
+        "minimum": 59.155,
+        "maximum": 170.732,
+        "null_count": 0
+      },
+      "MeanRR": {
+        "type": "number",
+        "unit": "seconds (s)",
+        "in_core_subset": true,
+        "description": "Arithmetic mean of normal-to-normal RR intervals in seconds.",
+        "minimum": 0.405,
+        "maximum": 1.142,
+        "null_count": 0
+      },
+      "MedianRR": {
+        "type": "number",
+        "unit": "seconds (s)",
+        "in_core_subset": false,
+        "description": "Median of normal-to-normal RR intervals in seconds.",
+        "minimum": 0.399,
+        "maximum": 1.183,
+        "null_count": 0
+      },
+      "SDNN": {
+        "type": "number",
+        "unit": "seconds (s)",
+        "in_core_subset": true,
+        "description": "Standard deviation of normal-to-normal RR intervals (Task Force 1996 standard). Expressed in seconds in canonical CSV (0.0448 s = 44.8 ms).",
+        "minimum": 0.0125,
+        "maximum": 0.1995,
+        "null_count": 0
+      },
+      "RMSSD": {
+        "type": "number",
+        "unit": "seconds (s)",
+        "in_core_subset": true,
+        "description": "Root mean square of successive RR interval differences, reflecting parasympathetic autonomic tone (Task Force 1996 standard). Expressed in seconds in canonical CSV (0.0312 s = 31.2 ms).",
+        "minimum": 0.0023,
+        "maximum": 0.1540,
+        "null_count": 0
+      },
+      "pNN50": {
+        "type": "number",
+        "unit": "percentage (%)",
+        "in_core_subset": true,
+        "description": "Percentage of adjacent RR intervals that differ by more than 50 milliseconds.",
+        "minimum": 0.0,
+        "maximum": 74.0,
+        "null_count": 0
+      },
+      "RR_CV": {
+        "type": "number",
+        "unit": "unitless ratio",
+        "in_core_subset": true,
+        "description": "Coefficient of variation of RR intervals: RR_CV = SDNN / MeanRR.",
+        "minimum": 0.0271,
+        "maximum": 0.2968,
+        "null_count": 0
+      },
+      "RR_IQR": {
+        "type": "number",
+        "unit": "seconds (s)",
+        "in_core_subset": true,
+        "description": "Interquartile range (75th - 25th percentile) of RR intervals, providing robust dispersion insensitive to outlier beats.",
+        "minimum": 0.0114,
+        "maximum": 0.4000,
+        "null_count": 0
+      },
+      "HR_IQR": {
+        "type": "number",
+        "unit": "beats per minute (BPM)",
+        "in_core_subset": true,
+        "description": "Interquartile range of instantaneous heart rate.",
+        "minimum": 2.703,
+        "maximum": 54.295,
+        "null_count": 0
+      }
+    }
+  },
+  "baseline_calibration_formula": {
+    "mathematical_expression": "delta_x = (x - mean(X_base)) / max(|mean(X_base)|, 1e-6)",
+    "description": "Subject-specific relative fractional deviation centered around zero at rest.",
+    "standardization": "StandardScaler(with_mean=True, with_std=True) fitted strictly on training fold X_train and applied to test fold X_test with zero leakage."
+  }
+}

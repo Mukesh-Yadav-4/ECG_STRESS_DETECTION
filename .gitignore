@@ -66,11 +66,14 @@ paper/*.synctex.gz
 # =========================================================
 __pycache__/
 *.py[cod]
+*.pyc
 *$py.class
 .venv/
 env/
 venv/
 .pytest_cache/
+.env
+.env.*
 
 # Streamlit agent skills (environment-specific symlinks)
 .agents/skills/developing-with-streamlit
@@ -88,6 +91,8 @@ embedded_stm32/*.bin
 # =========================================================
 # SCRATCH & TEMPORARY DEV FILES
 # =========================================================
+tmp/
+tmp/**
 scratch/
 scratch/**
 scratch_*

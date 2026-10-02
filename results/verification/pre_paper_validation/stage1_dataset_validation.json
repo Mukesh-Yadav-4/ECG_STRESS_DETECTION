@@ -1,0 +1,91 @@
+{
+  "subjects_count": 15,
+  "subjects": [
+    "S10",
+    "S11",
+    "S13",
+    "S14",
+    "S15",
+    "S16",
+    "S17",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6",
+    "S7",
+    "S8",
+    "S9"
+  ],
+  "total_windows": 445,
+  "baseline_windows": 285,
+  "stress_windows": 160,
+  "duplicate_rows": 0,
+  "nan_values": 0,
+  "window_duration_sec": 60,
+  "window_hop_sec": 60,
+  "window_overlap_pct": 0,
+  "per_subject_breakdown": {
+    "S10": {
+      "Baseline": 19,
+      "Stress": 12
+    },
+    "S11": {
+      "Baseline": 19,
+      "Stress": 11
+    },
+    "S13": {
+      "Baseline": 19,
+      "Stress": 11
+    },
+    "S14": {
+      "Baseline": 19,
+      "Stress": 11
+    },
+    "S15": {
+      "Baseline": 19,
+      "Stress": 11
+    },
+    "S16": {
+      "Baseline": 19,
+      "Stress": 11
+    },
+    "S17": {
+      "Baseline": 19,
+      "Stress": 12
+    },
+    "S2": {
+      "Baseline": 19,
+      "Stress": 10
+    },
+    "S3": {
+      "Baseline": 19,
+      "Stress": 10
+    },
+    "S4": {
+      "Baseline": 19,
+      "Stress": 10
+    },
+    "S5": {
+      "Baseline": 19,
+      "Stress": 10
+    },
+    "S6": {
+      "Baseline": 19,
+      "Stress": 10
+    },
+    "S7": {
+      "Baseline": 19,
+      "Stress": 10
+    },
+    "S8": {
+      "Baseline": 19,
+      "Stress": 11
+    },
+    "S9": {
+      "Baseline": 19,
+      "Stress": 10
+    }
+  },
+  "stage1_pass": true
+}

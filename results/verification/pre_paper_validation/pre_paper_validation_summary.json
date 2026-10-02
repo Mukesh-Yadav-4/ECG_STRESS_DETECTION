@@ -1,0 +1,136 @@
+{
+  "project": "WESAD ECG Stress Detection with Chaotic Telemetry",
+  "timestamp": "2026-10-02T00:37:00",
+  "overall_verdict": "PASS",
+  "safety_compliance": {
+    "hardware_reflashed": false,
+    "com10_opened": false,
+    "historical_evidence_overwritten": false,
+    "isolated_output_directory": "results/verification/pre_paper_validation"
+  },
+  "toolchains": {
+    "python": "3.14.3",
+    "numpy": "2.4.3",
+    "pandas": "3.0.1",
+    "scipy": "1.17.1",
+    "scikit_learn": "1.8.0",
+    "streamlit": "1.64.0",
+    "host_gcc": "MinGW GCC 6.3.0",
+    "arm_gcc": "GNU Tools for STM32 14.3.1 (14.3.rel1)",
+    "matlab": "26.1.0.3312084 (R2026a) Update 4",
+    "os": "Windows-11-10.0.26200-SP0"
+  },
+  "stages": {
+    "stage_1_dataset_windowing": {
+      "verdict": "PASS",
+      "subjects_count": 15,
+      "total_windows": 445,
+      "baseline_windows": 285,
+      "stress_windows": 160,
+      "window_duration_sec": 60,
+      "window_hop_sec": 60,
+      "overlap_percent": 0.0,
+      "duplicate_rows": 0,
+      "nan_count": 0,
+      "artifact_sha256": null
+    },
+    "stage_2_matlab_preprocessing": {
+      "verdict": "PASS",
+      "sampling_rate_hz": 700,
+      "filter_type": "Butterworth Bandpass 0.5 - 40 Hz (Order 4 filtfilt)",
+      "feature_count": 13,
+      "output_dimensions": [
+        445,
+        16
+      ],
+      "s2_window1_parity_diff": 0.0,
+      "non_destructive_execution": true
+    },
+    "stage_3_python_ml_reproducibility": {
+      "verdict": "PASS",
+      "cv_scheme": "15-Fold Leave-One-Subject-Out (LOSO)",
+      "models_evaluated": 6,
+      "metrics_evaluated_count": 84,
+      "max_absolute_metric_diff": 0.0,
+      "all_metrics_exact_match": true,
+      "primary_threshold": 0.5,
+      "primary_threshold_lr_metrics": {
+        "accuracy_pct": 92.13,
+        "f1_score_pct": 88.29,
+        "precision_pct": 94.96,
+        "recall_pct": 82.5,
+        "specificity_pct": 97.54,
+        "balanced_acc_pct": 90.02,
+        "roc_auc": 0.9634,
+        "pr_auc": 0.9416
+      },
+      "exploratory_threshold": 0.35,
+      "exploratory_threshold_lr_metrics": {
+        "accuracy_pct": 92.36,
+        "f1_score_pct": 89.03,
+        "recall_pct": 86.25,
+        "specificity_pct": 95.79
+      },
+      "optimizer_difference_documented": "MATLAB fminsearch / gradient search vs Python grid-search across ROC curve"
+    },
+    "stage_4_host_hc1_parity": {
+      "verdict": "PASS",
+      "c_compiler_flags": "-O2 -msse2 -mfpmath=sse -ffp-contract=off",
+      "packet_count": 10000,
+      "total_bytes": 200000,
+      "byte_mismatches": 0,
+      "packet_mismatches": 0,
+      "crypto_mode": "Mode 2: 4D Memristive Hyperchaos (M-4DJHS)",
+      "historical_failed_evidence_preserved": true
+    },
+    "stage_5_stm32_firmware_build": {
+      "verdict": "PASS",
+      "source_tree": "embedded_stm32/",
+      "compiler": "arm-none-eabi-gcc 14.3.1",
+      "target_mcu": "STM32G474RET6 (ARM Cortex-M4 @ 170MHz)",
+      "binary_size_bytes": 11316,
+      "sha256": "ed4b97b3e7279dc0f6d2add3a21b1ddf45347dbc9e8bfa21f1f48ac86657edc1",
+      "target_sha256": "ed4b97b3e7279dc0f6d2add3a21b1ddf45347dbc9e8bfa21f1f48ac86657edc1",
+      "sha256_match": true,
+      "hardware_reflashed": false
+    },
+    "stage_6_dashboard_smoke_test": {
+      "verdict": "PASS",
+      "headless_startup": "PASS",
+      "http_startup": "PASS",
+      "offline_data_loading": "PASS",
+      "hrv_extraction": "PASS",
+      "stress_inference": "PASS",
+      "stress_prob_calm": 9.597451344685975e-06,
+      "stress_prob_stress": 0.9982039640077954
+    },
+    "stage_7_physical_hil_verification": {
+      "verdict": "PASS",
+      "hardware_source": "Physical STM32G474RE Nucleo over ST-LINK Virtual COM Port (COM10)",
+      "captured_packets": 10000,
+      "sequence_range": [
+        11428,
+        21427
+      ],
+      "sequence_continuity": true,
+      "pacing_hz": 350.02,
+      "wire_flags": "0x05 (ENCRYPTED | CHAOS_4D)",
+      "crc_errors": 0,
+      "raw_max_abs_error_mV": 0.0,
+      "filt_max_abs_error_mV": 0.0,
+      "dry_run": false,
+      "wire_statistical_disclaimer": "Shannon entropy (7.998 b/B) and Chi-square (p=0.439) evaluate wire pseudo-random distribution; they do not represent formal mathematical cryptographic security proofs."
+    }
+  },
+  "artifact_hashes": {
+    "WESAD_HRV_features_expanded.csv": null,
+    "ML_Model_Benchmark_LOSO_canonical.csv": "10e68062edaac8a2083917a8397bba2614cdb54a9eccd33c1008355d48210172",
+    "ML_Model_Benchmark_LOSO_rerun.csv": "10e68062edaac8a2083917a8397bba2614cdb54a9eccd33c1008355d48210172",
+    "metric_comparison.csv": "7d3aaa0745321161f81cf1d1d302c80a1efefc2fa3fbbf88fac2390e5045fd70",
+    "STM32G474_HC1_rebuild.bin": "ed4b97b3e7279dc0f6d2add3a21b1ddf45347dbc9e8bfa21f1f48ac86657edc1",
+    "embedded_stm32_STM32G474_HC1_Telemetry.bin": "ed4b97b3e7279dc0f6d2add3a21b1ddf45347dbc9e8bfa21f1f48ac86657edc1",
+    "hardware_raw_packets.bin": "2c729fc0adcb3b0cd1a41a6ddb0a504783ef741b566a2a5f867318780a716c65",
+    "hardware_raw_packets_meta.json": "533cea3eb86a30c07a28b04756b874ae2fbc6691c4979777621a8448133194ee",
+    "firmware_replay_reference.npz": "151bc7335c607c0a36b0bbc5ee664d492796368d58314a475217e247cdc74155"
+  }
+}

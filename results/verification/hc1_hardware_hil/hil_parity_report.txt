@@ -1,0 +1,42 @@
+===============================================================================
+STM32 PHYSICAL HC1 HARDWARE-IN-THE-LOOP (HIL) PARITY REPORT
+===============================================================================
+Timestamp:                    2026-10-01T23:36:26.440970
+Final HIL Verdict:            FAIL
+Reference Vector:             Firmware Replay Vector (WESAD S2 Baseline modulo 2100)
+raw_ecg_2100 SHA-256:         106fbd7d56a678c10aa60541b697326de3a761456dded54c3e1fa6443eb866db
+runtime_filt_10k SHA-256:     d4e252a8536377ace9140c303f0fee43339cc589ad1fbb271d70623fa65f32d8
+Evaluated Packets:            10,000 (Total Bytes: 200,000 B)
+Hardware Sampling Rate:       350.02 Hz [PASS]
+-------------------------------------------------------------------------------
+--- Acceptance Criteria Check ---
+  • exactly_10000_packets_captured     : PASS
+  • all_flags_are_0x05                 : PASS
+  • zero_crc_errors                    : PASS
+  • zero_sequence_gaps                 : PASS
+  • sample_rate_is_345_to_355_hz       : PASS
+  • no_nan_or_infinity_values          : PASS
+  • decryption_succeeds                : PASS
+  • raw_parity_meets_tolerance         : FAIL
+  • filtered_parity_meets_tolerance    : FAIL
+  • qrs_peak_retention_fidelity        : FAIL
+-------------------------------------------------------------------------------
+--- Independent Numerical Reconstruction Parity ---
+  Max Absolute Error (Raw ECG):   0.926055968 mV [FAIL]
+  Max Absolute Error (Filt ECG):  0.676048636 mV [FAIL]
+  Mean Absolute Error (Raw ECG):  0.155453295 mV
+  Mean Absolute Error (Filt ECG): 0.158451840 mV
+  Mean Squared Error (Raw ECG):   0.043554015458 mV^2
+  Mean Squared Error (Filt ECG):  0.040185660124 mV^2
+  Parity Tolerance Declared:      < 1.0e-05 mV
+  NaN Detected:                   False
+  Inf Detected:                   False
+  QRS Peak Retention:             Mismatch
+-------------------------------------------------------------------------------
+--- Wire Cryptographic Metrics ---
+  Wire Shannon Entropy:           7.9977 bits/byte (99.97% of 8.0)
+  Chi-Square Uniformity:          chi^2=257.79, p=0.4394 [PASS]
+  Plain vs Cipher Correlation:    r_plain=0.9896, r_cipher=0.0012 [PASS]
+===============================================================================
+DISCLAIMER: This test validates physical hardware telemetry captured over the ST-LINK Virtual COM Port from an STM32G474RE microcontroller running canonical HC1 firmware. Results reflect true over-the-wire hardware execution and cryptographic round-trip parity.
+===============================================================================

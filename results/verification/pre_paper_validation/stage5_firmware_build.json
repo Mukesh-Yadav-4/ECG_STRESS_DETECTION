@@ -1,0 +1,30 @@
+﻿{
+    "cflags":  "-mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -O2 -ffp-contract=off -Wall -fdata-sections -ffunction-sections -Iembedded_stm32/include",
+    "elf_path":  "results/verification/pre_paper_validation/STM32G474_HC1_rebuild.elf",
+    "source_files":  [
+                         "embedded_stm32/src/main_stm32.c",
+                         "embedded_stm32/src/ecg_dsp_filter.c",
+                         "embedded_stm32/src/telemetry_protocol.c",
+                         "embedded_stm32/src/wesad_test_samples.c",
+                         "embedded_stm32/src/syscalls.c",
+                         "embedded_stm32/src/sysmem.c",
+                         "embedded_stm32/src/startup_stm32g474retx.s"
+                     ],
+    "timestamp":  "2026-10-02T00:30:22",
+    "hardware_flashed":  false,
+    "target_sha256":  "ed4b97b3e7279dc0f6d2add3a21b1ddf45347dbc9e8bfa21f1f48ac86657edc1",
+    "memory":  {
+                   "total_dec":  13084,
+                   "bss":  1768,
+                   "data":  20,
+                   "text":  11296
+               },
+    "toolchain":  "GNU Tools for STM32 (14.3.rel1) / arm-none-eabi-gcc 14.3.1",
+    "ldflags":  "-mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Tembedded_stm32/STM32G474RETX_FLASH.ld -Wl,--gc-sections -specs=nano.specs -specs=nosys.specs -lc -lm -lnosys",
+    "status":  "PASS",
+    "size_bytes":  11316,
+    "bin_path":  "results/verification/pre_paper_validation/STM32G474_HC1_rebuild.bin",
+    "target_mcu":  "STM32G474RET6 (ARM Cortex-M4 @ 170MHz)",
+    "sha256_match":  true,
+    "sha256":  "ed4b97b3e7279dc0f6d2add3a21b1ddf45347dbc9e8bfa21f1f48ac86657edc1"
+}

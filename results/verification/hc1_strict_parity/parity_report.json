@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-01T21:21:55.554785",
+  "timestamp": "2026-10-02T00:27:49.549734",
   "verdict": "PASS",
   "hardware_parity_disclaimer": "DISCLAIMER: This test validates software simulation parity between the Python telemetry implementation and the host-compiled C firmware (compiled with IEEE-754 single-precision SSE instructions: -msse2 -mfpmath=sse -ffp-contract=off matching the ARM Cortex-M4 single-precision FPU). It does not constitute or claim physical over-the-air/UART hardware validation on a physical STM32 microcontroller board.",
   "host_environment": {

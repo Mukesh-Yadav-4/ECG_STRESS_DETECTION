@@ -1,0 +1,93 @@
+{
+  "stage": "STAGE 6: DASHBOARD SMOKE TEST",
+  "timestamp": "2026-10-02T00:35:04",
+  "status": "PASS",
+  "checks": {
+    "offline_data_loading": {
+      "status": "PASS",
+      "waveform_keys": [
+        "S2_Baseline_raw",
+        "S2_Baseline_filt",
+        "S2_Baseline_peaks",
+        "S2_Stress_raw",
+        "S2_Stress_filt",
+        "S2_Stress_peaks",
+        "S3_Baseline_raw",
+        "S3_Baseline_filt",
+        "S3_Baseline_peaks",
+        "S3_Stress_raw",
+        "S3_Stress_filt",
+        "S3_Stress_peaks",
+        "S10_Baseline_raw",
+        "S10_Baseline_filt",
+        "S10_Baseline_peaks",
+        "S10_Stress_raw",
+        "S10_Stress_filt",
+        "S10_Stress_peaks",
+        "S17_Baseline_raw",
+        "S17_Baseline_filt",
+        "S17_Baseline_peaks",
+        "S17_Stress_raw",
+        "S17_Stress_filt",
+        "S17_Stress_peaks"
+      ],
+      "meta_keys": [
+        "fs_original",
+        "fs_demo",
+        "window_sec",
+        "subjects"
+      ],
+      "tabular_files_present": {
+        "benchmark": true,
+        "predictions": true,
+        "features": true,
+        "metrics": true,
+        "threshold": true,
+        "importance": true
+      }
+    },
+    "hrv_extraction": {
+      "status": "PASS",
+      "baseline_hrv": {
+        "MeanHR": 54.0,
+        "SDNN": 117.4,
+        "RMSSD": 131.38,
+        "pNN50": 62.5,
+        "MeanRR": 1.127,
+        "RR_CV": 0.1042,
+        "RR_IQR": 0.094,
+        "HR_IQR": 4.3,
+        "NumBeats": 18
+      },
+      "stress_hrv": {
+        "MeanHR": 112.0,
+        "SDNN": 30.75,
+        "RMSSD": 13.36,
+        "pNN50": 0.0,
+        "MeanRR": 0.537,
+        "RR_CV": 0.0572,
+        "RR_IQR": 0.048,
+        "HR_IQR": 10.0,
+        "NumBeats": 37
+      }
+    },
+    "stress_inference": {
+      "status": "PASS",
+      "baseline_stress_prob": 9.597451344685975e-06,
+      "baseline_label": 0,
+      "stress_stress_prob": 0.9982039640077954,
+      "stress_label": 1,
+      "decision_threshold": 0.5
+    },
+    "headless_startup": {
+      "status": "PASS",
+      "pid": 16836
+    },
+    "http_startup": {
+      "status": "PASS",
+      "health_endpoint_200": true,
+      "root_endpoint_200": true,
+      "port": 8504
+    }
+  }
+}

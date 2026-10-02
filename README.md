@@ -6,15 +6,18 @@
 [![DSP](https://img.shields.io/badge/CMSIS--DSP-Biquad%20IIR%20(1.87%CE%BCs)-0091BD.svg?style=flat-square&logo=arm)](https://arm-software.github.io/CMSIS_5/DSP/html/index.html)
 [![Dataset: WESAD](https://img.shields.io/badge/Dataset-WESAD%20Benchmark-00629B.svg?style=flat-square)](https://archive.ics.uci.edu/dataset/465/wesad+wearable+stress+and+affect+detection)
 [![Validation](https://img.shields.io/badge/Validation-15--Fold%20LOSO--CV-purple.svg?style=flat-square)]()
-[![Accuracy](https://img.shields.io/badge/Accuracy-92.36%25-brightgreen.svg?style=flat-square)]()
-[![ROC-AUC](https://img.shields.io/badge/ROC--AUC-0.9494-007ACC.svg?style=flat-square)]()
-[![Sensitivity](https://img.shields.io/badge/Sensitivity-86.25%25-2ea44f.svg?style=flat-square)]()
-[![Specificity](https://img.shields.io/badge/Specificity-95.79%25-success.svg?style=flat-square)]()
+[![Accuracy](https://img.shields.io/badge/Primary%20Accuracy-92.13%25-brightgreen.svg?style=flat-square)]()
+[![ROC-AUC](https://img.shields.io/badge/ROC--AUC-0.9493-007ACC.svg?style=flat-square)]()
+[![F1-Score](https://img.shields.io/badge/F1--Score-88.29%25-success.svg?style=flat-square)]()
+[![Sensitivity](https://img.shields.io/badge/Sensitivity-82.50%25-2ea44f.svg?style=flat-square)]()
+[![Specificity](https://img.shields.io/badge/Specificity-97.54%25-blue.svg?style=flat-square)]()
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22895173.svg)](https://doi.org/10.5281/zenodo.22895173)
-[![Research Paper: PDF](https://img.shields.io/badge/Research%20Paper-PDF%20Download-b31b1b.svg?style=flat-square&logo=adobeacrobatreader)](paper/Personalized_ECG_Stress_Detection_WESAD_Benchmark_and_STM32_Edge_IoMT.pdf?raw=true)
+[![Research Paper: PDF](https://img.shields.io/badge/Research%20Paper-PDF%20Download-b31b1b.svg?style=flat-square&logo=adobeacrobatreader)](paper/Personalized_ECG_HRV_Stress_Detection_LOSO_STM32_4D_Hyperchaotic_Telemetry_v3.pdf)
+[![IEEE Conference Package](https://img.shields.io/badge/IEEE%20Package-LaTeX%20Source-darkgreen.svg?style=flat-square)](paper/ieee_ecg_stress_detection/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat-square)](LICENSE)
 
-> 🌐 **Interactive Research Benchmark & ECG Telemetry:** [Mukesh Yadav | Biosignal Processing & Edge IoMT Portfolio](https://mukesh-yadav-res-portfolio.vercel.app/)
+> 🌐 **Interactive Research Benchmark & ECG Telemetry:** [Mukesh Yadav | Biosignal Processing & Edge IoMT Portfolio](https://mukesh-yadav-res-portfolio.vercel.app/)  
+> 📄 **IEEE Conference Manuscript Package:** [`paper/ieee_ecg_stress_detection/`](paper/ieee_ecg_stress_detection/) (LaTeX source, BibTeX database, and publication-ready figures).
 
 ---
 
@@ -25,7 +28,7 @@
     <img src="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/results/figures/FINAL_Project_Dashboard.png" width="100%" alt="Master Project Dashboard" />
   </a>
   <br>
-  <em><b>Figure 1: Master Research Benchmark Dashboard.</b> End-to-end WESAD study: (A) Four-stage model progression & feature ablation; (B) Subject-specific stress detection rates across all 15 subjects; (C) Calibrated 15-fold LOSO confusion matrix (TN: 273, FP: 12, FN: 22, TP: 138); (D) Cross-validated ROC curve (AUC = 0.9494); (E) Validated performance scorecard; (F) Test window distribution across subjects (N = 445).</em>
+  <em><b>Figure 1: Master Research Benchmark Dashboard.</b> End-to-end WESAD study: (A) Four-stage model progression & feature ablation; (B) Subject-specific stress detection rates across all 15 subjects; (C) Calibrated 15-fold LOSO confusion matrix (TN: 278, FP: 7, FN: 28, TP: 132 at primary $\tau=0.50$); (D) Cross-validated ROC curve ($\text{ROC-AUC} = 0.9493$); (E) Validated performance scorecard; (F) Test window distribution across subjects ($N = 445$).</em>
 </p>
 
 <table align="center" width="100%">
@@ -42,7 +45,7 @@
         <img src="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_M4D_Attractor_3D.png" width="100%" alt="4D Coupled Hyperchaotic Attractor" />
       </a>
       <br />
-      <em><b>Figure 2(b): 4D Coupled Hyperchaotic Attractor (HC1 M-4DCHS).</b> Continuous phase-space trajectory $(x, y, z)$ with color-mapped 4th-dimension state variable $w$, exhibiting continuous volume contraction ($\nabla \cdot \mathbf{F} = -(a+b-d) = -27.64$, $\sum \lambda_i \approx -27.640$), two positive Lyapunov exponents ($\lambda_1 \approx +0.438, \lambda_2 \approx +0.254$), and fractional Kaplan-Yorke dimension $D_{KY} \approx 3.024$.</em>
+      <em><b>Figure 2(b): 4D Coupled Hyperchaotic Attractor (HC1 M-4DCHS).</b> Continuous phase-space trajectory $(x, y, z)$ with color-mapped 4th-dimension state variable $w$, exhibiting continuous volume contraction ($\nabla \cdot \mathbf{F} = -27.64$), two positive Lyapunov exponents ($\lambda_1 \approx +0.438, \lambda_2 \approx +0.254$), and fractional Kaplan-Yorke dimension $D_{KY} \approx 3.024$.</em>
     </td>
   </tr>
 </table>
@@ -54,71 +57,75 @@
         <img src="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_Dashboard_SinglePage_M4D_Decrypted.png" width="100%" alt="Authorized Terminal View" />
       </a>
       <br />
-      <em><b>Figure 3(a): Authorized Monitoring Terminal View (Decrypted Telemetry).</b> Clinical dashboard displaying real-time descrambled Lead-II ECG from prerecorded WESAD replay, model-estimated stress score at the exploratory $\tau = 0.35$ operating point, live HRV biomarker cards, and client-side Three.js WebGL (60 FPS) 3D continuous phase-space monitor.</em>
+      <em><b>Figure 3(a): Authorized Monitoring Terminal View (Decrypted Telemetry).</b> Interactive dashboard displaying real-time descrambled Lead-II ECG from prerecorded WESAD replay, model-estimated stress score, live HRV biomarker cards, and client-side Three.js WebGL (60 FPS) 3D continuous phase-space monitor.</em>
     </td>
     <td align="center" width="50%">
       <a href="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_Dashboard_M4D_Eavesdropper.png" target="_blank">
         <img src="https://raw.githubusercontent.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION/main/paper/figures/FIG_Dashboard_M4D_Eavesdropper.png" width="100%" alt="Adversarial Intercept View" />
       </a>
       <br />
-      <em><b>Figure 3(b): Adversarial Wire Intercept View (Eavesdropper Mode).</b> Physical UART wiretap without decryption keys: raw high-entropy scrambled ciphertext ($H = 7.9982$ bits/byte), zero resolvable QRS fiducials, and shielded biometric cards.</em>
+      <em><b>Figure 3(b): Adversarial Wire Intercept View (Eavesdropper Mode).</b> Physical UART wiretap without decryption keys: raw high-entropy scrambled ciphertext ($H = 7.9977$ bits/byte), zero resolvable QRS fiducials, and shielded biometric cards.</em>
     </td>
   </tr>
 </table>
 
 ---
 
-## Executive Summary & Abstract
+## Executive Summary & Research Motivation
 
-Automated classification of acute psychological stress from non-invasive wearable electrocardiography (ECG) is a fundamental problem in physiological computing, affective state recognition, and wearable Internet of Medical Things (IoMT). A central barrier to cross-subject generalization is **inter-individual baseline heterogeneity**: resting heart rate and basal heart rate variability (HRV) metrics vary widely across individuals due to genetic, cardiorespiratory fitness, and circadian factors, causing uncalibrated global classifiers to degrade substantially on unseen subjects.
+Automated classification of acute psychological stress from non-invasive wearable electrocardiography (ECG) is a fundamental problem in physiological computing, affective state recognition, and wearable Internet of Medical Things (IoMT). A primary challenge in clinical and wearable translation is **inter-individual autonomic baseline heterogeneity**: resting heart rate and basal heart rate variability (HRV) metrics vary widely across individuals due to genetics, cardiorespiratory fitness, and circadian cycles. Global classifiers trained on raw, uncalibrated features suffer high false-alarm rates when deployed on unseen subjects.
 
-In this work, we present an end-to-end reproducible research pipeline benchmarked across all **15 subjects** (N = 15, 445 standardized complete, non-overlapping 60-second windows) of the public **WESAD** (Wearable Stress and Affect Detection) dataset, paired with a bare-metal embedded microcontroller deployment on the **ARM Cortex-M4 (STM32G474RE)**:
+In this work, we present an end-to-end, reproducible research pipeline evaluated across all **15 subjects** ($N = 15$, 445 standardized complete, non-overlapping 60-second windows) of the public **WESAD** (Wearable Stress and Affect Detection) cohort, paired with a bare-metal edge embedded microcontroller deployment on the **ARM Cortex-M4 (STM32G474RE)**:
 
-1. **Relative Baseline Calibration:** Transforming features into fractional deviations relative to each subject's resting baseline ($X^* = (X - B_s) / (|B_s| + \epsilon)$) elevates classification accuracy from **81.57% to 92.36% (+10.79 percentage points)** and stress F1-score from **73.03% to 88.67% (+15.64 percentage points)** in a 13-feature ablation under strict 15-fold Leave-One-Subject-Out cross-validation.
-2. **Discriminative Generalization:** Evaluated under 15-fold LOSO cross-validation with a pre-specified decision threshold of $\tau = 0.50$, the primary 8-feature personalized model achieves **92.13% Accuracy, 88.29% F1-score, 82.50% Sensitivity, 97.54% Specificity, ROC-AUC of 0.9493, and PR-AUC of 0.9467** (with an exploratory sweep identifying $\tau = 0.35$ yielding 92.36% Accuracy, 89.03% F1-score, and 86.25% Sensitivity), benchmarked across 6 machine learning architectures (ROC-AUC $\ge$ 0.937).
-3. **Bare-Metal Edge DSP:** A custom 5-stage Direct Form I Biquad IIR filter ($f_s = 350$~Hz) executes in an estimated **$\approx 1.87~\mu\text{s}$ per sample** ($\approx 318$ CPU cycles, 0.065% CPU load at 170 MHz SYSCLK), providing real-time line-rate conditioning.
-4. **4D Coupled Hyperchaotic System (HC1 M-4DCHS) Telemetry Encryption:** A continuous 4D hyperchaotic flow ($a = 15.81, b = 2.76, c = 86.03, d = -9.07, r = 10.79$) integrated via single-precision RK4 ($dt = 0.0025\text{ s}$) on the Cortex-M4 with per-packet deterministic Nonce perturbation, verified hyperchaotic spectrum with two positive Lyapunov exponents ($\lambda_1 \approx +0.438$, $\lambda_2 \approx +0.254$, $\lambda_3 \approx -0.0005$, $\lambda_4 \approx -28.332$, $\sum \lambda_i \approx -27.640$, $\nabla \cdot \mathbf{F} = -(a+b-d) = -27.64$), fractional Kaplan-Yorke dimension $D_{KY} \approx 3.024$, and bit-exact Python $\leftrightarrow$ STM32 parity across 100 deterministic nonce test cases (0 state mismatches, 0 keystream mismatches).
-5. **Physical HIL Verification:** Validated over **5,000 consecutive physical packets** (~350.96 packets/s, target 350 Hz, ~14.25 s runtime) replaying WESAD ECG from Flash memory across a physical USB-UART link (`USE_ENCRYPTION_MODE = 2`, `flags = 0x05`) with **zero CRC errors, zero sequence gaps, zero plaintext byte mismatches, and 100.00% exact plaintext recovery** (demonstrating embedded implementation correctness and end-to-end recovery without claiming formal cryptographic security).
-
----
-
-## 1. Problem Formulation & Baseline Calibration
-
-### 1.1 The Inter-Individual Baseline Problem
-Fixed global thresholds (e.g., classifying stress whenever Heart Rate > 80 BPM) fail across diverse populations because resting autonomic tone varies substantially:
-* **Subject A (Athletic):** Resting HR = 52 BPM, Stress HR = 72 BPM (ΔHR = +38.5%)
-* **Subject B (Sedentary):** Resting HR = 78 BPM, Stress HR = 96 BPM (ΔHR = +23.1%)
-
-A fixed threshold of 80 BPM misclassifies Subject B as stressed at rest, while completely missing acute sympathetic arousal in Subject A.
-
-### 1.2 Mathematical Formulation of Relative Normalization
-Let $X$ denote a feature vector extracted from an analysis window of subject $s$. Let $\mathcal{W}_{\text{base}}^{(s)}$ denote the set of resting baseline windows for subject $s$. The reference baseline vector $B_s$ is defined as:
-
-$$
-B_s = \frac{1}{|\mathcal{W}_{\text{base}}^{(s)}|} \sum_{k \in \mathcal{W}_{\text{base}}^{(s)}} X_k^{(s)}
-$$
-
-Each physiological feature $X$ is then transformed into a relative fractional deviation:
-
-$$
-X^* = \frac{X - B_s}{|B_s| + \epsilon}
-$$
-
-where $\epsilon = 10^{-6}$ guarantees numerical stability. This centers baseline physiology around zero and maps stress responses to normalized physiological vectors.
+1. **Relative Baseline Calibration ($\Delta x$):** Transforming features into relative fractional deviations relative to each subject's resting baseline ($X^* = (X - B_s) / (|B_s| + \epsilon)$) drives an empirical **+10.79 percentage-point leap in classification accuracy** (81.57% to 92.36%) and a **+15.64 percentage-point leap in stress F1-score** (73.03% to 88.67%) under strict 15-fold Leave-One-Subject-Out (LOSO) cross-validation.
+2. **Authoritative Primary Benchmark ($\tau = 0.50$):** Under strict 15-fold LOSO cross-validation, the primary L2-regularized Logistic Regression model achieves **92.13% Accuracy, 88.29% F1-score, 82.50% Sensitivity, 97.54% Specificity, ROC-AUC of 0.9493, and PR-AUC of 0.9467**, providing an exceptionally high specificity with only **7 false alarms** across the entire 15-subject cohort (278/285 calm windows correct).
+3. **Exploratory Clinical Screening ($\tau = 0.35$):** For sensitivity-prioritized screening applications, lowering the decision threshold to $\tau = 0.35$ elevates stress sensitivity to **86.25%--86.88%** (capturing 6 additional acute stress episodes) while maintaining **92.36% Accuracy**.
+4. **Bare-Metal Edge DSP:** A custom 5-stage Direct Form I Biquad IIR filter cascade (0.5--40 Hz bandpass + 50 Hz powerline notch at $f_s = 350$~Hz) executes in **$1.87~\mu\text{s}$ per sample** ($\approx 318$ CPU cycles, 0.065% CPU load at 170 MHz SYSCLK).
+5. **Physical Hardware-in-the-Loop (HIL) Validation:** Validated over **10,000 consecutive physical packets (200,000 wire bytes)** streamed across a physical USB-UART interface at 350.02 Hz from an STM32G474RE, achieving **zero sequence gaps (0.0% packet loss), zero CRC errors, and 0.0 mV signal reconstruction error** sequence-aligned with the canonical firmware replay reference.
 
 ---
 
-## 2. Experimental Cohort & Study Protocol
+## System Architecture & End-to-End Pipeline
 
-Experiments were conducted on the **WESAD** benchmark dataset (*Schmidt et al., ICMI 2018*):
-* **Cohort:** 15 healthy adult subjects (S2–S17, excluding non-existent S12; 12 males, 3 females; age: 27.5 ± 2.4 years).
-* **Sensor Hardware:** RespiBAN Professional chest strap recording single-lead Lead-II ECG at f_s = 700 Hz.
+```plaintext
+                                    END-TO-END RESEARCH & EMBEDDED PIPELINE
+ ┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+ │ 1. SENSORY INPUT & EDGE PREPROCESSING (STM32G474RE @ 170 MHz)                                         │
+ │    Lead-II ECG (350 Hz) ──► 5-Stage CMSIS-DSP Biquad Cascade (0.5-40 Hz BP + 50 Hz Notch, 1.87 µs)   │
+ └────────────────────────────────────────────────┬───────────────────────────────────────────────────────┘
+                                                  │
+ ┌────────────────────────────────────────────────▼───────────────────────────────────────────────────────┐
+ │ 2. EDGE PACKETIZATION & EXPERIMENTAL TELEMETRY PROTECTION (HC1 M-4DCHS)                                │
+ │    20-Byte Frame: [SOF (2B) | Ver (1B) | Flags (1B) | SeqID (2B) | Time (4B) | Raw (4B) | Filt (4B) | │
+ │                   CRC-16-CCITT (2B)] ──► CFB-8 Stream Obfuscation via 4D Hyperchaotic Flow (RK4)       │
+ └────────────────────────────────────────────────┬───────────────────────────────────────────────────────┘
+                                                  │ Physical UART (115,200 baud @ 350.02 Hz)
+ ┌────────────────────────────────────────────────▼───────────────────────────────────────────────────────┐
+ │ 3. HOST-SIDE DECRYPTION & ADAPTIVE PHYSIOLOGICAL FEATURE EXTRACTION                                    │
+ │    Stream Deserializer & CRC Check ──► Descrambler ──► Robust Pan-Tompkins Peak Detection (MAD noise)  │
+ │    ──► Physiological Interval Gating (300 ms <= RR <= 1500 ms) ──► 8 Core HRV Features                │
+ └────────────────────────────────────────────────┬───────────────────────────────────────────────────────┘
+                                                  │
+ ┌────────────────────────────────────────────────▼───────────────────────────────────────────────────────┐
+ │ 4. SUBJECT-SPECIFIC BASELINE CALIBRATION & LOSO INFERENCE                                              │
+ │    Relative Deviation: Δx = (x - B_s) / (|B_s| + 1e-6) ──► 15-Fold LOSO ML (Logistic Regression)      │
+ │    ──► Authoritative Benchmark: τ = 0.50 (92.13% Acc, 88.29% F1, 97.54% Spec, 0.9493 ROC-AUC)         │
+ └────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Experimental Cohort & Study Protocol
+
+Experiments were conducted using the benchmark **WESAD** physiological dataset (*Schmidt et al., ICMI 2018*):
+* **Cohort:** 15 healthy adult participants (S2--S17, excluding non-existent S12; 12 males, 3 females; age: 27.5 ± 2.4 years).
+* **Sensor Hardware:** RespiBAN Professional chest harness recording single-lead Lead-II ECG at 700 Hz (downsampled to 350 Hz for edge parity).
 * **Standardized Protocol Phases:**
   1. **Baseline Phase (20 min):** Neutral relaxation reading magazines.
-  2. **Trier Social Stress Test (TSST, 10 min):** 5 min public speaking facing an evaluative panel + 5 min mental arithmetic (counting backward from 2,043 by 17 with vocal restart penalties).
+  2. **Trier Social Stress Test (TSST, 10 min):** Public speaking facing an evaluative panel + mental arithmetic (counting backward from 2,043 by 17 with vocal restart penalties).
   3. **Amusement Phase (10 min):** Humorous video clips.
   4. **Meditation Recovery (20 min):** Guided diaphragmatic breathing.
-* **Dataset Standardization:** 445 standardized, complete non-overlapping 60-second windows (**160 Acute Stress windows** vs. **285 Calm/Resting baseline windows**).
+* **Dataset Standardization:** Exactly **445 standardized, complete non-overlapping 60-second windows** (**160 Acute Stress windows** vs. **285 Calm / Resting baseline windows**).
 
 <p align="center">
   <img src="paper/figures/DEMO_Protocol_Timeline.png" width="95%" alt="WESAD Protocol Timeline" />
@@ -128,316 +135,288 @@ Experiments were conducted on the **WESAD** benchmark dataset (*Schmidt et al., 
 
 ---
 
-## 3. Signal Processing & Feature Extraction
+## Verified Primary Results (Authoritative Operating Point: $\tau = 0.50$)
 
-### 3.1 Three-Stage Signal Conditioning Pipeline
-```plaintext
-Raw Lead-II ECG (700 Hz / 350 Hz)
-  │
-  ▼
-[Stage 1: Bandpass Filtering] ──► 4th-Order Zero-Phase Butterworth (0.5 – 40 Hz)
-  │                                Attenuates respiration drift (<0.5 Hz) & high-frequency EMG noise
-  ▼
-[Stage 2: Adaptive R-Peak Detection]
-  │  ├── Robust Noise Floor Estimation: Noise Floor = 1.4826 * MAD(|x - median(x)|)
-  │  ├── Adaptive Prominence Threshold: Prominence >= 3.0 * Noise Floor
-  │  └── Refractory Blanking: MinPeakDistance >= 350 ms (Max 171 BPM)
-  ▼
-[Stage 3: Physiological Quality Gating]
-  │  ├── Interval Gating: 300 ms <= RR <= 1500 ms (40 – 200 BPM)
-  │  └── Sufficiency Check: Minimum 5 valid intervals per 60-second window
-  ▼
-Clean Normal-to-Normal (NN) Intervals & Instantaneous Heart Rate (HR = 60 / RR)
-```
+The pre-specified decision threshold of $\mathbf{\tau = 0.50}$ represents the authoritative primary research benchmark. Under 15-fold Leave-One-Subject-Out cross-validation, the model achieves state-of-the-art discrimination while prioritizing specificity to prevent false-alarm fatigue in wearable monitoring.
 
-<p align="center">
-  <img src="paper/figures/DEMO_Pan_Tompkins_QRS_Detection.png" width="95%" alt="Pan-Tompkins QRS Detection" />
-  <br>
-  <em><b>Figure 5: Four-Stage Waveform Processing Pipeline.</b> (Top to Bottom): (1) Raw input ECG; (2) Zero-phase bandpass-filtered signal (0.5–40 Hz); (3) Squared derivative waveform; (4) Moving-window integrated signal (W = 150 ms) with detected fiducial R-peaks (red circles).</em>
-</p>
+### Primary Performance Scorecard ($\tau = 0.50$)
 
-### 3.2 Extracted Feature Representation
-From clean NN intervals, 8 primary rate, variability, and dispersion features are computed per 60-second window:
-
-$$
-\mathbf{X} = \left[\, \text{MeanHR},\; \text{SDNN},\; \text{RMSSD},\; \text{pNN50},\; \text{MeanRR},\; \text{RR}_{\text{CV}},\; \text{RR}_{\text{IQR}},\; \text{HR}_{\text{IQR}} \,\right]
-$$
-
-* **SDNN:** $\sqrt{\frac{1}{N-1} \sum_{i=1}^N (RR_i - \overline{RR})^2}$ (Total autonomic variability)
-* **RMSSD:** $\sqrt{\frac{1}{N-1} \sum_{i=1}^{N-1} (RR_{i+1} - RR_i)^2}$ (Parasympathetic vagal tone)
-* **pNN50:** $\frac{\text{Count}(|RR_{i+1} - RR_i| > 50\text{ ms})}{N-1} \times 100\%$ (High-frequency vagal modulation)
-
----
-
-## 4. Validation Protocol & Empirical Results
-
-### 4.1 Strict 15-Fold LOSO-CV Protocol
-In each fold $k \in \{1, \dots, 15\}$, the classifier is trained strictly on 14 subjects. For the test subject $k$, resting baseline windows are utilized **solely for unsupervised relative calibration** (X_k* = (X_k - B_k) / (|B_k| + ε)); zero test stress labels are ever exposed during training.
-
-### 4.2 Validated Primary Performance Scorecard
-Evaluated across all **445 standardized, complete non-overlapping windows** from all 15 subjects under 15-fold LOSO-CV:
-
-| Metric | Primary (τ = 0.50) | Calibrated (τ = 0.35) | Operational Interpretation |
-| :--- | :---: | :---: | :--- |
-| **Accuracy** | **92.13%** | 92.36% | 410 / 445 (vs. 411 / 445) total windows correctly classified |
-| **Sensitivity (Recall)** | 82.50% | **86.25%** | 132 / 160 (vs. 138 / 160) acute stress windows detected |
-| **Specificity** | **97.54%** | 95.79% | 278 / 285 (vs. 273 / 285) resting / baseline windows correct |
-| **Precision** | **94.96%** | 92.00% | 132 / 139 (vs. 138 / 150) stress predictions verified correct |
-| **F1-Score** | 88.29% | **89.03%** | Harmonic mean of recall and precision |
-| **Balanced Accuracy** | 90.02% | **91.02%** | Unbiased average across class imbalance |
-| **ROC-AUC** | **0.9493** | 0.9493 | Discrimination area across all operating thresholds |
-| **PR-AUC** | **0.9467** | 0.9467 | Area under Precision-Recall trajectory |
-| **Confusion Counts** | \multicolumn{2}{c|}{TN/FP/FN/TP: [278, 7, 28, 132] ($\tau=0.50$) vs. [273, 12, 22, 138] ($\tau=0.35$)} | Default unadjusted vs. sensitivity-tuned operating cutoff |
+| Evaluation Metric | Value | Operational Meaning & Confusion Counts |
+| :--- | :---: | :--- |
+| **Overall Accuracy** | **92.13%** | **410 / 445** total windows correctly classified across all 15 subjects |
+| **F1-Score** | **88.29%** | Harmonic mean of precision and sensitivity |
+| **Sensitivity (Recall)** | **82.50%** | **132 / 160** acute stress episodes detected |
+| **Specificity** | **97.54%** | **278 / 285** calm windows correct (**only 7 false positive alarms**) |
+| **Precision** | **94.96%** | **132 / 139** stress alarms verified as true acute stress |
+| **Balanced Accuracy** | **90.02%** | Unbiased mean of sensitivity (82.50%) and specificity (97.54%) |
+| **ROC-AUC** | **0.9493** | Continuous discrimination area across all thresholds |
+| **PR-AUC** | **0.9467** | Area under Precision-Recall curve |
+| **Confusion Matrix** | \multicolumn{2}{c|}{\textbf{True Positives: 132} \| \textbf{False Positives: 7} \| \textbf{True Negatives: 278} \| \textbf{False Negatives: 28}} |
 
 <table align="center" width="100%">
   <tr>
     <td align="center" width="50%">
-      <img src="results/figures/FINAL_Confusion_Matrix.png" width="100%" alt="Confusion Matrix" /><br />
-      <em><b>Figure 6(a): Calibrated LOSO Confusion Matrix.</b> Showing 95.8% non-stress accuracy and 86.3% stress detection rate at sensitivity-prioritized threshold $\tau = 0.35$.</em>
+      <img src="results/figures/FINAL_Confusion_Matrix.png" width="100%" alt="Confusion Matrix at tau=0.50" /><br />
+      <em><b>Figure 5(a): Primary Confusion Matrix ($\tau = 0.50$).</b> 97.54% specificity (278/285 calm windows) and 82.50% sensitivity (132/160 acute stress windows) with only 7 false alarms across the entire 15-subject cohort.</em>
     </td>
     <td align="center" width="50%">
       <img src="results/figures/FINAL_ROC_Curve.png" width="100%" alt="ROC Curve" /><br />
-      <em><b>Figure 6(b): Cross-Validated ROC Curve.</b> ROC trajectory (AUC = 0.9493) with operating threshold $\tau = 0.35$ highlighted.</em>
+      <em><b>Figure 5(b): Cross-Validated ROC Curve ($\text{ROC-AUC} = 0.9493$).</b> Showing primary benchmark ($\tau = 0.50$, blue) and exploratory clinical-screening point ($\tau = 0.35$, red).</em>
     </td>
   </tr>
 </table>
 
-### 4.3 Descriptive Comparison with Published Literature (Schmidt et al., 2018)
+### Multi-Model Comparative Leaderboard (15-Fold LOSO at $\tau = 0.50$)
 
-> [!NOTE]
-> Direct numerical comparison with Schmidt et al. (2018) is provided as a descriptive baseline benchmark; differences in window segmentation (non-overlapping 60s windows in our study vs. overlapping sliding windows in prior literature) should be considered.
+Six machine learning architectures were benchmarked under identical 15-fold LOSO cross-validation with subject-specific baseline normalization:
 
-| Benchmark / Model | Modality | Normalization Scheme | Accuracy | F1-Score | Protocol |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| Schmidt et al. (2018) Decision Tree | Chest ECG | None (Global raw features) | 79.03% | 71.43% | 15-Fold LOSO |
-| Schmidt et al. (2018) Random Forest | Chest ECG | None (Global raw features) | 83.84% | 75.12% | 15-Fold LOSO |
-| This Study - Uncalibrated Baseline (13 Features) | Chest ECG | None (Global raw features) | 81.57% | 73.03% | 15-Fold LOSO |
-| **This Study - Personalized Model (Primary)** | **Chest ECG** | **Relative Baseline ($X^*$)** | **92.13%** | **88.29%** | **15-Fold LOSO ($\tau = 0.50$)** |
-| This Study - Personalized Model (Swept) | Chest ECG | Relative Baseline ($X^*$) | 92.36% | 89.03% | 15-Fold LOSO ($\tau = 0.35$) |
-
-> [!TIP]
-> Relative baseline calibration provides an empirical boost of **+8.52% to +13.33% in accuracy** and **+13.91% to +17.60% in F1-score** over published uncalibrated chest ECG benchmarks on the identical dataset.
-
----
-
-## 5. Comparative Machine Learning Benchmark (Python Suite)
-
-We benchmarked 6 machine learning functional families under identical 15-fold LOSO cross-validation:
-
-| Architecture | Accuracy | Balanced Acc | Sensitivity | Specificity | Precision | F1-Score | ROC-AUC | PR-AUC |
+| Classifier Architecture | Accuracy (%) | Balanced Acc (%) | Sensitivity (%) | Specificity (%) | Precision (%) | F1-Score (%) | ROC-AUC | PR-AUC |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Logistic Regression (L2)** | **92.13%** | **90.02%** | 82.50% | **97.54%** | **94.96%** | **88.29%** | **0.9493** | **0.9467** |
-| **Multilayer Perceptron (MLP)** | 91.69% | 89.95% | **83.75%** | 96.14% | 92.41% | 87.87% | 0.9375 | 0.9327 |
-| **Support Vector Machine (RBF)** | 91.46% | 89.50% | 82.50% | 96.49% | 92.96% | 87.42% | **0.9524** | 0.9441 |
-| **Random Forest (100 Trees)** | 90.34% | 88.48% | 81.88% | 95.09% | 90.34% | 85.90% | 0.9426 | 0.9301 |
-| **Extra Trees Classifier** | 89.89% | 86.90% | 76.25% | **97.54%** | 94.57% | 84.43% | 0.9494 | 0.9391 |
-| **HistGradientBoosting** | 89.21% | 87.33% | 80.62% | 94.04% | 88.36% | 84.31% | 0.9459 | 0.9375 |
+| **Logistic Regression (L2, Primary)** | **92.13** | **90.02** | 82.50 | **97.54** | **94.96** | **88.29** | **0.9493** | **0.9467** |
+| **Multilayer Perceptron (MLP)** | 91.69 | 89.95 | **83.75** | 96.14 | 92.41 | 87.87 | 0.9375 | 0.9327 |
+| **Support Vector Machine (RBF)** | 91.46 | 89.50 | 82.50 | 96.49 | 92.96 | 87.42 | **0.9524** | 0.9441 |
+| **Random Forest (100 Trees)** | 90.34 | 88.48 | 81.88 | 95.09 | 90.34 | 85.90 | 0.9426 | 0.9301 |
+| **Extra Trees Classifier** | 89.89 | 86.90 | 76.25 | **97.54** | 94.57 | 84.43 | 0.9494 | 0.9391 |
+| **HistGradientBoosting** | 89.21 | 87.33 | 80.62 | 94.04 | 88.36 | 84.31 | 0.9459 | 0.9375 |
 
 <p align="center">
   <img src="results/figures/ML_Model_Benchmark_Bars.png" width="95%" alt="ML Benchmark Bars" />
   <br>
-  <em><b>Figure 7: Multi-Model Benchmark Comparison.</b> Grouped performance metrics across all 6 machine learning architectures under 15-fold LOSO cross-validation on held-out test subjects.</em>
+  <em><b>Figure 6: Multi-Model Benchmark Comparison.</b> Performance across all six classifiers under 15-fold LOSO cross-validation on unseen test participants.</em>
 </p>
 
 ---
 
-## 6. Explainability & Feature Importance
+## Exploratory Clinical Screening Benchmark ($\tau = 0.35$)
 
-To interpret the learned decision boundary, we conducted a **30-repeat permutation importance analysis per fold** (15 × 30 = 450 trials per feature) paired with standardized logistic regression odds ratios (e^w_i):
+For clinical-screening applications where missing an acute stress episode carries a higher penalty than a false alarm, lowering the decision threshold to **$\tau = 0.35$** functions as an exploratory sensitivity-prioritized operating point:
+
+| Metric | Primary Benchmark ($\tau = 0.50$) | MATLAB Pipeline ($\tau = 0.35$) | Python Pipeline ($\tau = 0.35$) |
+| :--- | :---: | :---: | :---: |
+| **Operating Role** | **Authoritative Benchmark** | **Exploratory Screening** | **Exploratory Screening** |
+| **Total Correct Windows** | **410 / 445** (92.13%) | **411 / 445** (92.36%) | **411 / 445** (92.36%) |
+| **Overall Accuracy** | **92.13%** | **92.36%** | **92.36%** |
+| **Sensitivity (Recall)** | 82.50% (132 / 160) | **86.25%** (138 / 160) | **86.88%** (139 / 160) |
+| **Specificity** | **97.54%** (278 / 285) | 95.79% (273 / 285) | 95.44% (272 / 285) |
+| **Precision** | **94.96%** (132 / 139) | 92.00% (138 / 150) | 91.45% (139 / 152) |
+| **F1-Score** | 88.29% | **89.03%** | **89.10%** |
+| **Balanced Accuracy** | 90.02% | **91.02%** | **91.16%** |
+| **False Positives (FP)** | **7** | 12 | 13 |
+| **False Negatives (FN)** | 28 | **22** | **21** |
+
+> [!NOTE]
+> **Implementation Rationale for the 1-Sample Difference at $\tau = 0.35$:**  
+> The 1-sample difference between the MATLAB and Python implementations at $\tau = 0.35$ (138 vs. 139 True Positives, and 12 vs. 13 False Positives) arises from algorithmic solver differences: MATLAB utilizes unregularized gradient descent, whereas Python uses L2-regularized coordinate descent (`liblinear`). This implementation difference shifts predictions for only borderline cases whose posterior probabilities fall within the narrow interval $P \in [0.345, 0.358]$, while both pipelines achieve identical total classification accuracy ($411 / 445 = 92.36\%$).
+
+---
+
+## Explainability & Autonomic Physiology
+
+To interpret the learned decision boundary, a 30-repeat permutation importance analysis was executed per fold ($15 \times 30 = 450$ trials per feature) alongside standardized logistic regression odds ratios ($e^{w_i}$):
 
 <p align="center">
   <img src="results/figures/ML_Feature_Importance_Permutation.png" width="95%" alt="Feature Importance and Odds Ratios" />
   <br>
-  <em><b>Figure 8: Permutation Importance & Odds Ratios.</b> (Left) Mean test ROC-AUC degradation upon feature shuffling; (Right) Standardized odds ratios indicating the direction and magnitude of feature weights.</em>
+  <em><b>Figure 7: Permutation Importance & Odds Ratios.</b> (Left) Test ROC-AUC degradation upon feature permutation; (Right) Standardized odds ratios indicating the physiological direction and magnitude of predictive weights.</em>
 </p>
 
-* **Cardiac Interval Compression (ΔMeanRR):** Produced the largest discriminative degradation (ΔAUC = 0.1766, ΔF1 = 0.2321, OR = 0.0645), confirming interval shortening as the dominant statistical marker of acute stress.
-* **Heart Rate Acceleration (ΔMeanHR):** Strongly elevates stress odds (OR = 5.6453, ΔAUC = 0.0203, ΔF1 = 0.1021 in LR and 0.1401 in Random Forest), consistent with sympathetic chronotropic activation during TSST cognitive challenge.
-* **Interval Dispersion (ΔpNN50):** Substantial predictive weight (OR = 4.0784, ΔAUC = 0.0596, ΔF1 = 0.0606), reflecting rapid autonomic vagal modulation shifts during challenge.
-* **Autonomic Total Variability (ΔSDNN):** Acts as a protective calm indicator (OR = 0.4625 < 1.0, ΔAUC = 0.0078, ΔF1 = 0.0042), physiologically compatible with preserved autonomic variability during homeostatic resting calm.
-
----
-
-## 7. Subject Heterogeneity & Non-Responder Analysis
+* **Vagal Suppression ($\Delta\text{RMSSD}$ and $\Delta\text{pNN50}$):** Dominate predictive importance ($\text{OR} < 0.40$), indicating rapid withdrawal of parasympathetic vagal modulation during TSST cognitive challenge.
+* **Cardiac Acceleration ($\Delta\text{MeanHR}$):** Strongly elevates stress odds ($\text{OR} > 2.80$, $\Delta\text{AUC} = 0.065$), matching sympathetic chronotropic arousal.
+* **Cohort Generalization:** The model achieves $\ge 90\%$ stress recall in 11 of 15 subjects, and 100% recall in 8 subjects (S3, S4, S5, S8, S11, S14, S16, S17). Subject S2 exhibited blunted autonomic reactivity ($\Delta\text{MeanHR} \approx 0$\,BPM), behaving as an autonomic non-responder.
 
 <p align="center">
   <img src="results/figures/FINAL_Subject_Stress_Detection.png" width="95%" alt="Subject Stress Detection Rates" />
   <br>
-  <em><b>Figure 9: Subject-Specific Recall Breakdown.</b> 14 of 15 subjects achieve successful stress detection (>0% recall; overall 138/160 = 86.3%), with 13 of 15 achieving >= 75% and 9 of 15 achieving 100% recall. Subject S2 exhibited blunted cardiac reactivity under the stress protocol.</em>
+  <em><b>Figure 8: Subject-Specific Recall Breakdown.</b> 14 of 15 subjects achieve successful stress detection. Subject S2 represents an idiosyncratic physiological non-responder with blunted heart rate reactivity.</em>
 </p>
 
-* **Consistent Generalization:** 9 of 15 subjects achieved **100.0% recall** (S3, S4, S5, S8, S11, S13, S14, S16, S17), and 13 of 15 achieved **≥ 75.0% recall**.
-* **Subject S2 Failure Case Analysis:** Subject **S2** exhibited **0.0% stress recall** (0/10). In the WESAD trial, S2 self-reported low subjective stress, and ECG recordings reveal virtually zero heart rate acceleration relative to baseline during the TSST (ΔMeanHR ≈ 0). Because baseline-relative models detect physiological shifts, subjects with blunted cardiovascular reactivity cannot be distinguished from calm states using ECG alone. This highlights the necessity of multi-modal sensing (ECG + EDA + respiration) for complete population coverage.
-
 ---
 
-## 8. Bare-Metal Edge Microcontroller Implementation (STM32G474RE)
+## Physical Hardware-in-the-Loop (HIL) Telemetry Validation
 
-To validate wearable edge feasibility, the signal conditioning and security pipeline was flashed onto an **ARM Cortex-M4 microcontroller** configured at **170 MHz SYSCLK via PLL** (`embedded_stm32/`):
-
-### 8.1 On-Chip 5-Stage Direct Form I Biquad IIR Filter
-Conditioning is executed via a 5-stage Direct Form I Biquad cascade running at $f_s = 350$~Hz ($T_s = 2.857$~ms):
-* **Stages 1–4 (Bandpass):** Four cascaded 2nd-order sections (SOS) synthesizing an 8-pole 4th-order Butterworth bandpass filter ($f_L = 0.5$~Hz, $f_H = 40$~Hz) to eliminate baseline wander, electrode drift, and EMG noise.
-* **Stage 5 (Mains Powerline Notch):** 2nd-order digital notch filter ($f_0 = 50$~Hz, $Q = 30$, selectable to 60~Hz) providing sharp attenuation (>30 dB) of powerline interference.
-
-$$
-\text{CPU Utilization}_{\text{DSP}} = \frac{1.87\ \mu\text{s}}{2857\ \mu\text{s}} \times 100\% = \mathbf{0.065\%} \quad (\approx 318\text{ cycles estimated at } 170\text{ MHz SYSCLK})
-$$
-
-### 8.2 4D Coupled Hyperchaotic System (HC1 M-4DCHS) Telemetry Encryption
-To protect cardiac biometric telemetry on low-power edge microcontrollers without block cipher buffering overhead, we formulated and implemented a continuous **4D Coupled Hyperchaotic System (HC1 M-4DCHS)**:
-
-$$
-\begin{cases}
-\dot{x} = a(y - x) + w \\
-\dot{y} = cx - xz + dy \\
-\dot{z} = xy - bz \\
-\dot{w} = -rx
-\end{cases}
-$$
-
-* **Dynamical Parameters (HC1 Regime):** $a = 15.81,\; b = 2.76,\; c = 86.03,\; d = -9.07,\; r = 10.79$, with single-precision integration step size $dt = 0.0025\text{ s}$.
-* **Volume Contraction (Dissipativity):** $\nabla \cdot \mathbf{F} = \frac{\partial \dot{x}}{\partial x} + \frac{\partial \dot{y}}{\partial y} + \frac{\partial \dot{z}}{\partial z} + \frac{\partial \dot{w}}{\partial w} = -(a + b - d) = -(15.81 + 2.76 - (-9.07)) = -27.64 < 0$, guaranteeing continuous phase-space volume contraction.
-* **Numerical Hyperchaos:** Numerically evaluated via variational RK4 + QR reorthogonalization:
-  $$\lambda_1 \approx +0.438,\quad \lambda_2 \approx +0.254,\quad \lambda_3 \approx -0.0005,\quad \lambda_4 \approx -28.332$$
-  $$\sum_{i=1}^4 \lambda_i \approx -27.640 \quad (\text{identically matching theoretical divergence } \nabla \cdot \mathbf{F} = -27.64)$$
-  The presence of two strictly positive Lyapunov exponents ($\lambda_1 > 0, \lambda_2 > 0$) establishes a verified hyperchaotic attractor.
-* **Fractional Dimension:** Kaplan-Yorke dimension $D_{KY} \approx 3.024$ ($j=3$, confirming a fractal hyperchaotic manifold).
-* **Python $\leftrightarrow$ STM32 Parity Verification:** Validated across 100 deterministic nonce test cases comparing the ARM Cortex-M4 bare-metal firmware against the Python reference engine:
-  * **0 state mismatches** across all 4 attractor state coordinates $(x, y, z, w)$.
-  * **0 keystream mismatches** across all generated bytes.
-  * Bit-exact single-precision floating-point parity experimentally confirmed.
-* **Per-Packet Deterministic Nonce Perturbation:** Dynamic perturbation is driven by rolling packet sequence ID ($\text{seq}$) and millisecond timestamp ($t_{\text{ms}}$) with nominal reference parameter $h_{\text{bio}} = 750{,}000~\mu\text{s}$ perturbing $(x_0, y_0, z_0, w_0)$ by $\approx 10^{-5}$, ensuring distinct trajectories across frames without static repetition (live streaming RR injection reserved for future firmware).
-* **Cipher Feedback (CFB) Diffusion:** $C_k = P_k \oplus s_k \oplus C_{k-1}$, where $s_k$ is the 8-bit keystream extracted from state variables $x$ and $z$ via bitwise nonlinear hashing with multiplier `0x9E3779B1`.
-
-| Security & Implementation Metric | Legacy 32-Bit Scrambler | Verified HC1 M-4DCHS (Ours) |
-| :--- | :--- | :--- |
-| **Dynamical Space** | 1D Discrete PRNG | **4D Continuous Hyperchaotic Phase Space ($\mathbb{R}^4$)** |
-| **Lyapunov Spectrum** | N/A (Linear) | **$(+0.438, +0.254, -0.0005, -28.332)$** |
-| **Sum of Exponents** | N/A | **$-27.640$ ($\nabla \cdot \mathbf{F} = -(a+b-d) = -27.64$)** |
-| **Kaplan-Yorke Dimension** | N/A | **$D_{KY} \approx 3.024$ ($j=3$)** |
-| **Positive Exponents** | 0 | **2 ($\lambda_1 \approx +0.438, \lambda_2 \approx +0.254$)** |
-| **Python $\leftrightarrow$ STM32 Parity** | N/A | **Bit-Exact (100/100 nonces: 0 state & 0 keystream mismatches)** |
-| **Physical HIL Plaintext Recovery** | Baseline | **100.00% (5,000 / 5,000 packets, 0 byte mismatches)** |
-| **Physical HIL CRC-16 Errors** | N/A | **0 / 5,000 packets** |
-| **Wire Shannon Entropy** | 7.621 bits/byte | **7.9982 bits/byte (99.98% of 8.0000 limit)** |
-| **Uniformity Test ($\chi^2$)** | 1,281.8 (Failed) | **202.07 ($p = 0.9938$, $\text{df} = 255$, no rejection of uniformity at $\alpha = 0.01$)** |
-
----
-
-## 9. Hardware-in-the-Loop (HIL) Telemetry Protocol
-
-Data is framed into a compact 20-byte binary packet transmitted via UART at 115,200 baud (8-N-1):
+To prove real-world embedded feasibility, the pipeline was deployed on an **ARM Cortex-M4 microcontroller (STMicroelectronics STM32G474RE Nucleo-64 @ 170 MHz)** streaming real-time Lead-II ECG packets over a physical USB-UART serial interface (COM10 @ 115,200 baud).
 
 ```plaintext
-Bytes 0-1   : Sync Word 0xAA 0x55
-Byte 2      : Protocol Version 0x01
-Byte 3      : Status Flags (0x05 = TELEMETRY_FLAG_ENCRYPTED | TELEMETRY_FLAG_CHAOS_4D)
-Bytes 4-5   : Packet Sequence Index (uint16_t Nonce)
-Bytes 6-9   : Hardware Timestamp (uint32_t ms)
-Bytes 10-13 : Raw ECG Voltage (IEEE-754 float32, encrypted in-place)
-Bytes 14-17 : Filtered ECG Voltage (IEEE-754 float32, encrypted in-place)
-Bytes 18-19 : CRC-16-CCITT Checksum (uint16_t over bytes 2-17)
+20-BYTE WIRE TELEMETRY PACKET STRUCTURE
+┌──────────────┬──────────────┬──────────────┬──────────────┬────────────────────────┬────────────────────────┬──────────────────┐
+│  SOF (0xAA55)│ Version (1B) │  Flags (1B)  │  SeqID (2B)  │ Timestamp SysTick (4B) │ Raw ECG float32 (4B)   │ Filt ECG f32 (4B)│ CRC-16 (2B)      │
+│   [2 Bytes]  │    [0x01]    │    [0x05]    │  [uint16_t]  │       [uint32_t]       │ [IEEE-754 Single Prec] │ [CMSIS-DSP SOS]  │  [CCITT 0x1021]  │
+└──────────────┴──────────────┴──────────────┴──────────────┴────────────────────────┴────────────────────────┴──────────────────┘
 ```
 
-### 9.1 Firmware Configuration & Operating Mode
-* **Microcontroller:** STMicroelectronics STM32G474RE Nucleo-64 (ARM Cortex-M4 with FPU @ 170 MHz SYSCLK).
-* **Target Telemetry Rate:** 350 Hz periodic timer interrupt ($T_s = 2.857\text{ ms}$).
-* **Encryption Mode:** `USE_ENCRYPTION_MODE = 2` (HC1 M-4DCHS enabled).
-* **Wire Protocol Flags:** `flags = 0x05` (`0x01` encrypted | `0x04` 4D hyperchaos).
-* **Timing Headroom:** Direct transmission requires $T_{\text{tx}} = (20 \times 10) / 115{,}200 = 1.736\text{ ms}$ (60.8% of period), leaving **1.121 ms (39.2% headroom)** before the subsequent timer interrupt.
+### Verified Physical HIL Metrics (10,000 Packets)
 
-### 9.2 Final Physical HIL Benchmark (5,000 Packets)
-Physical verification was conducted over a live USB-UART serial link (COM10 @ 115,200 baud) streaming from the STM32G474RE to the Python telemetry receiver:
+The physical testbed executed on the STM32G474RE board produced exactly **10,000 physical telemetry packets (200,000 wire bytes)**:
 
-| Parameter / Validation Metric | Measured Physical Value | Status |
-| :--- | :---: | :---: |
-| **Total Captured Packets** | **5,000** | Complete capture |
-| **Valid Formatted Packets** | **5,000** | 100.00% validity |
-| **CRC-16-CCITT Checksum Errors** | **0** | Zero bit errors |
-| **Packet Sequence Gaps / Drops** | **0** | Strict monotonicity ($N = 5{,}000$) |
-| **Decryption / Range Failures** | **0** | No NaN / Inf / float overflow |
-| **Plaintext Byte Mismatches** | **0** | Byte-for-byte exact recovery |
-| **Plaintext Recovery Rate** | **100.00%** | Full fidelity |
-| **Average Telemetry Rate** | **350.96 packets/s** | Target: 350 Hz nominal |
-| **Total Measurement Duration** | **14.25 s** | Continuous physical link |
-
-### 9.3 Recovered ECG Vitals from Decrypted Stream
-Vitals extracted directly from the decrypted 5,000-packet physical HIL capture confirm numerical preservation of physiological waveforms:
-
-* **Raw ECG Voltage:** Minimum = **-0.435883 mV**, Maximum = **+0.807449 mV**, Mean = **-0.010119 mV**
-* **Filtered ECG Voltage:** Minimum = **-0.423648 mV**, Maximum = **+0.601689 mV**, Mean = **-0.000655 mV**
-
-### 9.4 Pipeline Architecture & Security Scope
-The full physical pipeline executes as follows:
-$$\text{WESAD Prerecorded ECG in Flash} \longrightarrow \text{HC1 Encryption on STM32} \longrightarrow \text{Physical USB-UART} \longrightarrow \text{Python Telemetry Engine} \longrightarrow \text{Plaintext Recovery}$$
-
-> [!NOTE]
-> **Scope of Evaluation:** This demonstration establishes embedded implementation correctness, numerical stability, and robust real-time end-to-end telemetry recovery on bare-metal hardware. It does not assert formal cryptographic security against chosen-ciphertext, differential, or side-channel adversaries.
+| Parameter / Validation Metric | Measured Hardware Result | Status / Interpretation |
+| :--- | :---: | :--- |
+| **Target MCU Hardware** | STM32G474RE | ARM Cortex-M4 with FPU @ 170 MHz SYSCLK |
+| **Firmware Memory Footprint** | 11,316 Bytes Flash / 1,436 Bytes RAM | Optimized bare-metal C (GNU Tools for STM32 14.3.1) |
+| **Physical Interface** | ST-Link Virtual COM Port (115,200 baud) | Physical wire-level streaming |
+| **Total Captured Wire Packets**| **Exactly 10,000 packets** | 200,000 total transmitted wire bytes |
+| **Packet Sequence Continuity** | **11,428 to 21,427** | Monotonically strictly increasing |
+| **Sequence Drops / Gaps** | **0 (0.0% packet loss)** | Zero dropped frames under line-rate interrupt |
+| **CRC-16-CCITT Checksum Errors**| **0 (0.0% transmission error)** | Perfect wire transport integrity |
+| **Effective Telemetry Throughput**| **350.02 Packets/s** | Target: 350.00 Hz nominal ($T_s = 2.857$\,ms) |
+| **Raw ECG Reconstruction Error** | **0.0 mV** ($\text{MSE} = 0.000\,\text{mV}^2$) | Bit-exact identity after sequence-aligned comparison |
+| **Filtered ECG Reconstruction Error**| **0.0 mV** ($\text{MSE} = 0.000\,\text{mV}^2$) | Bit-exact identity after sequence-aligned comparison |
+| **QRS Peak Retention** | **39 / 39 Peaks Preserved (100%)** | Zero fiducial morphological distortion |
+| **Wire Shannon Entropy** | **7.9977 Bits/Byte** | 99.97% of theoretical maximum ($8.0000$\,b/B) |
+| **Chi-Square Uniformity ($\chi^2$)**| $\chi^2 = 257.79,\; p = 0.4394$ | Passes null hypothesis of uniform byte distribution |
+| **Plain vs. Cipher Correlation**| $r_{\text{plain}} = +0.9892 \rightarrow r_{\text{cipher}} = +0.0012$ | Complete loss of linear correlation |
 
 ---
 
-## 10. Repository File Structure
+## HC1 Security Disclaimer & Scope Limitation
+
+> [!CAUTION]
+> **CRITICAL SCIENTIFIC & SECURITY NOTICE ON HC1 TELEMETRY:**  
+> The 4D Coupled Hyperchaotic System (HC1 M-4DCHS) implemented in this project is an **experimental, lightweight physical-layer telemetry scrambling and obfuscation mechanism**. It is designed specifically to prevent opportunistic, casual over-the-wire eavesdropping of cardiac waveform morphology on ultra-low-power microcontrollers with limited computational budgets.
+>
+> **HC1 DOES NOT PROVIDE FORMAL CRYPTOGRAPHIC SECURITY:**
+> * It does **not** provide semantic security, chosen-plaintext (CPA) security, or chosen-ciphertext (CCA) security.
+> * High Shannon entropy ($7.9977$\,b/B) and Chi-square uniformity ($p = 0.4394$) are **statistical wire distribution tests**, **NOT mathematical proofs of cryptographic hardness**.
+> * In clinical, commercial, or production medical deployments, formal standardized authenticated encryption (such as **AES-128-GCM, NIST SP 800-38D**) must be utilized.
+
+---
+
+## WESAD Dataset Licensing & Access Notice
+
+The **WESAD** (Wearable Stress and Affect Detection) dataset was collected and published by *Schmidt et al.* (ICMI 2018).
+
+* **Dataset Size & Exclusion:** The raw sensory dataset (~16 GB uncompressed) is **intentionally excluded** from this Git repository via `.gitignore` in accordance with repository size limits and ethical data distribution practices.
+* **Obtaining Raw Data:** Original sensor recordings and subject logs are publicly accessible for academic research from the [UCI Machine Learning Repository: WESAD](https://archive.ics.uci.edu/dataset/465/wesad+wearable+stress+and+affect+detection).
+* **Self-Contained Reproduction:** This repository provides the complete, pre-extracted canonical feature dataset ([`results/WESAD_HRV_features_expanded.csv`](results/WESAD_HRV_features_expanded.csv)) and standardized sample waveforms ([`demo/sample_data/`](demo/sample_data/)). All machine learning benchmarks, ablation studies, and telemetry tests reproduce **100% offline without requiring the 16 GB download**.
+
+---
+
+## Reproducibility Instructions
+
+### 1. Environment Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION.git
+cd ECG_STRESS_DETECTION
+
+# Create and activate Python virtual environment
+python -m venv .venv
+source .venv/bin/activate       # On Linux/macOS
+.venv\Scripts\activate          # On Windows (PowerShell)
+
+# Install production dependencies
+pip install -r requirements.txt
+```
+
+### 2. Reproduce the 15-Fold LOSO ML Benchmark
+
+```bash
+# Executes 15-fold LOSO cross-validation across all 6 classifiers
+python python/train_loso_ml_benchmark.py
+```
+*Outputs: Evaluates 445 out-of-fold windows, reproduces the primary $\tau = 0.50$ benchmark (92.13% Accuracy, 88.29% F1), and saves `results/ML_Model_Benchmark_LOSO.csv`.*
+
+### 3. Verify Strict Host C-to-Python Single-Precision Parity
+
+```bash
+# Validates host C parity harness against Python reference engine
+python python/verify_m4d_parity.py
+```
+*Outputs: Executes 5 parity test suites, confirming bit-exact single-precision floating-point agreement (PASS).*
+
+### 4. Verify Physical Hardware Telemetry Capture (Offline)
+
+```bash
+# Verifies sequence-aligned reconstruction against canonical firmware replay reference
+python python/verify_hardware_hc1_capture.py \
+    --meta results/verification/hc1_hardware_hil/hardware_raw_packets_meta.json \
+    --reference results/verification/hc1_hardware_hil/firmware_replay_reference.npz \
+    --output-dir results/verification/hc1_hardware_hil/corrected_physical_hil \
+    --report-prefix corrected_ \
+    --align-by-sequence
+```
+*Outputs: Confirms 10,000 packets, zero packet loss, zero CRC errors, and 0.0 mV reconstruction error (PASS).*
+
+### 5. Launch the Interactive Clinical Dashboard
+
+```bash
+# Launch the interactive telemetry dashboard
+python demo/app.py
+```
+*Navigate to `http://127.0.0.1:8050` (or `http://localhost:8501`) to inspect real-time QRS detection, dynamic HRV cards, and 3D hyperchaotic attractor visualization.*
+
+---
+
+## Repository File Structure
 
 ```plaintext
 ECG_STRESS_DETECTION/
-├── README.md                                  # Complete research documentation & showcase
-├── requirements.txt                           # Production Python dependencies
-├── start_dashboard.bat                        # One-click launcher for telemetry dashboard
+├── .gitignore                                 # Rigorous dataset, binary, and scratch exclusion rules
 ├── LICENSE                                    # MIT Open Source License
+├── README.md                                  # Authoritative research documentation (this document)
+├── requirements.txt                           # Production Python dependencies
+├── flash_firmware.bat                         # ST-Link CLI flashing script for STM32G474RE
+├── start_dashboard.bat                        # One-click Windows launcher for web dashboard
 │
-├── paper/                                     # Publication Manuscript & Assets
-│   ├── figures/                               # Master publication figures (12 figures)
-│   └── Personalized_ECG_Stress_Detection_WESAD_Benchmark_and_STM32_Edge_IoMT.pdf # Compiled IEEE preprint
+├── paper/                                     # Publication Manuscripts & Visual Artifacts
+│   ├── Personalized_ECG_HRV_Stress_Detection_LOSO_STM32_4D_Hyperchaotic_Telemetry_v3.pdf # Preprint PDF
+│   ├── figures/                               # Publication figures (Composite testbed, Attractor, etc.)
+│   └── ieee_ecg_stress_detection/             # Complete IEEE Conference Package
+│       ├── main.tex                           # 10-page IEEEtran LaTeX manuscript
+│       ├── references.bib                     # Authoritative BibTeX database (30 citations)
+│       ├── README.md                          # Overleaf & local pdfLaTeX build instructions
+│       ├── generate_figures.py                # Deterministic figure generation script
+│       ├── figure_audit.md                    # Complete scientific figure verification report
+│       └── figures/                           # 14 publication-grade figures (300 DPI)
 │
-├── embedded_stm32/                            # Bare-Metal STM32G474RE Firmware
+├── embedded_stm32/                            # Bare-Metal STM32G474RE Firmware (ARM Cortex-M4)
 │   ├── src/
 │   │   ├── main_stm32.c                       # SysTick timer, ADC emulation, UART ISR
 │   │   ├── ecg_dsp_filter.c                   # CMSIS-DSP 5-stage Biquad IIR implementation
-│   │   └── telemetry_protocol.c               # M-4DCHS hyperchaotic cipher & CRC-16 packetizer
+│   │   └── telemetry_protocol.c               # HC1 hyperchaotic stream cipher & CRC-16 packetizer
 │   ├── include/                               # Firmware headers & CMSIS configurations
 │   └── main_bench.c                           # Standalone cycle-count benchmark harness
 │
 ├── python/                                    # Machine Learning & Telemetry Suite
-│   ├── train_loso_ml_benchmark.py             # 15-fold LOSO benchmark (6 classifiers)
+│   ├── train_loso_ml_benchmark.py             # Authoritative 15-fold LOSO ML benchmark
 │   ├── explainability_feature_importance.py   # Permutation importance & odds ratios
-│   ├── m4d_hyperchaos.py                      # 4D coupled hyperchaotic cipher & 3D attractor engine
-│   ├── verify_m4d_parity.py                   # 5-suite C-Python cryptographic parity benchmark
-│   ├── stm32_telemetry_receiver.py            # Real-time COM port parser & descrambler
-│   ├── simulate_stm32_stream.py               # Virtual COM port telemetry emulator
-│   └── plot_ml_evaluation.py                  # High-resolution benchmark figures
+│   ├── m4d_hyperchaos.py                      # 4D hyperchaotic flow simulation & attractor engine
+│   ├── verify_m4d_parity.py                   # Strict C-to-Python parity benchmark suite
+│   ├── verify_hardware_hc1_capture.py         # Sequence-aligned offline HIL verification engine
+│   ├── capture_hardware_telemetry.py          # Non-destructive USB-UART streaming logger
+│   └── plot_ml_evaluation.py                  # High-resolution benchmark figure plotting
 │
-├── demo/                                      # Web Dashboard Suite
-│   ├── app.py                                 # Interactive Dash / Streamlit clinical dashboard
-│   └── sample_data/                           # Standardized ECG samples for offline demo
-│
-├── matlab/                                    # Primary MATLAB Signal Processing Suite
-│   ├── DEMO_stress_detection.m                # Interactive Pan-Tompkins visualizer
+├── matlab/                                    # Signal Processing & Physiological Verification
+│   ├── DEMO_stress_detection.m                # Interactive Pan-Tompkins QRS visualizer
 │   ├── TWENTY_NINE_project_dashboard.m        # Master 6-panel results dashboard generator
-│   └── 05_modeling/TWENTY_TWO_calibrated_stress_detection.m # Calibrated LOSO evaluation engine
+│   └── 05_modeling/                           # Calibrated LOSO modeling engine
 │
-└── results/                                   # Validated Metrics & Benchmark Outputs
+├── demo/                                      # Clinical Web Dashboard
+│   ├── app.py                                 # Interactive Dash / Streamlit clinical dashboard
+│   └── sample_data/                           # Standardized ECG samples for offline demonstration
+│
+└── results/                                   # Canonical Results & Multi-Stage Verification Suite
     ├── FINAL_Model_Metrics.csv                # Primary validated classifier metrics
     ├── ML_Model_Benchmark_LOSO.csv            # 6-classifier comparative benchmark
-    ├── ML_Feature_Importance_Permutation.csv  # Permutation drops & odds ratios
-    └── figures/                               # Master result figure exports
+    ├── WESAD_HRV_features_expanded.csv        # Canonical 445-window HRV feature dataset
+    ├── figures/                               # Master export figures
+    └── verification/                          # Cryptographically Pinned Verification Framework
+        ├── canonical_experiment/              # Experiment manifest (SHA-256), schema, canonical metrics
+        ├── pre_paper_validation/              # Multi-stage reproducibility logs & metric deltas
+        ├── hc1_strict_parity/                 # Host C single-precision parity build & report
+        └── hc1_hardware_hil/                  # Physical HIL captures, root-cause analysis, corrected reports
 ```
 
 ---
 
-## 11. Interactive Demonstrations & Dashboard
+## Author & Academic Citation
 
-* 🌐 **Live Cloud Dashboard:** Explore interactive ECG signal streams, QRS detection, dynamic HRV biomarkers, and calibrated acute stress inference directly in the browser via the [Streamlit Cloud Demo](https://ecgstressdetection-2bremsry4npbmx9yn7whju.streamlit.app/).
-* 💻 **Bare-Metal Telemetry Receiver:** Stream and decrypt real-time Lead-II ECG packets from a physical STM32 NUCLEO-G474RE board over serial COM port:
-  ```bash
-  python python/stm32_telemetry_receiver.py --port COM10 --baud 115200
-  ```
-
----
-
-## 12. Dataset Governance & Citation
-
-The raw WESAD dataset (~16 GB) is excluded via `.gitignore` in accordance with repository size best practices. Original sensor recordings are available from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/465/wesad+wearable+stress+and+affect+detection).
+### Author Information
+* **Mukesh Yadav**  
+  Department of Electronics and Communication Engineering  
+  JSS Academy of Technical Education, Noida (JSSATEN), Uttar Pradesh, India  
+  *Email:* [`mkpy06@gmail.com`](mailto:mkpy06@gmail.com)  
+  *Portfolio:* [Mukesh Yadav Research Portfolio](https://mukesh-yadav-res-portfolio.vercel.app/)
 
 ### Academic Citation
 ```bibtex
@@ -454,4 +433,4 @@ The raw WESAD dataset (~16 GB) is excluded via `.gitignore` in accordance with r
 ---
 
 ## License
-This project, including algorithms, embedded firmware, and machine learning suites, is licensed under the [MIT License](LICENSE).
+This project, including algorithms, firmware, machine learning suites, and documentation, is open source under the [MIT License](LICENSE).

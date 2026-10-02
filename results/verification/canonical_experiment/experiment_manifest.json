@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "experiment_id": "EXP-WESAD-ECG-LOSO-CANONICAL-2026",
+  "project_title": "Personalized Electrocardiographic and HRV Dynamics for Acute Stress Detection",
+  "authoritative_pipeline": "MATLAB preprocessing -> canonical feature dataset -> Python 15-fold LOSO benchmark -> primary threshold tau = 0.50 -> canonical metrics",
+  "timestamp": "2026-10-02T10:20:00+05:30",
+  "cohort": {
+    "total_subjects": 15,
+    "subject_ids": ["S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11", "S13", "S14", "S15", "S16", "S17"],
+    "excluded_subjects": {
+      "S1": "Excluded during WESAD acquisition due to sensor hardware failure",
+      "S12": "Excluded during WESAD acquisition due to sensor hardware failure"
+    },
+    "total_windows": 445,
+    "baseline_windows": 285,
+    "stress_windows": 160
+  },
+  "signal_processing": {
+    "raw_sampling_rate_hz": 700,
+    "hardware_telemetry_rate_hz": 350,
+    "window_duration_seconds": 60.0,
+    "window_hop_seconds": 60.0,
+    "window_overlap_percentage": 0.0,
+    "matlab_filter": {
+      "type": "Butterworth Bandpass Filter",
+      "order": 4,
+      "low_cutoff_hz": 0.5,
+      "high_cutoff_hz": 40.0,
+      "implementation": "filtfilt (zero-phase forward-backward digital filtering)"
+    },
+    "stm32_edge_filter": {
+      "type": "Cascaded Direct Form I Biquad IIR Filter",
+      "stages": 5,
+      "bandpass_stages": 4,
+      "notch_stages": 1,
+      "notch_frequency_hz": 50.0,
+      "notch_q_factor": 30.0,
+      "execution_cost_cycles": 318,
+      "execution_time_microseconds": 1.87
+    },
+    "r_peak_detection": {
+      "method": "Median Absolute Deviation (MAD) Adaptive Noise-Floor Prominence",
+      "prominence_factor": 3.0,
+      "refractory_period_ms": 350,
+      "physiological_rr_limits_seconds": [0.30, 1.50],
+      "min_beats_per_window": 5
+    }
+  },
+  "features": {
+    "expanded_feature_count": 13,
+    "expanded_feature_names": [
+      "MeanHR", "MedianHR", "StdHR", "MinHR", "MaxHR",
+      "MeanRR", "MedianRR", "SDNN", "RMSSD", "pNN50",
+      "RR_CV", "RR_IQR", "HR_IQR"
+    ],
+    "primary_model_feature_count": 8,
+    "primary_model_feature_order": [
+      "MeanHR", "SDNN", "RMSSD", "pNN50", "MeanRR", "RR_CV", "RR_IQR", "HR_IQR"
+    ],
+    "feature_units_in_canonical_csv": {
+      "MeanHR": "BPM",
+      "MedianHR": "BPM",
+      "StdHR": "BPM",
+      "MinHR": "BPM",
+      "MaxHR": "BPM",
+      "MeanRR": "seconds",
+      "MedianRR": "seconds",
+      "SDNN": "seconds",
+      "RMSSD": "seconds",
+      "pNN50": "percentage",
+      "RR_CV": "unitless",
+      "RR_IQR": "seconds",
+      "HR_IQR": "BPM"
+    }
+  },
+  "normalization_and_cross_validation": {
+    "cross_validation_scheme": "15-Fold Leave-One-Subject-Out (LOSO-CV)",
+    "baseline_calibration_formula": "delta_x = (x - mean(X_base)) / max(|mean(X_base)|, 1e-6)",
+    "baseline_epoch_per_subject": "Resting baseline condition (~19 complete 60-second windows)",
+    "z_score_standardization": "StandardScaler fitted strictly on training fold (14 subjects) and applied to both training and held-out test fold (1 subject)",
+    "leakage_prevention": "Test subject baseline calibration computed strictly from its own baseline windows; no test stress windows exposed to training"
+  },
+  "decision_thresholds": {
+    "primary_research_threshold": {
+      "tau": 0.50,
+      "role": "Pre-specified canonical research benchmark threshold across all multi-model tables and ablation studies",
+      "accuracy": 92.13,
+      "f1_score": 88.29,
+      "sensitivity": 82.50,
+      "specificity": 97.54,
+      "roc_auc": 0.9493,
+      "pr_auc": 0.9467
+    },
+    "exploratory_clinical_threshold": {
+      "tau": 0.35,
+      "role": "Exploratory sensitivity-prioritized clinical screening threshold identified via empirical ROC sweep",
+      "accuracy": 92.36,
+      "f1_score": 89.03,
+      "sensitivity": 86.25,
+      "specificity": 95.79,
+      "roc_auc": 0.9494
+    }
+  },
+  "models": {
+    "random_seed": 42,
+    "primary_classifier": {
+      "architecture": "Logistic Regression",
+      "implementation": "sklearn.linear_model.LogisticRegression",
+      "hyperparameters": {
+        "C": 1.0,
+        "penalty": "l2",
+        "solver": "liblinear",
+        "random_state": 42
+      }
+    },
+    "benchmark_classifiers": {
+      "SVM_RBF": {
+        "implementation": "sklearn.svm.SVC",
+        "hyperparameters": {"kernel": "rbf", "C": 1.5, "gamma": "scale", "probability": true, "random_state": 42}
+      },
+      "Random_Forest": {
+        "implementation": "sklearn.ensemble.RandomForestClassifier",
+        "hyperparameters": {"n_estimators": 100, "max_depth": 6, "min_samples_split": 4, "random_state": 42}
+      },
+      "Extra_Trees": {
+        "implementation": "sklearn.ensemble.ExtraTreesClassifier",
+        "hyperparameters": {"n_estimators": 100, "max_depth": 6, "min_samples_split": 4, "random_state": 42}
+      },
+      "HistGradientBoosting": {
+        "implementation": "sklearn.ensemble.HistGradientBoostingClassifier",
+        "hyperparameters": {"max_iter": 100, "max_depth": 4, "learning_rate": 0.08, "random_state": 42}
+      },
+      "MLP_Neural_Net": {
+        "implementation": "sklearn.neural_network.MLPClassifier",
+        "hyperparameters": {"hidden_layer_sizes": [32, 16], "activation": "relu", "solver": "adam", "learning_rate_init": 0.005, "max_iter": 1000, "alpha": 0.01, "random_state": 42}
+      }
+    }
+  },
+  "toolchain_and_environment": {
+    "matlab": "MATLAB R2026a Update 4 (Version 26.1.0.3312084)",
+    "python": "Python 3.14.3 (tags/v3.14.3:323c59a, Feb 3 2026) AMD64",
+    "numpy": "2.4.3",
+    "pandas": "3.0.1",
+    "scipy": "1.17.1",
+    "scikit_learn": "1.8.0",
+    "streamlit": "1.64.0",
+    "host_gcc": "MinGW GCC 6.3.0",
+    "arm_gcc": "GNU Tools for STM32 14.3.1 (14.3.rel1.20251027-0700)",
+    "operating_system": "Microsoft Windows 11 Enterprise (Build 10.0.26200-SP0)"
+  },
+  "canonical_file_hashes": {
+    "results/WESAD_HRV_features_expanded.csv": "0405170bb05f4b597d8ec46eea47c2fbb474144fc5f3fcfbd5027b04c70ac2a7",
+    "results/ML_Model_Benchmark_LOSO.csv": "10e68062edaac8a2083917a8397bba2614cdb54a9eccd33c1008355d48210172",
+    "results/ML_Predictions_LOSO.csv": "dd469804ea92a7ee4c99149476aeb87095b3cac3a8da34a25cdafb89db3dba9a",
+    "results/FINAL_Model_Metrics.csv": "3f20ef8f326535aa4b08cd81368a419314254797fa521fa0798dafe5377e9794",
+    "results/FINAL_Project_Summary.csv": "65ce699ddefd3235fb344bf8c446207c5e6c73790cfd3b730316a6095ea1823e",
+    "results/Threshold_Analysis.csv": "ff03a00e44eda115699202d574d4074cfdebbc4a75c7df1695c6f5883348ca73",
+    "results/Personalized_Classifier_Predictions.csv": "3f138c9d67ea6d805d67f37fd445dbbb035195bfbd9d071acfc8833ba8361316",
+    "results/Stress_Classifier_Predictions.csv": "aec81d75c88e75182f413f790680319706df76f5d08cc7c28add2bcf539fae92",
+    "results/Feature_Group_Comparison.csv": "436aa838a1e4b2bff47712b2a874bb83be8d15facb700e8eb10771f2288855cf",
+    "results/Personalized_Feature_Ablation.csv": "e9e16bfed05f75706be16fb2a4da7c844985cb4f25cb2482081bc5401335ab91",
+    "results/ML_Feature_Importance_Permutation.csv": "6da7ef69d846c95a161c6c6b49a33fe7c6122029fc413bfc8d9dd110c419f11b",
+    "embedded_stm32/STM32G474_HC1_Telemetry.bin": "ed4b97b3e7279dc0f6d2add3a21b1ddf45347dbc9e8bfa21f1f48ac86657edc1",
+    "results/verification/hc1_hardware_hil/hardware_raw_packets.bin": "2c729fc0adcb3b0cd1a41a6ddb0a504783ef741b566a2a5f867318780a716c65",
+    "results/verification/hc1_hardware_hil/firmware_replay_reference.npz": "151bc7335c607c0a36b0bbc5ee664d492796368d58314a475217e247cdc74155",
+    "demo/sample_data/ecg_samples.npz": "349c6f769d7d9e2def1433a93175857f5e9a35ee0ffa081deaaac6104e5c962e",
+    "demo/sample_data/samples_meta.json": "da0e33abfc395bc93d9d7f80afe353388ab8784cf27e0849a46f0410ca040b29"
+  },
+  "canonical_output_paths": {
+    "dataset": "results/WESAD_HRV_features_expanded.csv",
+    "benchmark_leaderboard": "results/ML_Model_Benchmark_LOSO.csv",
+    "out_of_fold_predictions": "results/ML_Predictions_LOSO.csv",
+    "threshold_sweep": "results/Threshold_Analysis.csv",
+    "scorecard_metrics": "results/FINAL_Model_Metrics.csv",
+    "feature_ablation": "results/Personalized_Feature_Ablation.csv",
+    "feature_importance": "results/ML_Feature_Importance_Permutation.csv",
+    "firmware_binary": "embedded_stm32/STM32G474_HC1_Telemetry.bin",
+    "physical_hil_capture": "results/verification/hc1_hardware_hil/hardware_raw_packets.bin",
+    "physical_hil_report": "results/verification/hc1_hardware_hil/corrected_physical_hil/corrected_hil_parity_report.json"
+  }
+}

@@ -1,0 +1,213 @@
+{
+  "title": "Authoritative Canonical Metrics for WESAD ECG Stress Detection",
+  "project": "Personalized Electrocardiographic and HRV Dynamics for Acute Stress Detection",
+  "version": "1.0.0-canonical",
+  "dataset_summary": {
+    "total_subjects": 15,
+    "total_windows": 445,
+    "baseline_windows": 285,
+    "stress_windows": 160,
+    "window_duration_seconds": 60,
+    "window_hop_seconds": 60
+  },
+  "primary_results_tau_0_50": {
+    "operating_threshold": 0.50,
+    "description": "Authoritative primary scientific benchmark operating point under strict 15-fold Leave-One-Subject-Out (LOSO) cross-validation with subject-specific baseline normalization.",
+    "primary_model": "Logistic Regression (L2 Regularized, C=1.0, liblinear)",
+    "feature_subset": "8 Core Physiological Features [MeanHR, SDNN, RMSSD, pNN50, MeanRR, RR_CV, RR_IQR, HR_IQR]",
+    "metrics": {
+      "accuracy_percentage": 92.1348,
+      "f1_score_percentage": 88.2943,
+      "sensitivity_recall_percentage": 82.5000,
+      "specificity_percentage": 97.5439,
+      "precision_percentage": 94.9640,
+      "balanced_accuracy_percentage": 90.0219,
+      "roc_auc": 0.9493,
+      "pr_auc": 0.9467,
+      "subject_mean_accuracy_percentage": 92.2033,
+      "subject_mean_f1_percentage": 85.0865
+    },
+    "confusion_matrix": {
+      "true_positives": 132,
+      "false_positives": 7,
+      "true_negatives": 278,
+      "false_negatives": 28,
+      "total_correct": 410,
+      "total_samples": 445
+    },
+    "multi_model_benchmark_leaderboard": [
+      {
+        "model": "Logistic Regression",
+        "accuracy_pct": 92.13,
+        "balanced_acc_pct": 90.02,
+        "sensitivity_recall_pct": 82.50,
+        "specificity_pct": 97.54,
+        "precision_pct": 94.96,
+        "f1_score_pct": 88.29,
+        "roc_auc": 0.9493,
+        "pr_auc": 0.9467,
+        "tp": 132,
+        "fp": 7,
+        "tn": 278,
+        "fn": 28
+      },
+      {
+        "model": "MLP Neural Net",
+        "accuracy_pct": 91.69,
+        "balanced_acc_pct": 89.95,
+        "sensitivity_recall_pct": 83.75,
+        "specificity_pct": 96.14,
+        "precision_pct": 92.41,
+        "f1_score_pct": 87.87,
+        "roc_auc": 0.9375,
+        "pr_auc": 0.9327,
+        "tp": 134,
+        "fp": 11,
+        "tn": 274,
+        "fn": 26
+      },
+      {
+        "model": "SVM (RBF Kernel)",
+        "accuracy_pct": 91.46,
+        "balanced_acc_pct": 89.50,
+        "sensitivity_recall_pct": 82.50,
+        "specificity_pct": 96.49,
+        "precision_pct": 92.96,
+        "f1_score_pct": 87.42,
+        "roc_auc": 0.9524,
+        "pr_auc": 0.9441,
+        "tp": 132,
+        "fp": 10,
+        "tn": 275,
+        "fn": 28
+      },
+      {
+        "model": "Random Forest",
+        "accuracy_pct": 90.34,
+        "balanced_acc_pct": 88.48,
+        "sensitivity_recall_pct": 81.88,
+        "specificity_pct": 95.09,
+        "precision_pct": 90.34,
+        "f1_score_pct": 85.90,
+        "roc_auc": 0.9426,
+        "pr_auc": 0.9301,
+        "tp": 131,
+        "fp": 14,
+        "tn": 271,
+        "fn": 29
+      },
+      {
+        "model": "Extra Trees",
+        "accuracy_pct": 89.89,
+        "balanced_acc_pct": 86.90,
+        "sensitivity_recall_pct": 76.25,
+        "specificity_pct": 97.54,
+        "precision_pct": 94.57,
+        "f1_score_pct": 84.43,
+        "roc_auc": 0.9494,
+        "pr_auc": 0.9391,
+        "tp": 122,
+        "fp": 7,
+        "tn": 278,
+        "fn": 38
+      },
+      {
+        "model": "HistGradientBoosting",
+        "accuracy_pct": 89.21,
+        "balanced_acc_pct": 87.33,
+        "sensitivity_recall_pct": 80.62,
+        "specificity_pct": 94.04,
+        "precision_pct": 88.36,
+        "f1_score_pct": 84.31,
+        "roc_auc": 0.9459,
+        "pr_auc": 0.9375,
+        "tp": 129,
+        "fp": 17,
+        "tn": 268,
+        "fn": 31
+      }
+    ]
+  },
+  "exploratory_results_tau_0_35": {
+    "operating_threshold": 0.35,
+    "description": "Exploratory sensitivity-prioritized clinical screening operating point identified via threshold sweep for higher stress recall (capturing 86.25% - 86.88% of acute stress windows).",
+    "matlab_pipeline": {
+      "source_file": "results/FINAL_Model_Metrics.csv",
+      "optimizer": "Custom Unregularized Gradient Descent (alpha=0.05, 2500 iterations)",
+      "accuracy_percentage": 92.3596,
+      "f1_score_percentage": 89.0323,
+      "sensitivity_recall_percentage": 86.2500,
+      "specificity_percentage": 95.7895,
+      "precision_percentage": 92.0000,
+      "balanced_accuracy_percentage": 91.0197,
+      "roc_auc": 0.9494,
+      "confusion_matrix": {
+        "true_positives": 138,
+        "false_positives": 12,
+        "true_negatives": 273,
+        "false_negatives": 22,
+        "total_correct": 411,
+        "total_samples": 445
+      }
+    },
+    "python_pipeline": {
+      "source_file": "results/ML_Predictions_LOSO.csv",
+      "optimizer": "Scikit-Learn Coordinate Descent (L2 Regularized, C=1.0)",
+      "accuracy_percentage": 92.3596,
+      "f1_score_percentage": 89.1026,
+      "sensitivity_recall_percentage": 86.8750,
+      "specificity_percentage": 95.4386,
+      "precision_percentage": 91.4474,
+      "balanced_accuracy_percentage": 91.1568,
+      "confusion_matrix": {
+        "true_positives": 139,
+        "false_positives": 13,
+        "true_negatives": 272,
+        "false_negatives": 21,
+        "total_correct": 411,
+        "total_samples": 445
+      }
+    },
+    "optimizer_difference_documentation": "Both pipelines achieve exactly 92.36% accuracy (411/445 correct). Exactly 4 borderline windows with probabilities in [0.345, 0.358] differ due to L2 regularization in scikit-learn versus unregularized gradient descent in MATLAB. This shifts TP by 1 (138 in MATLAB vs 139 in Python) and FP by 1 (12 in MATLAB vs 13 in Python)."
+  },
+  "ablation_study_progression": [
+    {
+      "id": "M1",
+      "configuration": "Raw MeanHR (Uncalibrated)",
+      "features": 1,
+      "normalization": "None (Global)",
+      "accuracy_pct": 77.08,
+      "f1_score_pct": 64.34,
+      "recall_pct": 56.88
+    },
+    {
+      "id": "M2",
+      "configuration": "4 Time-Domain (Uncalibrated)",
+      "features": 4,
+      "normalization": "None (Global)",
+      "accuracy_pct": 78.43,
+      "f1_score_pct": 68.80,
+      "recall_pct": 66.88
+    },
+    {
+      "id": "M3",
+      "configuration": "13 Metrics (Uncalibrated)",
+      "features": 13,
+      "normalization": "None (Global)",
+      "accuracy_pct": 81.57,
+      "f1_score_pct": 73.03,
+      "recall_pct": 69.38
+    },
+    {
+      "id": "M4",
+      "configuration": "Personalized (X* Calibrated, tau=0.50)",
+      "features": 13,
+      "normalization": "Relative Baseline (X*)",
+      "accuracy_pct": 92.36,
+      "f1_score_pct": 88.67,
+      "recall_pct": 83.13,
+      "delta_accuracy_vs_m3_pp": 10.79,
+      "delta_f1_vs_m3_pp": 15.64
+    }
+  ]
+}
