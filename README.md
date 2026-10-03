@@ -13,11 +13,11 @@
 [![Specificity](https://img.shields.io/badge/Specificity-97.54%25-blue.svg?style=flat-square)]()
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22895173.svg)](https://doi.org/10.5281/zenodo.22895173)
 [![Research Paper: PDF](https://img.shields.io/badge/Research%20Paper-PDF%20Download-b31b1b.svg?style=flat-square&logo=adobeacrobatreader)](paper/Personalized_ECG_HRV_Stress_Detection_LOSO_STM32_4D_Hyperchaotic_Telemetry_v3.pdf)
-[![IEEE Conference Package](https://img.shields.io/badge/IEEE%20Package-LaTeX%20Source-darkgreen.svg?style=flat-square)](paper/ieee_ecg_stress_detection/)
+[![IEEE Conference Paper](https://img.shields.io/badge/IEEE%20Paper-Compiled%20PDF-darkgreen.svg?style=flat-square&logo=adobeacrobatreader)](paper/Personalized_ECG_HRV_Stress_Detection_LOSO_STM32_4D_Hyperchaotic_Telemetry_v3.pdf)
 [![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat-square)](LICENSE)
 
 > 🌐 **Interactive Research Benchmark & ECG Telemetry:** [Mukesh Yadav | Biosignal Processing & Edge IoMT Portfolio](https://mukesh-yadav-res-portfolio.vercel.app/)  
-> 📄 **IEEE Conference Manuscript Package:** [`paper/ieee_ecg_stress_detection/`](paper/ieee_ecg_stress_detection/) (LaTeX source, BibTeX database, and publication-ready figures).
+> 📄 **Compiled IEEE Conference Manuscript:** [`paper/Personalized_ECG_HRV_Stress_Detection_LOSO_STM32_4D_Hyperchaotic_Telemetry_v3.pdf`](paper/Personalized_ECG_HRV_Stress_Detection_LOSO_STM32_4D_Hyperchaotic_Telemetry_v3.pdf) (Complete compiled IEEE research paper).
 
 ---
 
@@ -34,15 +34,15 @@
 <table align="center" width="100%">
   <tr>
     <td align="center" width="50%">
-      <a href="paper/ieee_ecg_stress_detection/figures/FIG_Hardware_Testbed_Composite.png" target="_blank">
-        <img src="paper/ieee_ecg_stress_detection/figures/FIG_Hardware_Testbed_Composite.png" width="100%" alt="Physical STM32 Hardware Testbed" />
+      <a href="paper/figures/FIG_Hardware_Testbed_Composite.png" target="_blank">
+        <img src="paper/figures/FIG_Hardware_Testbed_Composite.png" width="100%" alt="Physical STM32 Hardware Testbed" />
       </a>
       <br />
       <em><b>Figure 2(a): Physical STM32 Edge Hardware Testbed.</b> NUCLEO-G474RE (170 MHz ARM Cortex-M4) testbed streaming real-time filtered and hyperchaotic encrypted ECG over physical USB-UART (COM10 @ 115,200 baud).</em>
     </td>
     <td align="center" width="50%">
-      <a href="paper/ieee_ecg_stress_detection/figures/FIG_M4D_Attractor_3D.png" target="_blank">
-        <img src="paper/ieee_ecg_stress_detection/figures/FIG_M4D_Attractor_3D.png" width="100%" alt="4D Coupled Hyperchaotic Attractor" />
+      <a href="paper/figures/FIG_M4D_Attractor_3D.png" target="_blank">
+        <img src="paper/figures/FIG_M4D_Attractor_3D.png" width="100%" alt="4D Coupled Hyperchaotic Attractor" />
       </a>
       <br />
       <em><b>Figure 2(b): 4D Coupled Hyperchaotic Attractor (HC1 M-4DCHS).</b> Continuous phase-space trajectory (x, y, z) with color-mapped 4th-dimension state variable w, exhibiting continuous volume contraction (div(F) = -27.64), two positive Lyapunov exponents (&lambda;₁ &approx; +0.438, &lambda;₂ &approx; +0.254), and fractional Kaplan-Yorke dimension D_KY &approx; 3.024.</em>
@@ -53,15 +53,15 @@
 <table align="center" width="100%">
   <tr>
     <td align="center" width="50%">
-      <a href="paper/ieee_ecg_stress_detection/figures/FIG_Dashboard_SinglePage_M4D_Decrypted.png" target="_blank">
-        <img src="paper/ieee_ecg_stress_detection/figures/FIG_Dashboard_SinglePage_M4D_Decrypted.png" width="100%" alt="Authorized Monitoring View" />
+      <a href="paper/figures/FIG_Dashboard_SinglePage_M4D_Decrypted.png" target="_blank">
+        <img src="paper/figures/FIG_Dashboard_SinglePage_M4D_Decrypted.png" width="100%" alt="Authorized Monitoring View" />
       </a>
       <br />
       <em><b>Figure 3(a): Authorized Monitoring Terminal View (Decrypted Telemetry).</b> Interactive dashboard displaying real-time descrambled Lead-II ECG from prerecorded WESAD replay, model-estimated stress score, live HRV biomarker cards, and client-side Three.js WebGL (60 FPS) 3D continuous phase-space monitor.</em>
     </td>
     <td align="center" width="50%">
-      <a href="paper/ieee_ecg_stress_detection/figures/FIG_Dashboard_M4D_Eavesdropper.png" target="_blank">
-        <img src="paper/ieee_ecg_stress_detection/figures/FIG_Dashboard_M4D_Eavesdropper.png" width="100%" alt="Adversarial Intercept View" />
+      <a href="paper/figures/FIG_Dashboard_M4D_Eavesdropper.png" target="_blank">
+        <img src="paper/figures/FIG_Dashboard_M4D_Eavesdropper.png" width="100%" alt="Adversarial Intercept View" />
       </a>
       <br />
       <em><b>Figure 3(b): Adversarial Wire Intercept View (Eavesdropper Mode).</b> Physical UART wiretap without decryption keys: raw high-entropy scrambled ciphertext (Shannon entropy H = 7.9977 bits/byte), zero resolvable QRS fiducials, and shielded biometric cards.</em>
@@ -128,7 +128,7 @@ Experiments were conducted using the benchmark **WESAD** physiological dataset (
 * **Dataset Standardization:** Exactly **445 standardized, complete non-overlapping 60-second windows** (**160 Acute Stress windows** vs. **285 Calm / Resting baseline windows**).
 
 <p align="center">
-  <img src="paper/ieee_ecg_stress_detection/figures/DEMO_Protocol_Timeline.png" width="95%" alt="WESAD Protocol Timeline" />
+  <img src="paper/figures/DEMO_Protocol_Timeline.png" width="95%" alt="WESAD Protocol Timeline" />
   <br>
   <em><b>Figure 4: Experimental Protocol Timeline.</b> Continuous physiological session showing transitions through Baseline, TSST Acute Stress, Amusement, and Meditation recovery phases.</em>
 </p>
@@ -156,11 +156,11 @@ The pre-specified decision threshold of **&tau; = 0.50** represents the authorit
 <table align="center" width="100%">
   <tr>
     <td align="center" width="50%">
-      <img src="paper/ieee_ecg_stress_detection/figures/FINAL_Confusion_Matrix.png" width="100%" alt="Confusion Matrix at tau=0.50" /><br />
+      <img src="paper/figures/FINAL_Confusion_Matrix.png" width="100%" alt="Confusion Matrix at tau=0.50" /><br />
       <em><b>Figure 5(a): Primary Confusion Matrix (&tau; = 0.50).</b> 97.54% specificity (278/285 calm windows) and 82.50% sensitivity (132/160 acute stress windows) with only 7 false alarms across the entire 15-subject cohort.</em>
     </td>
     <td align="center" width="50%">
-      <img src="paper/ieee_ecg_stress_detection/figures/FINAL_ROC_Curve.png" width="100%" alt="ROC Curve" /><br />
+      <img src="paper/figures/FINAL_ROC_Curve.png" width="100%" alt="ROC Curve" /><br />
       <em><b>Figure 5(b): Cross-Validated ROC Curve (ROC-AUC = 0.9493).</b> Showing primary benchmark (&tau; = 0.50, blue marker) and exploratory clinical-screening point (&tau; = 0.35, red marker).</em>
     </td>
   </tr>
@@ -180,7 +180,7 @@ Six machine learning architectures were benchmarked under identical 15-fold LOSO
 | **HistGradientBoosting** | 89.21 | 87.33 | 80.62 | 94.04 | 88.36 | 84.31 | 0.9459 | 0.9375 |
 
 <p align="center">
-  <img src="paper/ieee_ecg_stress_detection/figures/ML_Model_Benchmark_Bars.png" width="95%" alt="ML Benchmark Bars" />
+  <img src="paper/figures/ML_Model_Benchmark_Bars.png" width="95%" alt="ML Benchmark Bars" />
   <br>
   <em><b>Figure 6: Multi-Model Benchmark Comparison.</b> Performance across all six classifiers under 15-fold LOSO cross-validation on unseen test participants.</em>
 </p>
@@ -215,7 +215,7 @@ For clinical-screening applications where missing an acute stress episode carrie
 To interpret the learned decision boundary, a 30-repeat permutation importance analysis was executed per fold ($15 \times 30 = 450$ trials per feature) alongside standardized logistic regression odds ratios ($e^{w_i}$):
 
 <p align="center">
-  <img src="paper/ieee_ecg_stress_detection/figures/ML_Feature_Importance_Permutation.png" width="95%" alt="Feature Importance and Odds Ratios" />
+  <img src="paper/figures/ML_Feature_Importance_Permutation.png" width="95%" alt="Feature Importance and Odds Ratios" />
   <br>
   <em><b>Figure 7: Permutation Importance & Odds Ratios.</b> (Left) Test ROC-AUC degradation upon feature permutation; (Right) Standardized odds ratios indicating the physiological direction and magnitude of predictive weights.</em>
 </p>
@@ -225,7 +225,7 @@ To interpret the learned decision boundary, a 30-repeat permutation importance a
 * **Cohort Generalization:** The model achieves &ge; 90% stress recall in 11 of 15 subjects, and 100% recall in 8 subjects (S3, S4, S5, S8, S11, S14, S16, S17). Subject S2 exhibited blunted autonomic reactivity (&Delta;MeanHR &approx; 0 BPM), behaving as an autonomic non-responder.
 
 <p align="center">
-  <img src="paper/ieee_ecg_stress_detection/figures/FINAL_Subject_Stress_Detection.png" width="95%" alt="Subject Stress Detection Rates" />
+  <img src="paper/figures/FINAL_Subject_Stress_Detection.png" width="95%" alt="Subject Stress Detection Rates" />
   <br>
   <em><b>Figure 8: Subject-Specific Recall Breakdown.</b> 14 of 15 subjects achieve successful stress detection. Subject S2 represents an idiosyncratic physiological non-responder with blunted heart rate reactivity.</em>
 </p>
@@ -245,7 +245,7 @@ To prove real-world embedded feasibility, the pipeline was deployed on an **ARM 
 ```
 
 <p align="center">
-  <img src="paper/ieee_ecg_stress_detection/figures/FIG_Physical_HIL_10k_Validation.png" width="95%" alt="Physical HIL 10,000 Packets Validation" />
+  <img src="paper/figures/FIG_Physical_HIL_10k_Validation.png" width="95%" alt="Physical HIL 10,000 Packets Validation" />
   <br>
   <em><b>Figure 9: Physical HIL Telemetry Validation Across 10,000 Over-the-Wire Packets.</b> (a) Monotonic sequence continuity (11,428 to 21,427, zero gaps); (b) Transmission pacing distribution (2.857 &plusmn; 0.002 ms); (c) Bit-exact signal reconstruction error (0.0 mV raw and filtered after sequence alignment); (d) Wire statistical distribution checks (H = 7.9977 b/B, &chi;&sup2; = 257.79, p = 0.4394, zero CRC errors).</em>
 </p>
@@ -365,15 +365,8 @@ ECG_STRESS_DETECTION/
 ├── start_dashboard.bat                        # One-click Windows launcher for web dashboard
 │
 ├── paper/                                     # Publication Manuscripts & Visual Artifacts
-│   ├── Personalized_ECG_HRV_Stress_Detection_LOSO_STM32_4D_Hyperchaotic_Telemetry_v3.pdf # Preprint PDF
-│   ├── figures/                               # Publication figures (Composite testbed, Attractor, etc.)
-│   └── ieee_ecg_stress_detection/             # Complete IEEE Conference Package
-│       ├── main.tex                           # 10-page IEEEtran LaTeX manuscript
-│       ├── references.bib                     # Authoritative BibTeX database (30 citations)
-│       ├── README.md                          # Overleaf & local pdfLaTeX build instructions
-│       ├── generate_figures.py                # Deterministic figure generation script
-│       ├── figure_audit.md                    # Complete scientific figure verification report
-│       └── figures/                           # 14 publication-grade figures (300 DPI)
+│   ├── Personalized_ECG_HRV_Stress_Detection_LOSO_STM32_4D_Hyperchaotic_Telemetry_v3.pdf # Compiled Research Paper PDF
+│   └── figures/                               # Publication figures (Composite testbed, Attractor, etc.)
 │
 ├── embedded_stm32/                            # Bare-Metal STM32G474RE Firmware (ARM Cortex-M4)
 │   ├── src/

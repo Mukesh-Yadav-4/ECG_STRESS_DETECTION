@@ -235,7 +235,7 @@ ECG_STRESS_DETECTION/
 │   └── flash_firmware.bat                     # STM32 Programmer CLI script
 │
 ├── paper/                                     # Publication Assets & Manuscript
-│   ├── main.tex & references.bib              # IEEE LaTeX source files
+│   ├── Personalized_ECG_HRV_Stress_Detection_LOSO_STM32_4D_Hyperchaotic_Telemetry_v3.pdf # Compiled IEEE research paper PDF
 │   ├── figures/                               # Publication vector and PNG figures
 │   └── *.pdf                                  # Compiled conference / journal preprints
 │
