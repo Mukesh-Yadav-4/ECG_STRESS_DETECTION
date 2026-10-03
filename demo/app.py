@@ -276,10 +276,10 @@ st.markdown(
             <span style="font-size:1.35rem;">🫀</span>
             <div>
                 <h1 style="font-size:1.15rem; font-weight:800; margin:0; color:#F8FAFC; letter-spacing:-0.01em; display:inline;">
-                    Personalized Electrocardiographic and HRV Dynamics for Acute Stress Detection
+                    Reproducible Edge-to-Cloud ECG Stress Detection with Embedded Telemetry
                 </h1>
                 <span style="font-size:0.75rem; color:#64748B; margin-left:0.6rem;">
-                    15-Fold LOSO-CV Benchmark &amp; Bare-Metal Edge IoMT Node
+                    Hardware-in-the-Loop Validation &amp; 15-Fold LOSO-CV Benchmark
                 </span>
             </div>
         </div>
@@ -369,16 +369,17 @@ with tab_stm32:
         )
 
         if link_mode == "Simulated STM32 Link (Virtual)":
+            stm_subj_opts = ["S3", "S2", "S10", "S17"]
             stm_subj = st.selectbox(
                 "Patient / Subject Profile:",
-                options=["S3", "S2", "S10", "S17"],
+                options=stm_subj_opts,
                 format_func=lambda s: {
                     "S3": "S3 (Strong Autonomic Responder)",
                     "S2": "S2 (Clinical Non-Responder)",
                     "S10": "S10 (Tachycardic Profile)",
                     "S17": "S17 (Rapid Acceleration)"
                 }[s],
-                index=0,
+                index=stm_subj_opts.index("S17"),
             )
 
             stm_cond = st.radio(
@@ -425,9 +426,13 @@ with tab_stm32:
 
         continuous_stream = st.toggle(
             "🔴 Live Stream (350 Hz)",
-            value=False,
+            value=True,
             help="Continuously ingests incoming packets in real-time and scrolls the live ECG waveform without freezing."
         )
+
+        if "live_stream_toast_shown" not in st.session_state:
+            st.session_state["live_stream_toast_shown"] = True
+            st.toast("🫀 Live 350 Hz ECG telemetry active for Subject S17 (Resting Calm).", icon="⚡")
 
         chart_renderer = "🟢 Hospital Monitor (Flicker-Free Native)"
 
