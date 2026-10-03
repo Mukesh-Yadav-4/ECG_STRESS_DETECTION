@@ -232,11 +232,11 @@ pip install -r requirements.txt
   ```powershell
   python python/plot_ml_evaluation.py
   ```
-* **Generated Figures (`results/figures/python/`):**
-  * `ml_benchmark_roc_curves.png` (Comparison of all 6 models on held-out subjects)
-  * `ml_benchmark_pr_curves.png` (Precision-recall trade-offs)
-  * `ml_benchmark_metrics_bars.png` (Multi-metric comparison bar chart)
-  * `loso_confusion_matrices.png` (Subject-by-subject classification outcomes)
+* **Generated Figures (`results/figures/`):**
+  * `ML_Model_Comparison_ROC.png` (Comparison of all 6 models on held-out subjects)
+  * `ML_Model_Comparison_PR.png` (Precision-recall trade-offs)
+  * `ML_Model_Benchmark_Bars.png` (Multi-metric comparison bar chart)
+  * `ML_Confusion_Matrices_Grid.png` (Subject-by-subject classification outcomes)
 
 ---
 
