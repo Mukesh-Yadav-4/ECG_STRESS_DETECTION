@@ -12,12 +12,11 @@
 [![Sensitivity](https://img.shields.io/badge/Sensitivity-82.50%25-2ea44f.svg?style=flat-square)]()
 [![Specificity](https://img.shields.io/badge/Specificity-97.54%25-blue.svg?style=flat-square)]()
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22895173.svg)](https://doi.org/10.5281/zenodo.22895173)
-[![Research Paper: PDF](https://img.shields.io/badge/Research%20Paper-PDF%20Download-b31b1b.svg?style=flat-square&logo=adobeacrobatreader)](paper/Personalized_ECG_HRV_Stress_Detection_LOSO_STM32_4D_Hyperchaotic_Telemetry_v3.pdf)
-[![IEEE Conference Paper](https://img.shields.io/badge/IEEE%20Paper-Compiled%20PDF-darkgreen.svg?style=flat-square&logo=adobeacrobatreader)](paper/Personalized_ECG_HRV_Stress_Detection_LOSO_STM32_4D_Hyperchaotic_Telemetry_v3.pdf)
+[![Research Paper: PDF](https://img.shields.io/badge/Research%20Paper-PDF%20Download-b31b1b.svg?style=flat-square&logo=adobeacrobatreader)](paper/Reproducible_Edge_to_Cloud_ECG_Stress_Detection_with_Embedded_Telemetry_and_Hardware_in_the_Loop_Validation_v5.pdf)
+[![IEEE Conference Paper](https://img.shields.io/badge/IEEE%20Paper-Compiled%20PDF-darkgreen.svg?style=flat-square&logo=adobeacrobatreader)](paper/Reproducible_Edge_to_Cloud_ECG_Stress_Detection_with_Embedded_Telemetry_and_Hardware_in_the_Loop_Validation_v5.pdf)
 [![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat-square)](LICENSE)
 
-> 🌐 **Interactive Research Benchmark & ECG Telemetry:** [Mukesh Yadav | Biosignal Processing & Edge IoMT Portfolio](https://mukesh-yadav-res-portfolio.vercel.app/)  
-> 📄 **Compiled IEEE Conference Manuscript:** [`paper/Personalized_ECG_HRV_Stress_Detection_LOSO_STM32_4D_Hyperchaotic_Telemetry_v3.pdf`](paper/Personalized_ECG_HRV_Stress_Detection_LOSO_STM32_4D_Hyperchaotic_Telemetry_v3.pdf) (Complete compiled IEEE research paper).
+> 🌐 **Interactive Research Benchmark & ECG Telemetry:** [Mukesh Yadav | Biosignal Processing & Edge IoMT Portfolio](https://mukesh-yadav-res-portfolio.vercel.app/)
 
 ---
 
@@ -365,7 +364,7 @@ ECG_STRESS_DETECTION/
 ├── start_dashboard.bat                        # One-click Windows launcher for web dashboard
 │
 ├── paper/                                     # Publication Manuscripts & Visual Artifacts
-│   ├── Personalized_ECG_HRV_Stress_Detection_LOSO_STM32_4D_Hyperchaotic_Telemetry_v3.pdf # Compiled Research Paper PDF
+│   ├── Reproducible_Edge_to_Cloud_ECG_Stress_Detection_with_Embedded_Telemetry_and_Hardware_in_the_Loop_Validation_v5.pdf # Compiled Research Paper PDF
 │   └── figures/                               # Publication figures (Composite testbed, Attractor, etc.)
 │
 ├── embedded_stm32/                            # Bare-Metal STM32G474RE Firmware (ARM Cortex-M4)
