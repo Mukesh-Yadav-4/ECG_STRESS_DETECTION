@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this benchmark, firmware, or telemetry protocol, please cite it as below."
+authors:
+  - family-names: Yadav
+    given-names: Mukesh
+    orcid: "https://orcid.org/0009-0000-0000-0000"
+    affiliation: "Department of Electronics and Communication Engineering, JSS Academy of Technical Education, Noida, India"
+title: "Reproducible Edge-to-Cloud ECG Stress Detection with Embedded Telemetry and Hardware-in-the-Loop Validation"
+version: 1.0.0
+date-released: 2026-11-11
+url: "https://github.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION"
+preferred-citation:
+  type: article
+  authors:
+    - family-names: Yadav
+      given-names: Mukesh
+  title: "Reproducible Edge-to-Cloud ECG Stress Detection with Embedded Telemetry and Hardware-in-the-Loop Validation"
+  journal: "TechRxiv Preprint"
+  year: 2026
+  keywords:
+    - "Electrocardiogram"
+    - "Stress Detection"
+    - "Heart Rate Variability"
+    - "Hardware-in-the-Loop"
+    - "Embedded Telemetry"
+    - "STM32"
+    - "TinyML"
