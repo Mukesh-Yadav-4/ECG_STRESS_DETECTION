@@ -1,0 +1,19 @@
+To:
+Editor-in-Chief
+Biomedical Signal Processing and Control (Elsevier)
+
+Dear Editor,
+
+I am pleased to submit our original research manuscript entitled "Personalized ECG Stress Detection with Subject-Specific Baseline Normalization and Bare-Metal Edge Validation" for consideration for publication in Biomedical Signal Processing and Control.
+
+This work addresses a fundamental bottleneck in wearable affective computing and the Internet of Medical Things (IoMT): inter-individual physiological baseline heterogeneity and the risk of unencrypted telemetry. Using single-lead ECG from the benchmark WESAD cohort (N=15, 445 windows), we demonstrate that subject-specific relative baseline calibration provides a +10.79 percentage-point leap in classification accuracy under rigorous 15-fold Leave-One-Subject-Out (LOSO) cross-validation, achieving 92.13% accuracy and 0.9493 ROC-AUC. Furthermore, we demonstrate bare-metal execution on an ARM Cortex-M4 microcontroller (STM32G474RE) performing real-time Biquad filtering in 1.87 µs and validating 10,000 physical hardware-in-the-loop (HIL) telemetry packets over UART with zero CRC errors.
+
+This manuscript is original work, has not been published previously, and is not currently under consideration for publication elsewhere. All authors have read and approved the manuscript.
+
+Thank you for your time and consideration.
+
+Sincerely,
+Mukesh Yadav
+Department of Electronics and Communication Engineering (ECE)
+JSS Academy of Technical Education, Noida (JSSATEN)
+Email: mkpy06@gmail.com

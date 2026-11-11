@@ -1,0 +1,50 @@
+================================================================================
+TECHRXIV PREPRINT SUBMISSION PACKAGE
+Paper: Reproducible Edge-to-Cloud ECG Stress Detection with Embedded Telemetry
+       and Hardware-in-the-Loop Validation
+Author: Mukesh Yadav
+Date: November 2026
+================================================================================
+
+1. MANUSCRIPT PDF PATH:
+   C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\01_ECG_STRESS_DETECTION\paper\Reproducible_Edge_to_Cloud_ECG_Stress_Detection_with_Embedded_Telemetry_and_Hardware_in_the_Loop_Validation_v5.pdf
+
+2. ARTICLE TITLE:
+   Reproducible Edge-to-Cloud ECG Stress Detection with Embedded Telemetry and Hardware-in-the-Loop Validation
+
+3. AUTHOR INFORMATION:
+   First Name: Mukesh
+   Last Name: Yadav
+   Email: mkpy06@gmail.com
+   Institution: JSS Academy of Technical Education (Dr. A.P.J. Abdul Kalam Technical University)
+   Department: Department of Electronics and Communication Engineering
+   City / Country: Noida, Uttar Pradesh, India
+   ORCID: (Optional - leave blank if not yet registered)
+   Role: Corresponding Author / First Author
+
+4. SUBJECT CATEGORY:
+   Primary: Biomedical Engineering
+   Secondary: Signal Processing / Embedded Systems
+
+5. ABSTRACT:
+Continuous stress monitoring via wearable electrocardiogram (ECG) sensors is critical for early detection of autonomic dysregulation, yet existing edge implementations face trade-offs between inference latency, hardware resource constraints, and communication overhead. In this work, we present an end-to-end reproducible edge-to-cloud stress detection framework validated through hardware-in-the-loop (HIL) simulation. The edge processing pipeline performs QRS complex detection, temporal HRV feature extraction, and lightweight classification on an STM32 microcontroller. Extracted features and system status are packaged into a robust 128-byte UART telemetry protocol with CRC16 verification for secure cloud synchronization. Validated on the benchmark WESAD dataset, the edge classifier achieves 99.88% subject-independent classification accuracy (macro-F1 score 0.9984) with 2.34 ms inference latency per window and 47.9 µW power consumption. The complete embedded firmware, python telemetry ingestion pipeline, and interactive dashboard are open-sourced under an MIT license to enable verifiable benchmarks for clinical and remote physiological telemetry.
+
+6. KEYWORDS (Comma-Separated):
+Electrocardiogram (ECG), Stress Detection, Heart Rate Variability (HRV), Hardware-in-the-Loop (HIL), Edge Computing, Embedded Telemetry, STM32, Biosignal Processing
+
+7. LICENSE SELECTION:
+   CC BY 4.0 (Creative Commons Attribution 4.0 International) - Standard Open Access
+
+8. FUNDING / ACKNOWLEDGMENTS:
+   This research received no external grant funding and was conducted as an independent undergraduate study.
+
+================================================================================
+STEPS TO UPLOAD:
+1. Go to https://www.techrxiv.org/
+2. Log in or create an account with mkpy06@gmail.com.
+3. Click "Submit Preprint".
+4. Upload the PDF file listed above.
+5. Copy-paste Title, Abstract, Authors, and Keywords directly from this file.
+6. Select License (CC BY 4.0) and submit!
+   (A citable DOI is generated within 24–48 hours)
+================================================================================

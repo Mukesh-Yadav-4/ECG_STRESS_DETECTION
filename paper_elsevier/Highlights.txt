@@ -1,0 +1,4 @@
+- Subject-specific baseline calibration improves 15-fold LOSO stress accuracy by +10.79%.
+- Regularized Logistic Regression reaches 92.13% accuracy and 0.9493 ROC-AUC on WESAD.
+- Bare-metal ARM Cortex-M4 STM32 achieves 1.87 µs 5-stage Biquad filtering per sample.
+- Physical HIL telemetry validates 10,000 continuous packets with zero CRC errors.
