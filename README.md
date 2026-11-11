@@ -414,6 +414,7 @@ ECG_STRESS_DETECTION/
   Department of Electronics and Communication Engineering  
   JSS Academy of Technical Education, Noida (JSSATEN), Uttar Pradesh, India  
   *Email:* [`mkpy06@gmail.com`](mailto:mkpy06@gmail.com)  
+  *LinkedIn:* [Mukesh Yadav](https://www.linkedin.com/in/mukesh-yadav-4131563ba/)  
   *Portfolio:* [Mukesh Yadav Research Portfolio](https://mukesh-yadav-res-portfolio.vercel.app/)
 
 ### Academic Citation
