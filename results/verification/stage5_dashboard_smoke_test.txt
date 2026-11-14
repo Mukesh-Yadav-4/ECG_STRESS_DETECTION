@@ -8,7 +8,7 @@ Sample Data File:             demo/sample_data/ecg_samples.npz
 --------------------------------------------------------------------------------
 1. OFFLINE SAMPLE DATASET LOADING
 --------------------------------------------------------------------------------
-Sample data loaded successfully from: C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\demo\sample_data\ecg_samples.npz
+Sample data loaded successfully from: demo\sample_data\ecg_samples.npz
 Dataset arrays present: ['S2_Baseline_raw', 'S2_Baseline_filt', 'S2_Baseline_peaks', 'S2_Stress_raw', 'S2_Stress_filt', 'S2_Stress_peaks', 'S3_Baseline_raw', 'S3_Baseline_filt', 'S3_Baseline_peaks', 'S3_Stress_raw', 'S3_Stress_filt', 'S3_Stress_peaks', 'S10_Baseline_raw', 'S10_Baseline_filt', 'S10_Baseline_peaks', 'S10_Stress_raw', 'S10_Stress_filt', 'S10_Stress_peaks', 'S17_Baseline_raw', 'S17_Baseline_filt', 'S17_Baseline_peaks', 'S17_Stress_raw', 'S17_Stress_filt', 'S17_Stress_peaks']
   • S2_Baseline_raw: 21,000 samples (60.0s @ 350 Hz)
   • S2_Stress_raw:   21,000 samples (60.0s @ 350 Hz)

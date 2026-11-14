@@ -1,0 +1,48 @@
+{
+  "item": 6,
+  "claim": "Measure 5-stage Biquad IIR DSP cascade execution cost on actual STM32G474RE using DWT->CYCCNT at 170 MHz",
+  "verdict": "MEASURED (Hardware DWT benchmark executed on STM32G474RE; actual cost measured)",
+  "hardware_target": "STMicroelectronics NUCLEO-G474RE (ARM Cortex-M4 @ 170 MHz)",
+  "instrumentation_method": "ARM CoreDebug DEMCR TRCENA + DWT CYCCNT (zero software overhead)",
+  "measurement_clock_hz": 170000000,
+  "sampling_rate_hz": 350,
+  "sampling_period_us": 2857.14,
+  "biquad_filter_configuration": {
+    "stages": 5,
+    "butterworth_bandpass_order": 4,
+    "notch_order": 2,
+    "coefficients_per_stage": 5,
+    "total_coefficients": 25,
+    "sampling_frequency_hz": 350
+  },
+  "biquad_cascade_bench": {
+    "num_trials": 1000,
+    "min_cycles": 249,
+    "mean_cycles": 251,
+    "max_cycles": 281,
+    "min_time_us_170mhz": 1.464,
+    "mean_time_us_170mhz": 1.476,
+    "max_time_us_170mhz": 1.652,
+    "cpu_utilization_percent_350hz": 0.0517
+  },
+  "raw_mcu_output": [
+    "=======================================================",
+    "STM32G474RE 5-STAGE BIQUAD CASCADE DWT->CYCCNT BENCHMARK",
+    "Core: ARM Cortex-M4 @ 170 MHz (Hardware FPU Enabled)",
+    "Trials: 1000",
+    "=======================================================",
+    "5-Stage Biquad Cascade (1000 trials):",
+    "Min  Cycles: 249 (1.464 us @ 170 MHz)",
+    "Mean Cycles: 251 (1.476 us @ 170 MHz)",
+    "Max  Cycles: 281 (1.652 us @ 170 MHz)",
+    "=======================================================",
+    "BIQUAD_DWT_BENCHMARK_DONE"
+  ],
+  "prior_analytical_estimate": {
+    "paper_cycles_claimed": 318,
+    "paper_time_us_claimed": 1.87,
+    "paper_cpu_load_percent": 0.065,
+    "comparison": "Physical hardware execution is ~21% faster than analytical estimate (251 vs 318 cycles; 1.476 vs 1.87 us)"
+  },
+  "production_firmware_restored": true
+}

@@ -13,7 +13,7 @@
 
 During the physical Hardware-in-the-Loop (HIL) execution, 10,000 physical telemetry packets ($200,000\text{ raw wire bytes}$) were successfully streamed from the `STM32G474RE` over `COM10` at $350.02\text{ Hz}$ with zero CRC errors, zero sequence gaps, and 100% flags compliance (`0x05`). 
 
-However, the offline verification script [`verify_hardware_hc1_capture.py`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/python/verify_hardware_hc1_capture.py) marked the test as **FAIL** due to a reported maximum absolute reconstruction error of **$0.926056\text{ mV}$** (raw) and **$0.676049\text{ mV}$** (filtered).
+However, the offline verification script [`verify_hardware_hc1_capture.py`](python/verify_hardware_hc1_capture.py) marked the test as **FAIL** due to a reported maximum absolute reconstruction error of **$0.926056\text{ mV}$** (raw) and **$0.676049\text{ mV}$** (filtered).
 
 A deep, read-only mathematical investigation into the captured binary artifacts reveals:
 1. **The physical STM32 microcontroller and the Python decryption engine are in 100% bit-exact mathematical parity.**
@@ -125,7 +125,7 @@ A deep, read-only mathematical investigation into the captured binary artifacts 
 
 ## 8. Decomposition of the Final Verdict
 
-The monolithic verdict `FAIL` in [`hil_parity_report.json`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/verification/hc1_hardware_hil/hil_parity_report.json) conflated wire transport, cryptographic recovery, and verification test alignment. 
+The monolithic verdict `FAIL` in [`hil_parity_report.json`](results/verification/hc1_hardware_hil/hil_parity_report.json) conflated wire transport, cryptographic recovery, and verification test alignment. 
 
 A scientifically decomposed verdict breakdown of the physical hardware test is:
 
@@ -144,5 +144,5 @@ A scientifically decomposed verdict breakdown of the physical hardware test is:
 
 - The STM32G474RE physical hardware running the compiled HC1 firmware (`STM32G474_HC1_Telemetry.bin`) has achieved **100% bit-exact lossless parity** with the Python cryptographic receiver across all 10,000 packets ($200,000\text{ bytes}$).
 - The failure reported by `verify_hardware_hc1_capture.py` was an artifact of comparing packet sequences against an unshifted reference buffer without accounting for the hardware's autonomous boot sequence number ($11428$).
-- All physical artifacts ([`hardware_raw_packets.bin`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/verification/hc1_hardware_hil/hardware_raw_packets.bin), [`hardware_raw_packets_meta.json`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/verification/hc1_hardware_hil/hardware_raw_packets_meta.json), [`hil_parity_report.json`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/verification/hc1_hardware_hil/hil_parity_report.json), [`hil_parity_report.txt`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/verification/hc1_hardware_hil/hil_parity_report.txt), [`hardware_flash_log.txt`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/verification/hc1_hardware_hil/hardware_flash_log.txt)) remain preserved and unmodified.
+- All physical artifacts ([`hardware_raw_packets.bin`](results/verification/hc1_hardware_hil/hardware_raw_packets.bin), [`hardware_raw_packets_meta.json`](results/verification/hc1_hardware_hil/hardware_raw_packets_meta.json), [`hil_parity_report.json`](results/verification/hc1_hardware_hil/hil_parity_report.json), [`hil_parity_report.txt`](results/verification/hc1_hardware_hil/hil_parity_report.txt), [`hardware_flash_log.txt`](results/verification/hc1_hardware_hil/hardware_flash_log.txt)) remain preserved and unmodified.
 - No code or firmware modifications have been made.

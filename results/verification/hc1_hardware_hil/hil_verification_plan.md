@@ -49,7 +49,7 @@ The HIL verification is split into 5 distinct, decoupled steps:
 Flashing uses the official STMicroelectronics CLI programmer via the onboard ST-LINK SWD interface:
 
 ```cmd
-"C:\ST\STM32CubeIDE_2.2.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_2.2.500.202603051304\tools\bin\STM32_Programmer_CLI.exe" -c port=SWD -w "C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\embedded_stm32\STM32G474_HC1_Telemetry.bin" 0x08000000 -v -rst
+"C:\ST\STM32CubeIDE_2.2.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_2.2.500.202603051304\tools\bin\STM32_Programmer_CLI.exe" -c port=SWD -w "embedded_stm32\STM32G474_HC1_Telemetry.bin" 0x08000000 -v -rst
 ```
 
 **Parameters Explained:**

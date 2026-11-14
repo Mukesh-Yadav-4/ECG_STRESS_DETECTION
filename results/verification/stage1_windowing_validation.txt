@@ -2,7 +2,7 @@
 STAGE 1: STATIC DATA AND WINDOWING VALIDATION REPORT
 ================================================================================
 Timestamp: 2026-10-01T20:25:27.487263
-Project: C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION
+Project: 
 Source Data File: results/WESAD_HRV_features_expanded.csv
 Baseline Feature File: results/WESAD_HRV_features.csv
 MATLAB Source Reference: matlab/02_preprocessing/TEN_process_all_subjects.m

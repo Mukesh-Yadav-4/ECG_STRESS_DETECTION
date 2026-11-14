@@ -20,5 +20,5 @@
     "0x05": 10000
   },
   "all_flags_match_required": true,
-  "raw_binary_path": "C:\\Users\\YASH\\Desktop\\projects\\RESEARCH PROJECTS\\ECG_STRESS_DETECTION\\results\\verification\\hc1_hardware_hil\\dry_run_packets.bin"
+  "raw_binary_path": "results/verification/hc1_hardware_hil/dry_run_packets.bin"
 }

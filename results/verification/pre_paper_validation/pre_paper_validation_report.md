@@ -275,7 +275,7 @@ The following table presents the exact bit-for-bit comparison between the canoni
 | Component | Specification / Version | Path / Executable |
 | :--- | :--- | :--- |
 | **Operating System** | Windows 11 Enterprise (Build 10.0.26200-SP0) | `cmd.exe / powershell.exe` |
-| **Python Runtime** | Python 3.14.3 (AMD64, MSVC 19.44) | `C:\Users\YASH\AppData\Local\Programs\Python\Python314\python.exe` |
+| **Python Runtime** | Python 3.14.3 (AMD64, MSVC 19.44) | Standard Local Virtual Environment (`python.exe`) |
 | **NumPy** | 2.4.3 | Installed via pip |
 | **Pandas** | 3.0.1 | Installed via pip |
 | **SciPy** | 1.17.1 | Installed via pip |

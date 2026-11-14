@@ -39,12 +39,12 @@ The table below reports the confusion matrix and performance metrics evaluated s
 ## 3. Analysis of Specific Investigation Questions
 
 ### Question 7: Number of Rows
-- [`results/Threshold_Analysis.csv`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/Threshold_Analysis.csv): 81 rows (thresholds swept from 0.10 to 0.90 in increments of 0.01).
-- [`results/FINAL_Model_Metrics.csv`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/FINAL_Model_Metrics.csv): 12 rows (key-value scorecard summarizing performance at locked $\tau = 0.35$).
-- [`results/Stress_Classifier_Predictions.csv`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/Stress_Classifier_Predictions.csv): Exactly **445 rows** (representing the 445 WESAD windows).
-- [`results/Personalized_Classifier_Predictions.csv`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/Personalized_Classifier_Predictions.csv): Exactly **445 rows**.
-- [`results/ML_Predictions_LOSO.csv`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/ML_Predictions_LOSO.csv): **2,670 rows** (445 windows $\times$ 6 models; exactly 445 rows for Logistic Regression).
-- [`results/verification/ml_rerun/ML_Predictions_LOSO.csv`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/verification/ml_rerun/ML_Predictions_LOSO.csv): **2,670 rows** (exactly 445 rows for Logistic Regression).
+- [`results/Threshold_Analysis.csv`](results/Threshold_Analysis.csv): 81 rows (thresholds swept from 0.10 to 0.90 in increments of 0.01).
+- [`results/FINAL_Model_Metrics.csv`](results/FINAL_Model_Metrics.csv): 12 rows (key-value scorecard summarizing performance at locked $\tau = 0.35$).
+- [`results/Stress_Classifier_Predictions.csv`](results/Stress_Classifier_Predictions.csv): Exactly **445 rows** (representing the 445 WESAD windows).
+- [`results/Personalized_Classifier_Predictions.csv`](results/Personalized_Classifier_Predictions.csv): Exactly **445 rows**.
+- [`results/ML_Predictions_LOSO.csv`](results/ML_Predictions_LOSO.csv): **2,670 rows** (445 windows $\times$ 6 models; exactly 445 rows for Logistic Regression).
+- [`results/verification/ml_rerun/ML_Predictions_LOSO.csv`](results/verification/ml_rerun/ML_Predictions_LOSO.csv): **2,670 rows** (exactly 445 rows for Logistic Regression).
 
 ### Question 8: Whether Probability Values Are Identical
 - **Canonical Python vs. Verification Rerun:**  
@@ -112,14 +112,14 @@ Exactly **4 windows** differ because their predicted probabilities lie in the im
 The minor probability divergence ($< 0.01$) on these four boundary samples stems from two distinct algorithmic differences between the two implementations:
 
 1. **Optimization Solver & Regularization:**
-   - **MATLAB ([`matlab/05_modeling/TWENTY_personalized_classifier.m#L110-L117`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/matlab/05_modeling/TWENTY_personalized_classifier.m#L110-L117)):**  
+   - **MATLAB ([`matlab/05_modeling/TWENTY_personalized_classifier.m#L110-L117`](matlab/05_modeling/TWENTY_personalized_classifier.m#L110-L117)):**  
      Uses a custom **unregularized gradient descent** routine (`learning_rate = 0.05, iterations = 2500` with manual gradient descent loop `w = w - learning_rate * grad`). It does not include an L2 weight penalty.
-   - **Python ([`python/train_loso_ml_benchmark.py#L131-L133`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/python/train_loso_ml_benchmark.py#L131-L133)):**  
+   - **Python ([`python/train_loso_ml_benchmark.py#L131-L133`](python/train_loso_ml_benchmark.py#L131-L133)):**  
      Uses scikit-learn's `LogisticRegression(C=1.0, solver="liblinear", random_state=42)` which applies an **L2 regularization penalty** with Coordinate Descent optimization.
 2. **Dual Origin of Summary Files:**
-   - `results/FINAL_Model_Metrics.csv` and `results/Threshold_Analysis.csv` were produced by the MATLAB post-processing script [`matlab/06_final_results/TWENTY_EIGHT_report_figures.m`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/matlab/06_final_results/TWENTY_EIGHT_report_figures.m#L18), which read `Personalized_Classifier_Predictions.csv`.
-   - `results/ML_Model_Benchmark_LOSO.csv` and `results/ML_Predictions_LOSO.csv` were produced by the Python benchmark script [`python/train_loso_ml_benchmark.py`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/python/train_loso_ml_benchmark.py).
-   - In [`stage2_ml_reproducibility.txt`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/verification/stage2_ml_reproducibility.txt), the "Expected" values for $\tau = 0.35$ were extracted from `FINAL_Model_Metrics.csv` (the MATLAB summary), while the "Observed" values were computed by the Python rerun. Because of the 1-sample solver boundary shift, the test log recorded $\text{TP}=139\text{ vs }138$ and $\text{F1}=89.10\%\text{ vs }89.03\%$.
+   - `results/FINAL_Model_Metrics.csv` and `results/Threshold_Analysis.csv` were produced by the MATLAB post-processing script [`matlab/06_final_results/TWENTY_EIGHT_report_figures.m`](matlab/06_final_results/TWENTY_EIGHT_report_figures.m#L18), which read `Personalized_Classifier_Predictions.csv`.
+   - `results/ML_Model_Benchmark_LOSO.csv` and `results/ML_Predictions_LOSO.csv` were produced by the Python benchmark script [`python/train_loso_ml_benchmark.py`](python/train_loso_ml_benchmark.py).
+   - In [`stage2_ml_reproducibility.txt`](results/verification/stage2_ml_reproducibility.txt), the "Expected" values for $\tau = 0.35$ were extracted from `FINAL_Model_Metrics.csv` (the MATLAB summary), while the "Observed" values were computed by the Python rerun. Because of the 1-sample solver boundary shift, the test log recorded $\text{TP}=139\text{ vs }138$ and $\text{F1}=89.10\%\text{ vs }89.03\%$.
 
 ---
 

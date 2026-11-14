@@ -60,10 +60,10 @@ With this sequence alignment, the physical telemetry decrypted on Python achieve
 
 All historical and corrected artifacts remain strictly isolated:
 - Historical unaligned reports preserved:  
-  - [`results/verification/hc1_hardware_hil/hil_parity_report.json`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/verification/hc1_hardware_hil/hil_parity_report.json)  
-  - [`results/verification/hc1_hardware_hil/hil_parity_report.txt`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/verification/hc1_hardware_hil/hil_parity_report.txt)  
-  - [`results/verification/hc1_hardware_hil/physical_hil_failure_root_cause.md`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/verification/hc1_hardware_hil/physical_hil_failure_root_cause.md)
+  - [`results/verification/hc1_hardware_hil/hil_parity_report.json`](results/verification/hc1_hardware_hil/hil_parity_report.json)  
+  - [`results/verification/hc1_hardware_hil/hil_parity_report.txt`](results/verification/hc1_hardware_hil/hil_parity_report.txt)  
+  - [`results/verification/hc1_hardware_hil/physical_hil_failure_root_cause.md`](results/verification/hc1_hardware_hil/physical_hil_failure_root_cause.md)
 - Corrected aligned outputs generated:  
-  - [`results/verification/hc1_hardware_hil/corrected_physical_hil/corrected_hil_parity_report.json`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/verification/hc1_hardware_hil/corrected_physical_hil/corrected_hil_parity_report.json)  
-  - [`results/verification/hc1_hardware_hil/corrected_physical_hil/corrected_hil_parity_report.txt`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/verification/hc1_hardware_hil/corrected_physical_hil/corrected_hil_parity_report.txt)  
-  - [`results/verification/hc1_hardware_hil/corrected_physical_hil/corrected_physical_hil_verification.md`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/verification/hc1_hardware_hil/corrected_physical_hil/corrected_physical_hil_verification.md)
+  - [`results/verification/hc1_hardware_hil/corrected_physical_hil/corrected_hil_parity_report.json`](results/verification/hc1_hardware_hil/corrected_physical_hil/corrected_hil_parity_report.json)  
+  - [`results/verification/hc1_hardware_hil/corrected_physical_hil/corrected_hil_parity_report.txt`](results/verification/hc1_hardware_hil/corrected_physical_hil/corrected_hil_parity_report.txt)  
+  - [`results/verification/hc1_hardware_hil/corrected_physical_hil/corrected_physical_hil_verification.md`](results/verification/hc1_hardware_hil/corrected_physical_hil/corrected_physical_hil_verification.md)
