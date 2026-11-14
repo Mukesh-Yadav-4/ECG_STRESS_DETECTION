@@ -1,5 +1,7 @@
 # Canonical Experiment Manifest: WESAD ECG Stress Detection
 
+> **Legacy Protocol Note:** Performance figures in this historical verification document quoting 92.13% accuracy (or 92.36% at $\tau=0.35$) evaluate the legacy 445-window protocol using an all-baseline anchor ($B_s$ computed over all baseline windows for that subject). For the verified leak-free chronological calibration protocol ($N=10$, 295 evaluation windows, 90.17% accuracy [95% CI: 82.7, 95.9]), see `results/calibration_length/` and `docs/audit/`.
+
 **Experiment Identifier:** `EXP-WESAD-ECG-LOSO-CANONICAL-2026`  
 **Project:** Personalized Electrocardiographic and HRV Dynamics for Acute Stress Detection  
 **Status:** Canonical Reference Specification  

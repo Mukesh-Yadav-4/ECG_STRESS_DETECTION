@@ -1,5 +1,7 @@
 # Canonical Model Decision & Comparative Architecture Analysis
 
+> **Legacy Protocol Note:** Performance figures in this historical verification document quoting 92.13% accuracy (or 92.36% at $\tau=0.35$) evaluate the legacy 445-window protocol using an all-baseline anchor ($B_s$ computed over all baseline windows for that subject). For the verified leak-free chronological calibration protocol ($N=10$, 295 evaluation windows, 90.17% accuracy [95% CI: 82.7, 95.9]), see `results/calibration_length/` and `docs/audit/`.
+
 ## Executive Summary
 
 This report delivers a read-only architectural and mathematical comparison between the **MATLAB** and **Python** Logistic Regression implementations within the ECG Stress Detection project. It assesses code in `matlab/05_modeling/`, `python/`, and `results/` to establish a single canonical model, diagnose divergence causes, and provide an actionable migration roadmap.

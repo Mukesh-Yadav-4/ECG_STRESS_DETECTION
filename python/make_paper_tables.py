@@ -20,9 +20,8 @@ HIL_REPORT_TXT = os.path.join(REPO_ROOT, "results", "verification", "hc1_hardwar
 
 # Target directories for LaTeX outputs
 TARGET_DIRS = [
-    os.path.join(REPO_ROOT, "paper", "ECG_STRESS_DETECTION_Overleaf_Optimized_6Page"),
     os.path.join(REPO_ROOT, "paper"),
-    os.path.join(REPO_ROOT, "paper_elsevier"),
+]
 ]
 
 def load_data():
@@ -347,21 +346,17 @@ def generate_table_prior_work(df_primary, df_ablation):
     p_leg_445 = df_ablation[df_ablation["Configuration"].str.contains("8-feature.*Leaky", na=False)].iloc[0]
 
     lines = []
-    lines.append("% Table: Prior Work Benchmark Comparison")
+    lines.append("% Table: Internal Model Benchmark Comparison (Prior literature numbers omitted pending direct verification)")
     lines.append("\\begin{tabular}{llcc}")
     lines.append("\\toprule")
-    lines.append("\\textbf{Study} & \\textbf{Modality} & \\textbf{Validation Protocol} & \\textbf{Accuracy (\\%)} \\\\")
-    lines.append("\\midrule")
-    lines.append("Schmidt et al.~\\cite{schmidt2018introducing} & Chest Multimodal & 15-Fold LOSO-CV & 92.94 \\\\")
-    lines.append("Schmidt et al.~\\cite{schmidt2018introducing} & Single Sensor (EDA) & 15-Fold LOSO-CV & 86.85 \\\\")
-    lines.append("Bobade \\& Vani~\\cite{bobade2020stress} & Multimodal (Chest + Wrist) & 80/20 Train/Test Split & 84.32 (3-class) / 95.21 (binary) \\\\")
+    lines.append("\\textbf{Evaluation Protocol} & \\textbf{Modality} & \\textbf{Validation Scheme} & \\textbf{Accuracy (\\%)} \\\\")
     lines.append("\\midrule")
     lines.append(f"\\textbf{{This Work (Leak-Free, $N=10$)}} & \\textbf{{ECG Only (Single Lead)}} & \\textbf{{15-Fold LOSO-CV}} & \\textbf{{{p_n10['Accuracy (%)']:.2f}}} [{p_n10['Acc_CI_Low (%)']:.1f}, {p_n10['Acc_CI_High (%)']:.1f}] \\\\")
     lines.append(f"\\textit{{This Work (Legacy Anchor, same 295 win)}} & \\textit{{ECG Only (Single Lead)}} & \\textit{{15-Fold LOSO-CV}} & \\textit{{89.83}} [81.1, 96.7] \\\\")
     lines.append(f"\\textit{{This Work (Legacy Anchor, 445 win)}} & \\textit{{ECG Only (Single Lead)}} & \\textit{{15-Fold LOSO-CV}} & \\textit{{{p_leg_445['Accuracy (%)']:.2f}}} {p_leg_445['Acc_CI']} \\\\")
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}\\\\")
-    lines.append("{\\footnotesize \\textit{Note:} Schmidt et al.~\\cite{schmidt2018introducing} (Table 4) evaluates binary classification (stress vs. non-stress) under 15-fold LOSO-CV. Bobade \\& Vani~\\cite{bobade2020stress} (Section IV) reports 84.32\\% (3-class) and 95.21\\% (binary) using an 80/20 train/test holdout split. These prior methods do not require personal baseline calibration and differ in sensor modalities and cross-validation protocols, so the figures are not directly comparable.}")
+    lines.append("{\\footnotesize \\textit{Note:} Prior external literature figures (e.g. Schmidt et al., Bobade \\& Vani) are omitted until direct cross-protocol verification is completed.}")
     return "\n".join(lines) + "\n"
 
 def main():

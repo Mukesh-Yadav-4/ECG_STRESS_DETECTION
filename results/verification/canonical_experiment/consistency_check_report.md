@@ -1,5 +1,7 @@
 # Consistency Check & Project Alignment Report
 
+> **Legacy Protocol Note:** Performance figures in this historical verification document quoting 92.13% accuracy (or 92.36% at $\tau=0.35$) evaluate the legacy 445-window protocol using an all-baseline anchor ($B_s$ computed over all baseline windows for that subject). For the verified leak-free chronological calibration protocol ($N=10$, 295 evaluation windows, 90.17% accuracy [95% CI: 82.7, 95.9]), see `results/calibration_length/` and `docs/audit/`.
+
 **Project:** WESAD ECG Stress Detection with Chaotic Telemetry  
 **Scope:** Cross-Document Consistency Audit, Metric Contradiction Analysis, and Paper Writing Readiness  
 **Timestamp:** 2026-10-02T10:25:00+05:30  

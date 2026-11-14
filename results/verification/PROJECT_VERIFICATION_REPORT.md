@@ -1,5 +1,7 @@
 # Project Verification Report
 
+> **Legacy Protocol Note:** Performance figures in this historical verification document quoting 92.13% accuracy (or 92.36% at $\tau=0.35$) evaluate the legacy 445-window protocol using an all-baseline anchor ($B_s$ computed over all baseline windows for that subject). For the verified leak-free chronological calibration protocol ($N=10$, 295 evaluation windows, 90.17% accuracy [95% CI: 82.7, 95.9]), see `results/calibration_length/` and `docs/audit/`.
+
 ## Environment
 - **Operating System:** Windows 10/11 Pro (64-bit, AMD64 architecture)
 - **Python Version:** Python 3.14.3 (`MSC v.1944 64 bit [AMD64]`)

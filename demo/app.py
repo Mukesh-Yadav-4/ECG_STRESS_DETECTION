@@ -1935,7 +1935,9 @@ with tab_features:
     c_ablate_left, c_ablate_right = st.columns([1.6, 2.4])
 
     with c_ablate_left:
-        # Four-stage progression bar chart
+        # Leak-Free Feature Ablation / Progression
+        ablation_csv_path = os.path.join(PROJECT_ROOT, "results", "calibration_length", "leak_free_ablation_results.csv")
+        chart_title = "Ablation: Pipeline Evolution (Legacy All-Baseline Anchor)"
         progression_data = pd.DataFrame({
             "Stage": [
                 "1. Global Raw Features",
@@ -1946,6 +1948,25 @@ with tab_features:
             "Accuracy": [81.57, 83.15, 92.13, 92.36],
             "F1_Score": [73.03, 75.20, 88.62, 89.03],
         })
+
+        if os.path.exists(ablation_csv_path):
+            try:
+                df_abl_raw = pd.read_csv(ablation_csv_path)
+                df_n10 = df_abl_raw[df_abl_raw["Calibration"] == "Calibrated (N=10)"].copy()
+                if not df_n10.empty:
+                    progression_data = pd.DataFrame({
+                        "Stage": [
+                            "1-feat (MeanHR)",
+                            "4-feat (Classical Time)",
+                            "8-feat (Core Physiological)",
+                            "13-feat (Full Expanded)",
+                        ],
+                        "Accuracy": df_n10["Accuracy (%)"].astype(float).tolist(),
+                        "F1_Score": df_n10["F1 (%)"].astype(float).tolist(),
+                    })
+                    chart_title = "Leak-Free Feature Ablation (N=10 Calib, 295w)"
+            except Exception:
+                pass
 
         fig_prog = go.Figure()
         fig_prog.add_trace(go.Bar(
@@ -1967,7 +1988,7 @@ with tab_features:
             textposition="auto",
         ))
         fig_prog.update_layout(
-            title=dict(text="Ablation: Pipeline Evolution (LOSO-CV)", font=dict(size=13, color="#F1F5F9")),
+            title=dict(text=chart_title, font=dict(size=13, color="#F1F5F9")),
             paper_bgcolor="#0F1424",
             plot_bgcolor="#0A0E1A",
             barmode="group",

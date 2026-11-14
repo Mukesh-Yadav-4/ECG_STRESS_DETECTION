@@ -1,5 +1,7 @@
 # ECG_STRESS_DETECTION — Quick Reference Guide
 
+> **Legacy Protocol Note:** Historical performance figures in this quick reference quoting 92.13% accuracy (or 92.36% at $\tau=0.35$) evaluate the legacy 445-window protocol using an all-baseline anchor ($B_s$ computed over all baseline windows for that subject). For the verified leak-free chronological calibration protocol ($N=10$, 295 evaluation windows, 90.17% accuracy [95% CI: 82.7, 95.9]), see `results/calibration_length/` and `docs/audit/`.
+
 > **Purpose:** Master reference document for the entire project. Consult this file to understand the architecture, algorithms, dataset, firmware, benchmarks, and scripts without needing to re-read every individual source file.
 
 ---
@@ -93,7 +95,7 @@
    * Causal 5-stage Direct Form I Biquad IIR cascade at $350\text{ Hz}$:
      * Stages 1–4: Four 2nd-order sections (SOS) synthesizing 8-pole 4th-order Butterworth bandpass ($0.5 - 40\text{ Hz}$).
      * Stage 5: 2nd-order notch filter ($f_0 = 50\text{ Hz}$, $Q = 30$).
-   * State memory: 4 floats per stage; executes in $\approx 1.87\ \mu\text{s}$ per sample at 170 MHz ($\approx 4.4\ \mu\text{s}$ at 16 MHz HSI).
+   * State memory: 4 floats per stage; executes in 251 mean cycles ($1.476\ \mu\text{s}$) per sample at 170 MHz ($0.0517\%$ CPU load; measured via ARM Cortex-M4 DWT cycle counter).
 
 ### 3.3 Adaptive R-Peak Detection
 * Noise floor estimation: $\text{Noise Floor} = 1.4826 \cdot \text{MAD}(|x - \text{median}(x)|)$.
@@ -304,7 +306,7 @@ flash_firmware.bat
 | **Accuracy Gain from Baseline Calibration** | **+10.56%** ($81.57\% \rightarrow 92.13\%$ at $\tau = 0.50$) / **+10.79%** ($81.57\% \rightarrow 92.36\%$ at $\tau = 0.35$) |
 | **Microcontroller** | ARM Cortex-M4 (STM32G474RE @ 16 MHz HSI / 170 MHz PLL) |
 | **Sampling Rate / Telemetry Cadence** | 350 Hz ($T_s = 2.857\text{ ms}$) |
-| **Filter Execution Time** | $1.87\ \mu\text{s}$ per sample at 170 MHz (0.065% CPU load) |
+| **Filter Execution Time** | 251 cycles ($1.476\ \mu\text{s}$) per sample at 170 MHz (0.0517% CPU load; physical DWT benchmark) |
 | **Packet Size & Baud Rate** | 20 bytes @ 115,200 baud (UART 8-N-1) |
 | **Physical HIL Verification** | 5,000 packets, 0 CRC errors, 100% exact recovery |
 | **Wire Shannon Entropy** | 7.9982 bits/byte (99.98% of 8.000 limit) |

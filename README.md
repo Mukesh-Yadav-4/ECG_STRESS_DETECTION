@@ -293,18 +293,6 @@ The physical testbed streamed **10,000 consecutive 20-byte packets (200,000 wire
 
 ---
 
---- | :---: | :---: | :---: | :---: |
-| Schmidt et al. (2018) [ICMI] | Chest Multimodal | 15-Fold LOSO-CV (Table 4, Binary) | 92.94 (RF) / 93.12 (LDA) | None (Offline) |
-| Schmidt et al. (2018) [ICMI] | Single Sensor (EDA) | 15-Fold LOSO-CV (Table 4, Binary) | 86.85 (RF) | None (Offline) |
-| Bobade & Vani (2020) [ICIRCA] | Multimodal (Chest + Wrist) | 80/20 Train/Test Split (Section IV) | 84.32 (3-Class) / 95.21 (Binary) | None (Offline) |
-| **This Work (Leak-Free, $N=10$)** | **ECG Only (Single Lead)** | **15-Fold LOSO-CV ($N=10$ post hoc)** | **90.17** [95% CI: 82.7, 95.9] | **STM32 Bare-Metal HIL** |
-| *This Work (Legacy Anchor, same 295w)*| *ECG Only (Single Lead)* | *15-Fold LOSO-CV (All-Base Anchor)* | *89.83* [95% CI: 81.1, 96.7] | *STM32 Bare-Metal HIL* |
-| *This Work (Legacy Anchor, 445w)*| *ECG Only (Single Lead)* | *15-Fold LOSO-CV (All-Base Anchor)* | *92.13* [95% CI: 86.4, 97.1] | *STM32 Bare-Metal HIL* |
-
-> *Note on Prior Literature Benchmarks:* Schmidt et al. (ICMI 2018, Table 4) evaluated binary classification (baseline vs. stress) under 15-fold LOSO-CV without requiring baseline calibration. Bobade & Vani (ICIRCA 2020, Section IV) evaluated multimodal data using a random 80/20 train/test split across combined windows. Neither protocol uses subject-specific baseline calibration, making these figures descriptive contextual references rather than direct quantitative baselines.
-
----
-
 ## Study Limitations
 
 1. **Single Dataset & Demographic Scope:** Evaluated exclusively on the WESAD cohort ($N=15$, healthy young adults, age $27.5 \pm 2.4$ years, 80% male); generalizability to elderly or clinical cardiovascular cohorts remains unestablished.
