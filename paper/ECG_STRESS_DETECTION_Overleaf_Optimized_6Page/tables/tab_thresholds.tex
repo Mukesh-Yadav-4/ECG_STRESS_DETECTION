@@ -1,0 +1,13 @@
+% Table: Decision Threshold Sensitivity Comparison
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Protocol} & \textbf{Threshold} & \textbf{Accuracy (\%)} & \textbf{Sensitivity (\%)} & \textbf{Specificity (\%)} \\
+\midrule
+Leak-Free ($N=10$, 295 win) & $\tau = 0.50$ (Standard) & 90.17 & 86.25 & 94.81 \\
+Leak-Free ($N=10$, 295 win) & $\tau = 0.35$ (Screening) & 87.80 & 88.75 & 86.67 \\
+\midrule
+Control (b): Leaky Anchor, same 295 win & $\tau = 0.50$ & 89.83 & 82.50 & 98.52 \\
+Legacy Reference: Leaky Anchor, 445 win & $\tau = 0.50$ & 92.13 & 82.50 & 97.54 \\
+Legacy Reference: Leaky Anchor, 445 win & $\tau = 0.35$ & 92.36 & 86.25 & 95.79 \\
+\bottomrule
+\end{tabular}

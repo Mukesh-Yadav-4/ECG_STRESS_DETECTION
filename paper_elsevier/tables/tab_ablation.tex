@@ -1,0 +1,16 @@
+% Table: Leak-Free Feature Ablation (Common 295 Windows, N=10 Calibration, tau=0.50)
+\begin{tabular}{llcc}
+\toprule
+\textbf{Model} & \textbf{Feature Representation} & \textbf{Accuracy (\%) [95\% CI]} & \textbf{Bal Acc (\%)} \\
+\midrule
+M1 & 4 Raw Features (Uncalibrated)         & 75.25 [64.4, 86.1] & 76.44 \\
+M2 & 4 Calibrated Features ($N=10$ min)    & 88.81 [81.0, 95.2] & 89.34 \\
+M3 & 8 Raw Features (Uncalibrated)         & 78.64 [69.0, 88.1] & 79.50 \\
+\textbf{M4} & \textbf{8 Calibrated Features (Proposed $N=10$)} & \textbf{90.17 [82.7, 95.9]} & \textbf{90.53} \\
+M5 & 13 Raw Features (Uncalibrated)        & 78.31 [69.3, 87.3] & 79.07 \\
+M6 & 13 Calibrated Features ($N=10$ min)   & 89.49 [81.9, 95.6] & 89.85 \\
+\midrule
+\multicolumn{4}{l}{\textit{Legacy Reference (All-Baseline Anchor, 445 Windows, $\tau=0.50$):}} \\
+Ref & 8 Calibrated Features (Leaky Anchor, 445 win) & 92.13 [86.4, 97.1] & 90.02 \\
+\bottomrule
+\end{tabular}
