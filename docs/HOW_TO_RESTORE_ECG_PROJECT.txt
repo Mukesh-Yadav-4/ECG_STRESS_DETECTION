@@ -17,7 +17,7 @@ THE 2-STEP FIX (Takes 10 seconds — All in this folder):
 
 STEP 1: RE-FLASH THE ECG FIRMWARE
 Go to:
-  C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\
+  
 Double-click:
   flash_firmware.bat
 
@@ -29,7 +29,7 @@ Drag-and-drop 'STM32G474_ECG_Telemetry\STM32G474_ECG_Telemetry.bin' directly int
 
 STEP 2: LAUNCH / REFRESH THE CLINICAL DASHBOARD
 Go to:
-  C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\
+  
 Double-click:
   start_dashboard.bat
 

@@ -40,7 +40,7 @@
            ▼
 ┌──────────────────────────────────────────────────────────────────────────────────┐
 │                          HOST INGESTION & PARSER TIER                            │
-│                  Python 3.10+ (python/stm32_telemetry_receiver.py)               │
+│                  Python 3.10+ (../python/stm32_telemetry_receiver.py)               │
 │                                                                                  │
 │   Byte Stream ──► Frame Sync (0xAA 0x55) ──► CRC-16 Check                        │
 │                                                   │                              │
@@ -68,7 +68,7 @@
                                                 ▼               ▼                  │
 ┌──────────────────────────────────────────────────────────────────────────────────┐
 │                         CLINICAL & SECURITY DASHBOARD                            │
-│                              Streamlit (demo/app.py)                             │
+│                              Streamlit (../demo/app.py)                             │
 │                                                                                  │
 │   🟢 Authorized Clinical View: Decrypted Lead-II ECG, Stress Gauge, HRV Cards    │
 │   🕵️ Eavesdropper Intercept View: Wire Static (H ~ 7.998 b/B), Locked Metrics    │
@@ -116,7 +116,7 @@
 ## 4. Machine Learning & Benchmarking Results
 
 ### 4.1 Strict 15-Fold LOSO-CV Protocol
-* **Canonical ML Source of Truth:** Python ([`python/train_loso_ml_benchmark.py`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/python/train_loso_ml_benchmark.py)), generating [`results/ML_Model_Benchmark_LOSO.csv`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/ML_Model_Benchmark_LOSO.csv) and [`results/ML_Predictions_LOSO.csv`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/ML_Predictions_LOSO.csv).
+* **Canonical ML Source of Truth:** Python ([`python/train_loso_ml_benchmark.py`](../python/train_loso_ml_benchmark.py)), generating [`results/ML_Model_Benchmark_LOSO.csv`](../results/ML_Model_Benchmark_LOSO.csv) and [`results/ML_Predictions_LOSO.csv`](../results/ML_Predictions_LOSO.csv).
 * **MATLAB Status:** Secondary/historical classifier implementation using custom unregularized gradient descent. Its τ=0.35 metrics differ slightly from the Python implementation because the optimization and regularization methods differ.
 * **Live Dashboard Model:** Pooled deployment inference engine with threshold τ=0.35, streaming safety floors, feature clipping, and optional subject-specific baseline calibration. It is not the same as the 15-fold LOSO evaluation model.
 * In each fold $k$, all data from subject $S_k$ is withheld.

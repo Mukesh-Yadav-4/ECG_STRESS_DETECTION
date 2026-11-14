@@ -48,7 +48,7 @@ Open PowerShell or Terminal in the project root directory:
 
 ```powershell
 # 1. Navigate to project root
-cd "C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION"
+cd ""
 
 # 2. Create virtual environment (if not already created)
 python -m venv venv
@@ -82,7 +82,7 @@ pip install -r requirements.txt
 ### Step 0: Raw Data Ingestion & Formatting (Python)
 > **Goal:** Extract raw chest ECG and affective ground-truth labels from WESAD pickle files (`.pkl`) and convert them into lightweight compressed MATLAB arrays (`.mat`).
 
-* **Script:** [`python/extract_ecg_labels.py`](python/extract_ecg_labels.py)
+* **Script:** [`python/extract_ecg_labels.py`](../python/extract_ecg_labels.py)
 * **Command:**
   ```powershell
   python python/extract_ecg_labels.py
@@ -103,7 +103,7 @@ pip install -r requirements.txt
 1. Open MATLAB.
 2. Set the current directory to:
    ```matlab
-   cd 'C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\matlab'
+   cd 'matlab'
    ```
 3. Run the setup script:
    ```matlab
@@ -116,7 +116,7 @@ pip install -r requirements.txt
 ### Step 2: Multi-Subject DSP & Feature Extraction (MATLAB)
 > **Goal:** Filter raw ECG, detect R-peaks, enforce physiological interval gating, extract 8 core HRV metrics from non-overlapping 60-second windows with a 60-second hop, and calculate subject-specific relative baseline calibration.
 
-* **Script:** [`matlab/02_preprocessing/TEN_process_all_subjects.m`](matlab/02_preprocessing/TEN_process_all_subjects.m)
+* **Script:** [`matlab/02_preprocessing/TEN_process_all_subjects.m`](../matlab/02_preprocessing/TEN_process_all_subjects.m)
 * **Execution (MATLAB Command Window):**
   ```matlab
   TEN_process_all_subjects
@@ -174,7 +174,7 @@ pip install -r requirements.txt
 ### Step 5: Interactive Telemetry MATLAB Demo (MATLAB GUI)
 > **Goal:** Run an interactive, tabbed telemetry interface showcasing raw ECG waveforms, the experimental timeline, Pan-Tompkins QRS detection, and biological feature contrasts.
 
-* **Script:** [`matlab/DEMO_stress_detection.m`](matlab/DEMO_stress_detection.m)
+* **Script:** [`matlab/DEMO_stress_detection.m`](../matlab/DEMO_stress_detection.m)
 * **Execution (MATLAB Command Window):**
   ```matlab
   DEMO_stress_detection
@@ -190,7 +190,7 @@ pip install -r requirements.txt
 ### Step 6: 15-Fold LOSO Machine Learning Benchmark (Python)
 > **Goal:** Execute strict Leave-One-Subject-Out cross-validation across 6 machine learning architectures using subject-specific relative baseline calibration ($\Delta x$).
 
-* **Script:** [`python/train_loso_ml_benchmark.py`](python/train_loso_ml_benchmark.py)
+* **Script:** [`python/train_loso_ml_benchmark.py`](../python/train_loso_ml_benchmark.py)
 * **Execution (Terminal / PowerShell):**
   ```powershell
   python python/train_loso_ml_benchmark.py
@@ -213,7 +213,7 @@ pip install -r requirements.txt
 ### Step 7: Explainability, Permutation Importance & Odds Ratios (Python)
 > **Goal:** Quantify physiological drivers behind classifier decisions using permutation importance and clinical standardized odds ratios.
 
-* **Script:** [`python/explainability_feature_importance.py`](python/explainability_feature_importance.py)
+* **Script:** [`python/explainability_feature_importance.py`](../python/explainability_feature_importance.py)
 * **Execution (Terminal / PowerShell):**
   ```powershell
   python python/explainability_feature_importance.py
@@ -227,7 +227,7 @@ pip install -r requirements.txt
 ### Step 8: Multi-Model Evaluation Plots & Visualizations (Python)
 > **Goal:** Render and save high-resolution comparative ROC curves, Precision-Recall curves, confusion matrices, and benchmark bar charts.
 
-* **Script:** [`python/plot_ml_evaluation.py`](python/plot_ml_evaluation.py)
+* **Script:** [`python/plot_ml_evaluation.py`](../python/plot_ml_evaluation.py)
 * **Execution (Terminal / PowerShell):**
   ```powershell
   python python/plot_ml_evaluation.py
@@ -243,7 +243,7 @@ pip install -r requirements.txt
 ### Step 9: Interactive Clinical Telemetry Web Dashboard (Streamlit)
 > **Goal:** Launch a web-based clinical dashboard allowing real-time subject playback, live ECG waveform visualization, dynamic decision threshold adjustment, and stress needle gauges.
 
-* **Script:** [`demo/app.py`](demo/app.py)
+* **Script:** [`demo/app.py`](../demo/app.py)
 * **Execution (Terminal / PowerShell):**
   ```powershell
   streamlit run demo/app.py

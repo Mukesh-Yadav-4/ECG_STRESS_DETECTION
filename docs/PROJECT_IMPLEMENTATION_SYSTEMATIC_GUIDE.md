@@ -168,7 +168,7 @@ To evaluate generalizability to unseen patients:
 4. Predictions from all 15 folds are pooled to calculate overall benchmark metrics.
 
 ### 3.4 Ground-Truth Multi-Model Benchmark Results
-The table below reflects the exact experimental results recorded in [`results/ML_Model_Benchmark_LOSO.csv`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/ML_Model_Benchmark_LOSO.csv) and [`results/FINAL_Model_Metrics.csv`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/FINAL_Model_Metrics.csv):
+The table below reflects the exact experimental results recorded in [`results/ML_Model_Benchmark_LOSO.csv`](../results/ML_Model_Benchmark_LOSO.csv) and [`results/FINAL_Model_Metrics.csv`](../results/FINAL_Model_Metrics.csv):
 
 | Model Architecture | Hyperparameters | Accuracy | Stress F1 | ROC-AUC | Sensitivity | Specificity | PR-AUC |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -200,7 +200,7 @@ The table below reflects the exact experimental results recorded in [`results/ML
 * **Toolchain**: ARM GNU Toolchain / STM32CubeIDE bare-metal C compiler.
 
 ### 4.2 Firmware Source Code Layout
-The verified firmware lives at `C:\Users\YASH\Desktop\projects\STM32_PROJECTS\STM32G474_ECG_Telemetry/`:
+The verified firmware lives at `firmware/STM32G474_ECG_Telemetry/`:
 ```
 STM32G474_ECG_Telemetry/
 ├── Inc/
@@ -366,11 +366,11 @@ RAM (xrw)                  1,704 B             128 KB                1.30 %
 * ST-Link Virtual COM Port driver installed (enumerated on `COM10` or similar).
 
 ### 9.2 Building & Flashing Firmware
-1. Open the project in **STM32CubeIDE** (`File -> Open Projects from File System -> C:\Users\YASH\Desktop\projects\STM32_PROJECTS\STM32G474_ECG_Telemetry`).
+1. Open the project in **STM32CubeIDE** (`File -> Open Projects from File System -> firmware/STM32G474_ECG_Telemetry`).
 2. Build the project (`Project -> Build Project` or `Ctrl + B`).
 3. To flash the compiled `.bin` file directly to the board, run the included batch script:
    ```cmd
-   cd "C:\Users\YASH\Desktop\projects\STM32_PROJECTS\STM32G474_ECG_Telemetry"
+   cd "firmware/STM32G474_ECG_Telemetry"
    flash_firmware.bat
    ```
    *(Alternatively, invoke `STM32_Programmer_CLI.exe -c port=SWD -w STM32G474_ECG_Telemetry.bin 0x08000000 -v -rst` directly).*
@@ -379,7 +379,7 @@ RAM (xrw)                  1,704 B             128 KB                1.30 %
 ### 9.3 Launching the Clinical Dashboard
 1. Navigate to the research project root:
    ```powershell
-   cd "C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION"
+   cd ""
    ```
 2. Start the Streamlit application:
    ```powershell
