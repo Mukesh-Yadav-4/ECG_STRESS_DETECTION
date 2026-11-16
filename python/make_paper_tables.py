@@ -21,7 +21,7 @@ HIL_REPORT_TXT = os.path.join(REPO_ROOT, "results", "verification", "hc1_hardwar
 
 # Target directories for LaTeX outputs
 TARGET_DIRS = [
-    os.path.join(REPO_ROOT, "paper_package"),
+    os.path.join(os.path.expanduser("~"), "Desktop", "ecg_scratch", "paper_package_latex_source"),
 ]
 
 def load_data():

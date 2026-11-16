@@ -362,11 +362,8 @@ ECG_STRESS_DETECTION/
 ├── docs/flash_firmware.bat                         # ST-Link CLI flashing script for STM32G474RE
 ├── docs/start_dashboard.bat                        # One-click Windows launcher for web dashboard
 │
-├── paper_package/                             # Self-contained camera-ready IEEE paper package
-│   ├── main.tex                               # Manuscript source (6-page IEEE format)
-│   ├── numbers.tex                            # Automated data macros
-│   ├── refs.bib                               # Complete bibtex bibliography
-│   ├── tables/                                # Generated LaTeX tables
+├── paper_package/                             # Camera-ready IEEE manuscript package
+│   ├── final_main.pdf                         # Camera-ready manuscript PDF (6-page IEEE format)
 │   └── figures/                               # Manuscript figures
 ├── paper/
 │   └── figures/                               # Publication figures (Composite testbed, Attractor, etc.)
