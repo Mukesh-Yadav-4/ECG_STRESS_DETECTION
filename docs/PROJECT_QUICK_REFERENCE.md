@@ -3,6 +3,8 @@
 
 # ECG_STRESS_DETECTION — Quick Reference Guide
 
+> **Legacy Protocol Note:** Historical performance figures in this quick reference quoting 92.13% accuracy (or 92.36% at $\tau=0.35$) evaluate the legacy 445-window protocol using an all-baseline anchor ($B_s$ computed over all baseline windows for that subject). For the verified leak-free chronological calibration protocol ($N=10$, 295 evaluation windows, 90.17% accuracy [95% CI: 82.7, 95.9]), see `results/calibration_length/` and `docs/audit/`.
+
 > **Purpose:** Master reference document for the entire project. Consult this file to understand the architecture, algorithms, dataset, firmware, benchmarks, and scripts without needing to re-read every individual source file.
 
 ---
@@ -43,7 +45,7 @@
            ▼
 ┌──────────────────────────────────────────────────────────────────────────────────┐
 │                          HOST INGESTION & PARSER TIER                            │
-│                  Python 3.10+ (python/stm32_telemetry_receiver.py)               │
+│                  Python 3.10+ (../python/stm32_telemetry_receiver.py)               │
 │                                                                                  │
 │   Byte Stream ──► Frame Sync (0xAA 0x55) ──► CRC-16 Check                        │
 │                                                   │                              │
@@ -71,7 +73,7 @@
                                                 ▼               ▼                  │
 ┌──────────────────────────────────────────────────────────────────────────────────┐
 │                         CLINICAL & SECURITY DASHBOARD                            │
-│                              Streamlit (demo/app.py)                             │
+│                              Streamlit (../demo/app.py)                             │
 │                                                                                  │
 │   🟢 Authorized Clinical View: Descrambled Chest ECG, Stress Gauge, HRV Cards    │
 │   🕵️ Eavesdropper Intercept View: Wire Static (H ~ 7.998 b/B), Locked Metrics    │
@@ -119,7 +121,7 @@
 ## 4. Machine Learning & Benchmarking Results
 
 ### 4.1 Strict 15-Fold LOSO-CV Protocol
-* **Canonical ML Source of Truth:** Python ([`python/train_loso_ml_benchmark.py`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/python/train_loso_ml_benchmark.py)), generating [`results/ML_Model_Benchmark_LOSO.csv`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/ML_Model_Benchmark_LOSO.csv) and [`results/ML_Predictions_LOSO.csv`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/ML_Predictions_LOSO.csv).
+* **Canonical ML Source of Truth:** Python ([`python/train_loso_ml_benchmark.py`](../python/train_loso_ml_benchmark.py)), generating [`results/ML_Model_Benchmark_LOSO.csv`](../results/ML_Model_Benchmark_LOSO.csv) and [`results/ML_Predictions_LOSO.csv`](../results/ML_Predictions_LOSO.csv).
 * **MATLAB Status:** Secondary/historical classifier implementation using custom unregularized gradient descent. Its τ=0.35 metrics differ slightly from the Python implementation because the optimization and regularization methods differ.
 * **Live Dashboard Model:** Pooled deployment inference engine with threshold τ=0.35, streaming safety floors, feature clipping, and optional subject-specific baseline calibration. It is not the same as the 15-fold LOSO evaluation model.
 * In each fold $k$, all data from subject $S_k$ is withheld.
@@ -191,13 +193,13 @@
 ```
 ECG_STRESS_DETECTION/
 ├── README.md                                  # Complete research showcase & documentation
-├── PROJECT_QUICK_REFERENCE.md                 # THIS FILE: Master quick-reference guide
-├── PROJECT_IMPLEMENTATION_SYSTEMATIC_GUIDE.md # Exhaustive technical reference & build guide
-├── EXECUTION_GUIDE.md                         # Operational guide for running all pipelines
-├── ROADMAP.md                                 # Project roadmap and future milestones
+├── docs/PROJECT_QUICK_REFERENCE.md                 # THIS FILE: Master quick-reference guide
+├── docs/PROJECT_IMPLEMENTATION_SYSTEMATIC_GUIDE.md # Exhaustive technical reference & build guide
+├── docs/EXECUTION_GUIDE.md                         # Operational guide for running all pipelines
+├── docs/ROADMAP.md                                 # Project roadmap and future milestones
 ├── requirements.txt                           # Python dependencies
-├── start_dashboard.bat                        # Launcher for Streamlit dashboard
-├── flash_firmware.bat                         # Firmware flashing script
+├── docs/start_dashboard.bat                        # Launcher for Streamlit dashboard
+├── docs/flash_firmware.bat                         # Firmware flashing script
 │
 ├── demo/                                      # Interactive Dashboard
 │   ├── app.py                                 # Streamlit 4-tab clinical & IoMT dashboard
@@ -235,7 +237,7 @@ ECG_STRESS_DETECTION/
 │
 ├── STM32G474_ECG_Telemetry/                   # STM32CubeIDE Project Eclipse Workspace
 │   ├── Inc/ & Src/                            # Mirror firmware source for CubeIDE
-│   └── flash_firmware.bat                     # STM32 Programmer CLI script
+│   └── docs/flash_firmware.bat                     # STM32 Programmer CLI script
 │
 ├── paper_package/                             # Self-contained camera-ready IEEE paper package
 │   ├── main.tex                               # Manuscript source (6-page IEEE format)
@@ -260,7 +262,7 @@ ECG_STRESS_DETECTION/
 
 ### 7.1 Launching the Interactive Web Dashboard
 ```bash
-# Option A: Double-click start_dashboard.bat, or run:
+# Option A: Double-click docs/start_dashboard.bat, or run:
 streamlit run demo/app.py --server.port 8501
 ```
 * Access at `http://localhost:8501`.
@@ -291,7 +293,7 @@ python python/stm32_telemetry_receiver.py --port COM10 --baud 115200
 ```cmd
 # Connect STM32G474RE Nucleo-64 via USB, then run:
 cd embedded_stm32
-flash_firmware.bat
+../docs/../docs/flash_firmware.bat
 # LD2 (green LED) should blink at 1 Hz indicating active 350 Hz telemetry
 ```
 

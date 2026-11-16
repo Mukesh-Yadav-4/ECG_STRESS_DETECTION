@@ -1,7 +1,7 @@
 ECG Stress Detection - Quick Run Guide
 
 1. Open Terminal / PowerShell and go to project directory:
-   cd "C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\01_ECG_STRESS_DETECTION"
+   cd ""
 
 
 =============================================
@@ -33,7 +33,7 @@ MATLAB SCRIPTS & LIVE DEMO
 
 Option A: Inside MATLAB (Recommended for live demo / presentation)
 1. Open MATLAB and set current folder to:
-   C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\matlab
+   matlab
 2. In the MATLAB Command Window, run:
 
    setup_project                     % Adds all subfolders to MATLAB path (run this first)
@@ -45,7 +45,7 @@ Option A: Inside MATLAB (Recommended for live demo / presentation)
 
 Option B: Headless from Terminal / PowerShell (No GUI)
 
-cd "C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\01_ECG_STRESS_DETECTION"
+cd ""
 
    # Run the interactive demo:
 matlab -batch "cd('matlab'); setup_project; DEMO_stress_detection"

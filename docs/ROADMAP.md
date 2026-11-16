@@ -143,8 +143,8 @@ flowchart LR
 
 ```
 ECG_STRESS_DETECTION/
-├── ROADMAP.md                           <-- Master project roadmap and architecture guide
-├── EXECUTION_GUIDE.md                   <-- Complete step-by-step reproduction instructions
+├── docs/ROADMAP.md                           <-- Master project roadmap and architecture guide
+├── docs/EXECUTION_GUIDE.md                   <-- Complete step-by-step reproduction instructions
 ├── requirements.txt                     <-- Python environment dependencies
 │
 ├── embedded_stm32/                      <-- STM32 C Firmware Core

@@ -1,6 +1,6 @@
 # Repository Cleanup Review & Storage Optimization Plan
 
-**Target Repository:** `C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION`  
+**Target Repository:** ``  
 **Date:** 2026-10-03  
 **Mode:** Read-Only Audit (No files deleted, moved, modified, or staged)  
 

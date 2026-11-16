@@ -17,9 +17,9 @@ THE 2-STEP FIX (Takes 10 seconds — All in this folder):
 
 STEP 1: RE-FLASH THE ECG FIRMWARE
 Go to:
-  C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\
+  
 Double-click:
-  flash_firmware.bat
+  docs/flash_firmware.bat
 
 (This uploads the ECG Telemetry firmware via ST-LINK SWD. You will see LD2 start blinking!)
 
@@ -29,9 +29,9 @@ Drag-and-drop 'STM32G474_ECG_Telemetry\STM32G474_ECG_Telemetry.bin' directly int
 
 STEP 2: LAUNCH / REFRESH THE CLINICAL DASHBOARD
 Go to:
-  C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\
+  
 Double-click:
-  start_dashboard.bat
+  docs/start_dashboard.bat
 
 (Open http://localhost:8501, and toggle 'Continuous Live Stream' to ON.)
 
@@ -40,5 +40,5 @@ TROUBLESHOOTING: "Access is Denied on COM10"
 If PowerShell or Streamlit says COM10 is busy/access denied:
 1. Close any other PowerShell, Arduino IDE, or terminal that might be connected to COM10.
 2. In the Streamlit terminal, press Ctrl + C to close it.
-3. Re-run start_dashboard.bat.
+3. Re-run docs/start_dashboard.bat.
 ========================================================================
