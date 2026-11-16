@@ -102,7 +102,7 @@ To ensure complete clarity and academic rigor during manuscript finalization and
 The `ECG_STRESS_DETECTION` project demonstrates **exceptional scientific and technical maturity**:
 - **Data Integrity:** Zero missing values, zero duplicates, exactly 445 standardized windows across 15 subjects.
 - **Methodological Soundness:** Strict 15-fold Leave-One-Subject-Out cross-validation with zero data leakage.
-- **Signal Processing:** Zero-phase Butterworth filtering and verified Direct Form I biquad DSP ($1.87~\mu\text{s}$ execution cost).
+- **Signal Processing:** Zero-phase Butterworth filtering and verified Direct Form I biquad DSP (measured $1.476~\mu\text{s}$ execution cost, mean 251 cycles; analytical estimate $1.87~\mu\text{s}$).
 - **Embedded Engineering:** ARM Cortex-M4 bare-metal firmware compiling cleanly (11,316 bytes), running 4D hyperchaotic telemetry encryption with single-precision bit-exact host parity.
 - **Physical Validation:** Physical hardware-in-the-loop over-the-wire telemetry captured and verified over USB-UART with 0 CRC dropouts and 0.0 mV reconstruction error.
 - **Artifact Governance:** All files cryptographically hashed and cataloged under `results/verification/canonical_experiment/`.

@@ -62,14 +62,14 @@ fig_demo = figure('Name', 'WESAD ECG Stress Detection — Clinical Telemetry Dem
 tab_group = uitabgroup(fig_demo);
 
 %% 2. Inspect Raw ECG (First 10 Seconds)
-fprintf('[2/6] Displaying raw Lead-II ECG segment (Tab 1)...\n');
+fprintf('[2/6] Displaying raw chest ECG segment (Tab 1)...\n');
 fprintf('  -> Visualizes the unprocessed electrical signal directly from the chest sensor.\n\n');
 
 duration_demo = 10;
 N = min(length(ecg), Fs * duration_demo);
 t = (0:N-1) / Fs;
 
-tab1 = uitab(tab_group, 'Title', 'Raw ECG Lead-II (10s)', 'BackgroundColor', c_space_bg);
+tab1 = uitab(tab_group, 'Title', 'Raw Chest ECG (10s)', 'BackgroundColor', c_space_bg);
 ax1 = axes('Parent', tab1, 'Position', [0.12 0.13 0.82 0.78]);
 
 % Vibrant Cyber-Ruby telemetry pulse with subtle zero-line glow
@@ -79,7 +79,7 @@ set(ax1, 'Color', c_space_bg, 'XColor', c_star_dim, 'YColor', c_star_dim, ...
     'FontSize', 10.5, 'LineWidth', 1.1, 'Box', 'on');
 xlabel(ax1, 'Time (seconds)', 'FontWeight', 'bold', 'Color', c_star_white);
 ylabel(ax1, 'ECG Voltage (mV)', 'FontWeight', 'bold', 'Color', c_star_white);
-title(ax1, 'Lead-II ECG Telemetry Signal (Subject S2, Initial 10-Second Window)', ...
+title(ax1, 'Chest ECG Telemetry Signal (RespiBAN, 700 Hz, Subject S2, Initial 10-Second Window)', ...
     'FontSize', 13, 'FontWeight', 'bold', 'Color', c_star_white);
 xlim(ax1, [-0.2, 10.2]);
 grid(ax1, 'on');

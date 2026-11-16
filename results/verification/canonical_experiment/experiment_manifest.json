@@ -36,7 +36,9 @@
       "notch_frequency_hz": 50.0,
       "notch_q_factor": 30.0,
       "execution_cost_cycles": 318,
-      "execution_time_microseconds": 1.87
+      "execution_time_microseconds": 1.476,
+      "analytical_estimate_microseconds": 1.87,
+      "measured_cycles_mean": 251
     },
     "r_peak_detection": {
       "method": "Median Absolute Deviation (MAD) Adaptive Noise-Floor Prominence",

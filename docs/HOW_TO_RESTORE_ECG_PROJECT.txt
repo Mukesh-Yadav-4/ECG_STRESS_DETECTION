@@ -19,7 +19,7 @@ STEP 1: RE-FLASH THE ECG FIRMWARE
 Go to:
   
 Double-click:
-  flash_firmware.bat
+  docs/flash_firmware.bat
 
 (This uploads the ECG Telemetry firmware via ST-LINK SWD. You will see LD2 start blinking!)
 
@@ -31,7 +31,7 @@ STEP 2: LAUNCH / REFRESH THE CLINICAL DASHBOARD
 Go to:
   
 Double-click:
-  start_dashboard.bat
+  docs/start_dashboard.bat
 
 (Open http://localhost:8501, and toggle 'Continuous Live Stream' to ON.)
 
@@ -40,5 +40,5 @@ TROUBLESHOOTING: "Access is Denied on COM10"
 If PowerShell or Streamlit says COM10 is busy/access denied:
 1. Close any other PowerShell, Arduino IDE, or terminal that might be connected to COM10.
 2. In the Streamlit terminal, press Ctrl + C to close it.
-3. Re-run start_dashboard.bat.
+3. Re-run docs/start_dashboard.bat.
 ========================================================================

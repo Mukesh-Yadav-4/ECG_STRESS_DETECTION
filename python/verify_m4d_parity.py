@@ -262,7 +262,7 @@ def run_benchmark():
     num_samples = len(raw_sig)
     fs = 350
 
-    print(f"\nLoaded {num_samples:,} real-world WESAD Lead-II ECG samples (Subject S2, Stress condition).")
+    print(f"\nLoaded {num_samples:,} real-world WESAD single-channel chest ECG (RespiBAN, 700 Hz) samples (Subject S2, Stress condition).")
     print(f"Sampling Rate: {fs} Hz | Duration: {num_samples / fs:.2f} s | Total Wire Bytes: {num_samples * 20:,} Bytes\n")
 
     # ---------------------------------------------------------

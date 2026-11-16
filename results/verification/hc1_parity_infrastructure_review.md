@@ -171,7 +171,7 @@ The review confirms that:
 - **Verified:** Yes.
 - **Evidence:**
   - Neither `python/verify_m4d_parity.py` nor `results/verification/hc1_strict_parity/` makes any claim of physical hardware validation.
-  - The review notes that flashing the STM32G474RE board via ST-LINK SWD (using `embedded_stm32/build_and_flash.bat` or `flash_firmware.bat`) and capturing live UART streams on COM10 represents the physical validation stage, whereas the host C harness provides mathematically rigorous validation of the compiled C algorithm under IEEE-754 single-precision semantics.
+  - The review notes that flashing the STM32G474RE board via ST-LINK SWD (using `embedded_stm32/build_and_flash.bat` or `docs/flash_firmware.bat`) and capturing live UART streams on COM10 represents the physical validation stage, whereas the host C harness provides mathematically rigorous validation of the compiled C algorithm under IEEE-754 single-precision semantics.
 
 ---
 

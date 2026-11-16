@@ -92,7 +92,7 @@ An exhaustive audit of the `ECG_STRESS_DETECTION` repository and both manuscript
     * Lyapunov script: `python/compute_lyapunov_spectrum.py` (lines 29–33)
     * Benchmarks: `results/m4d_lyapunov_benchmark.txt`, `results/hc1_reproducibility_benchmark.txt`
     * Dashboard: `demo/app.py` (lines 829, 1634)
-    * Docs: `PROJECT_QUICK_REFERENCE.md` (line 171)
+    * Docs: `docs/PROJECT_QUICK_REFERENCE.md` (line 171)
 * **Legacy Parameter Set (Dissipative Non-Hyperchaotic Regime):**
   * **Parameters:** $a = 35.0, b = 3.0, c = 28.0, d = -1.0, r = 5.0$, step size $dt = 0.0025\text{ s}$
   * **Divergence:** $\operatorname{div}(F) = -(35+3-(-1)) = -39.000000$
@@ -177,7 +177,7 @@ All models evaluated across all **445 non-overlapping 60-second windows** using 
 | **C-09** | Physical HIL Packet Count: ">15,000 packets" | Early README, early text | `results/raw_evidence_item3_hil_capture.json` | **CONTRADICTED** | 15,505 packets ran legacy scrambler (`flags: 0x01`). Validated HC1 run is 10,000 packets. |
 | **C-10** | Physical HIL Packet Count: 10,000 consecutive 20-byte packets | Overleaf tex line 185; Elsevier tex line 170, 181 | `results/verification/hc1_hardware_hil/corrected_physical_hil/corrected_hil_parity_report.json` | **VERIFIED** | Exact 10,000 packets (200,000 bytes) with zero CRC errors and zero drops. |
 | **C-11** | Ciphertext Shannon Entropy: $H = 7.9973$ bits/byte | Elsevier tex Table IV line 173; `item5_chi2_uniformity.json` | `results/raw_evidence_item5_chi2_uniformity.json` | **VERIFIED** | Measured on 80,000 bytes ($\chi^2 = 302.03, p = 0.023$). 10k HIL capture yielded $H = 7.9977$. |
-| **C-12** | Ciphertext Shannon Entropy: $H = 7.9982$ bits/byte | `PROJECT_QUICK_REFERENCE.md`, `independent_reproducibility_audit.txt` | `python/verify_m4d_parity.py` simulation | **ESTIMATED (SIM)** | Offline simulation result; not from physical UART wire capture. |
+| **C-12** | Ciphertext Shannon Entropy: $H = 7.9982$ bits/byte | `docs/PROJECT_QUICK_REFERENCE.md`, `independent_reproducibility_audit.txt` | `python/verify_m4d_parity.py` simulation | **ESTIMATED (SIM)** | Offline simulation result; not from physical UART wire capture. |
 | **C-13** | M1 Ablation Accuracy: 81.57% for 4 features | Overleaf tex line 132; Elsevier tex line 128 | `results/Feature_Group_Comparison.csv` | **CONTRADICTED** | 81.57% is the 13-feature uncalibrated model. Raw 4-feature baseline is 80.90%. |
 | **C-14** | M4 Ablation Accuracy: 92.36% for 8 features | Overleaf tex line 135; Elsevier tex line 131 | `results/Personalized_Feature_Ablation.csv` | **CONTRADICTED** | 92.36% is the 13-feature calibrated model. Proposed 8-feature canonical model is 92.13%. |
 | **C-15** | Reference [11] (Plarre et al.): SenSys 2011, pp. 400–408 | `references_ecg_stress.bib` line 64 | Web search / ACM Digital Library | **CONTRADICTED** | Published in **IPSN 2011, pp. 97–108**. Pages 400–408 were copy-pasted from Schmidt et al. (ICMI 2018). |
@@ -234,7 +234,7 @@ All models evaluated across all **445 non-overlapping 60-second windows** using 
   * `EXECUTION_GUIDE.md` -> `docs/EXECUTION_GUIDE.md`
   * `HOW_TO_RESTORE_ECG_PROJECT.txt` -> `docs/HOW_TO_RESTORE_ECG_PROJECT.txt`
   * `PROJECT_IMPLEMENTATION_SYSTEMATIC_GUIDE.md` -> `docs/PROJECT_IMPLEMENTATION_SYSTEMATIC_GUIDE.md`
-  * `PROJECT_QUICK_REFERENCE.md` -> `docs/PROJECT_QUICK_REFERENCE.md`
+  * `docs/PROJECT_QUICK_REFERENCE.md` -> `docs/docs/PROJECT_QUICK_REFERENCE.md`
   * `ECG_STRESS_DETECTION_RUN.txt` -> `docs/ECG_STRESS_DETECTION_RUN.txt`
   * `flash_firmware.bat` -> `docs/flash_firmware.bat`
   * `start_dashboard.bat` -> `docs/start_dashboard.bat`

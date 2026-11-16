@@ -73,7 +73,7 @@ ax.plot([0.35, 17.65], [4.89, 4.89], color=teal, linewidth=1.0)
 
 # Offline path
 offline = []
-offline.append(box(0.45, 7.45, 1.55, 1.05, "WESAD\nLead-II ECG\nrecordings", face=blue, edge=navy, weight="bold"))
+offline.append(box(0.45, 7.45, 1.55, 1.05, "WESAD\nChest ECG\n(RespiBAN, 700 Hz)", face=blue, edge=navy, weight="bold"))
 offline.append(box(2.20, 7.45, 1.65, 1.05, "Filtering\n0.5–40 Hz\nButterworth", face=blue, edge=navy))
 offline.append(box(4.05, 7.45, 1.65, 1.05, "R-peak\ndetection\nPan–Tompkins + MAD", face=blue, edge=navy, size=9.7))
 offline.append(box(5.90, 7.45, 1.65, 1.05, "RR intervals\nphysiological\ngating", face=blue, edge=navy))

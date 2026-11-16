@@ -1,3 +1,4 @@
+% LEGACY: leaky all-baseline anchor; outputs are not the paper results
 % TWENTY_SEVEN_final_results.m
 % Aggregates development models, feature ablation, subject-level detection,
 % and final calibrated stress-detection results into summary tables and report figures.
@@ -9,7 +10,11 @@ close all;
 %% 1. Paths & Initialization
 project_root = fileparts(fileparts(fileparts(mfilename('fullpath'))));
 results_folder = fullfile(project_root, 'results');
-figures_folder = fullfile(results_folder, 'figures', 'matlab');
+output_results_folder = fullfile(project_root, 'results', 'legacy_leaky');
+output_figures_folder = fullfile(project_root, 'results', 'figures', 'legacy_leaky');
+figures_folder = fullfile(output_figures_folder, 'matlab');
+if ~exist(output_results_folder, 'dir'), mkdir(output_results_folder); end
+if ~exist(output_figures_folder, 'dir'), mkdir(output_figures_folder); end
 
 if ~exist(figures_folder, 'dir')
     mkdir(figures_folder);
@@ -117,7 +122,7 @@ drawnow;
 f1 = fullfile(figures_folder, 'FINAL_Feature_Group_Comparison.png');
 if isfile(f1), try, delete(f1); catch, end; end
 exportgraphics(ax1, f1, 'Resolution', 300, 'BackgroundColor', 'current');
-try, copyfile(f1, fullfile(results_folder, 'figures', 'FINAL_Feature_Group_Comparison.png')); catch, end
+try, copyfile(f1, fullfile(output_figures_folder, 'FINAL_Feature_Group_Comparison.png')); catch, end
 
 % -------------------------------------------------------------
 % Tab 2: Personalized Feature Ablation
@@ -164,7 +169,7 @@ drawnow;
 f2 = fullfile(figures_folder, 'FINAL_Personalized_Feature_Ablation.png');
 if isfile(f2), try, delete(f2); catch, end; end
 exportgraphics(ax2, f2, 'Resolution', 300, 'BackgroundColor', 'current');
-try, copyfile(f2, fullfile(results_folder, 'figures', 'FINAL_Personalized_Feature_Ablation.png')); catch, end
+try, copyfile(f2, fullfile(output_figures_folder, 'FINAL_Personalized_Feature_Ablation.png')); catch, end
 
 % -------------------------------------------------------------
 % Tab 3: Subject-Wise Stress Detection Rate
@@ -229,8 +234,8 @@ if isfile(f3a), try, delete(f3a); catch, end; end
 if isfile(f3b), try, delete(f3b); catch, end; end
 exportgraphics(ax3, f3a, 'Resolution', 300, 'BackgroundColor', 'current');
 exportgraphics(ax3, f3b, 'Resolution', 300, 'BackgroundColor', 'current');
-try, copyfile(f3a, fullfile(results_folder, 'figures', 'FINAL_Subject_Stress_Detection.png')); catch, end
-try, copyfile(f3b, fullfile(results_folder, 'figures', 'FINAL_Subject_Stress_Performance.png')); catch, end
+try, copyfile(f3a, fullfile(output_figures_folder, 'FINAL_Subject_Stress_Detection.png')); catch, end
+try, copyfile(f3b, fullfile(output_figures_folder, 'FINAL_Subject_Stress_Performance.png')); catch, end
 
 %% 4. Compile Executive Summary Tables
 total_stress = sum(FinalPredictions.TrueLabel == 1);
@@ -257,9 +262,9 @@ fprintf('\n=== Model Development Progression ===\n');
 disp(DevelopmentTable);
 
 %% 5. Export Summary CSVs and Master MAT Package
-summary_file = fullfile(results_folder, 'FINAL_Project_Summary.csv');
-development_file = fullfile(results_folder, 'FINAL_Development_Model_Comparison.csv');
-final_package = fullfile(results_folder, 'FINAL_Project_Results.mat');
+summary_file = fullfile(output_results_folder, 'FINAL_Project_Summary.csv');
+development_file = fullfile(output_results_folder, 'FINAL_Development_Model_Comparison.csv');
+final_package = fullfile(output_results_folder, 'FINAL_Project_Results.mat');
 
 writetable(FinalSummary, summary_file);
 writetable(DevelopmentTable, development_file);

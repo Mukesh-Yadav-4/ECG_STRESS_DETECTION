@@ -103,7 +103,7 @@ Executing the canonical 15-fold Leave-One-Subject-Out (LOSO) cross-validation sc
    - Health check endpoint `/_stcore/health` responded with HTTP 200 OK within 3 seconds.
    - Main page fetched complete HTML bundle without unhandled exceptions.
 2. **Backend Engine & UI Capabilities:**
-   - Offline sample dataset [`demo/sample_data/ecg_samples.npz`](demo/sample_data/ecg_samples.npz) loaded 21,000 samples of Lead-II ECG.
+   - Offline sample dataset [`demo/sample_data/ecg_samples.npz`](demo/sample_data/ecg_samples.npz) loaded 21,000 samples of single-channel chest ECG (RespiBAN, 700 Hz).
    - Ingestion of 3,500 continuous samples (10.0 seconds) into `LiveTelemetryStream` successfully extracted 8 core HRV metrics (`MeanHR = 78.2 BPM`, `RMSSD = 37.72 ms`, `SDNN = 41.33 ms`).
    - Stress inference engine correctly predicted stress probability (6.15%, classified as Calm at $\tau = 0.35$).
    - All three telemetry encryption modes are cleanly supported:

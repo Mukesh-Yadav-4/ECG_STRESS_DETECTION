@@ -1,3 +1,6 @@
+> [!NOTE]
+> **Legacy Protocol Note:** Performance figures in this implementation guide quoting 92.13% accuracy (or 92.36% at $\tau=0.35$) evaluate the legacy 445-window protocol using an all-baseline anchor ($B_s$ computed over all baseline windows for that subject). For the verified leak-free chronological calibration protocol ($N=10$, 295 evaluation windows, 90.17% accuracy [95% CI: 82.7, 95.9], no-calibration: 78.64%), see `results/calibration_length/` and `paper_package/`.
+
 # Systematic Implementation Guide: End-to-End Cyber-Physical IoMT ECG Stress Detection & Lightweight Edge Telemetry Obfuscation System
 
 **Author & Developer:** Mukesh Yadav  
@@ -35,7 +38,7 @@ This project implements a complete, edge-to-cloud **Cyber-Physical Internet of M
 │                                    PHYSICAL HARDWARE TIER                                       │
 │                                 (STM32G474RE @ 16 MHz HSI Core)                                 │
 │                                                                                                 │
-│  [WESAD S2 Lead-II ECG (Flash)] ──▶ [350 Hz SysTick Loop] ──▶ [5-Stage Direct Form I Biquad]   │
+│  [WESAD S2 Single-Channel Chest ECG (Flash)] ──▶ [350 Hz SysTick Loop] ──▶ [5-Stage Direct Form I Biquad]   │
 │                                                                           │                     │
 │                                                                           ▼                     │
 │  [Software CRC-16-CCITT] ◀── [32b Xorshift32+Weyl Scrambler] ◀── [Biometric Voltage Framing]    │
@@ -50,7 +53,7 @@ This project implements a complete, edge-to-cloud **Cyber-Physical Internet of M
 │  [Thread-Safe Serial Connection] ──▶ [Frame Sync: 0xAA 0x55] ──▶ [CRC-16 Verification]          │
 │                                                                            │                    │
 │                                                                            ▼                    │
-│  [Eavesdropper Intercept View] ◀── [Cipher Buffer]           [Keystream Descrambling]           │
+│  [Eavesdropper Intercept View] ◀── [Scrambled Buffer]           [Keystream Descrambling]           │
 │  (Scrambled Static, LOCKED)                                                │                    │
 │                                                                            ▼                    │
 │                                      [QRS Peak Detection (SciPy find_peaks) & HRV Engine]       │
@@ -64,7 +67,7 @@ This project implements a complete, edge-to-cloud **Cyber-Physical Internet of M
 │                                  CLINICAL MONITORING DASHBOARD                                  │
 │                                  (Streamlit / demo/app.py)                                      │
 │                                                                                                 │
-│  • 🟢 Authorized Clinical View: Decrypted Lead-II Tracing, Calibrated Stress Dial, 6 HRV Cards  │
+│  • 🟢 Authorized Clinical View: Descrambled Chest ECG Tracing, Calibrated Stress Dial, 6 HRV Cards  │
 │  • 🕵️ Eavesdropper Intercept View: Scrambled Wire Static, Entropy Gauge, KEY LOCKED Protocol    │
 │  • Dual-Link: Physical NUCLEO-G474RE COM10 Stream OR Simulated Multi-Subject WESAD Replay        │
 └─────────────────────────────────────────────────────────────────────────────────────────────────┘
@@ -78,7 +81,7 @@ This project implements a complete, edge-to-cloud **Cyber-Physical Internet of M
 * **Dataset**: WESAD (Wearable Stress and Affect Detection), public reference benchmark.
 * **Subjects**: $N = 15$ healthy adult participants ($S2$ through $S17$, excluding $S1$ due to sensor malfunction).
 * **Sensor & Placement**: RespiBAN chest-worn bio-instrumentation rig.
-* **Signal Channel**: Single-lead chest electrocardiography (modified Lead-II orientation).
+* **Signal Channel**: Single-channel chest electrocardiography (RespiBAN, 700 Hz).
 * **Acquisition Sampling Rate**: 700 Hz (standardized to 350 Hz for edge microcontroller deployment).
 * **Experimental Protocol Conditions**:
   - `Baseline`: 20-minute quiet resting period in sitting/reading position.
@@ -206,15 +209,15 @@ STM32G474_ECG_Telemetry/
 ├── Inc/
 │   ├── ecg_dsp_filter.h            # Biquad filter structure, coefficient declarations
 │   ├── telemetry_protocol.h        # 20-byte packet framing & scrambler prototypes
-│   └── wesad_test_samples.h        # WESAD Lead-II test sample buffer declarations
+│   └── wesad_test_samples.h        # WESAD single-channel test sample buffer declarations
 ├── Src/
 │   ├── ecg_dsp_filter.c            # 5-stage Direct Form I Biquad IIR filter
 │   ├── main.c                      # Bare-metal register init, SysTick 350Hz loop, UART
 │   ├── syscalls.c / sysmem.c       # Minimal runtime stub support
 │   ├── telemetry_protocol.c        # Xorshift32+Weyl stream scrambler & software CRC-16
-│   └── wesad_test_samples.c        # 2,100 WESAD Subject S2 Lead-II samples in Flash
+│   └── wesad_test_samples.c        # 2,100 WESAD Subject S2 single-channel samples in Flash
 ├── STM32G474RETX_FLASH.ld          # Memory map linker script
-└── flash_firmware.bat              # One-click programming batch script
+└── docs/flash_firmware.bat              # One-click programming batch script
 ```
 
 ### 4.3 5-Stage Direct Form I Biquad IIR Filter
@@ -315,12 +318,12 @@ Using `@st.fragment(run_every="1s")`, the telemetry graph and metric cards refre
 
 ### 7.2 Dual Operational Views
 
-#### 1. 🟢 Authorized Clinical View (Decrypted Telemetry)
-* **Lead-II Waveform Tracing**: Clean, real-time filtered cardiac waveform showing clear P-wave, QRS-complex, and T-wave morphology.
+#### 1. 🟢 Authorized Clinical View (Descrambled Telemetry)
+* **Chest ECG Waveform Tracing**: Clean, real-time filtered cardiac waveform showing clear P-wave, QRS-complex, and T-wave morphology.
 * **Calibrated Stress Dial ($\tau = 0.35$)**: An SVG needle gauge indicating real-time stress probability ($0\% - 100\%$) calibrated to the patient's individual resting baseline.
 * **Live HRV Biomarkers Strip**: Displays real-time `Mean Heart Rate` (BPM), `RMSSD` (ms), `SDNN` (ms), `pNN50` (%), `Mean RR` (ms), and `Detected Beats`.
 
-#### 2. 🕵️ Eavesdropper Intercept View (Raw Wire Ciphertext)
+#### 2. 🕵️ Eavesdropper Intercept View (Raw Wire Scrambled Payload)
 * **Scrambled Wire Waveform**: Displays dense pseudo-random static in pink/red (`#FF3366`) with zero visible cardiac morphology.
 * **Security Status Card**: Displays `KEY LOCKED`, the wire Shannon entropy ($H \approx 7.25 - 7.98\text{ bits/byte}$), and cipher configuration.
 * **Cryptographically Locked Biomarkers**: All HRV cards display **`🔒 LOCKED`** (*"Signal masked to noise"*, *"Key required for vagal tone"*, *"0 valid QRS complexes detected"*), demonstrating that downstream autonomic features cannot be extracted without the key.
@@ -337,7 +340,7 @@ Memory Region         Used Size (Bytes)    Total Region Size    Memory Utilizati
 FLASH (rx)                18,904 B             512 KB                3.61 %
 RAM (xrw)                  1,704 B             128 KB                1.30 %
 ```
-*Note: Flash footprint includes 2,100 pre-loaded Lead-II WESAD samples (`wesad_test_samples.o`, 8,400 bytes).*
+*Note: Flash footprint includes 2,100 pre-loaded single-channel WESAD samples (`wesad_test_samples.o`, 8,400 bytes).*
 
 ### 8.2 Execution Timing Profile (350 Hz / 16 MHz HSI)
 
@@ -371,7 +374,7 @@ RAM (xrw)                  1,704 B             128 KB                1.30 %
 3. To flash the compiled `.bin` file directly to the board, run the included batch script:
    ```cmd
    cd "firmware/STM32G474_ECG_Telemetry"
-   flash_firmware.bat
+   docs/flash_firmware.bat
    ```
    *(Alternatively, invoke `STM32_Programmer_CLI.exe -c port=SWD -w STM32G474_ECG_Telemetry.bin 0x08000000 -v -rst` directly).*
 4. Verify that the green LED (`LD2`) blinks at 1 Hz, confirming active 350 Hz transmission.
