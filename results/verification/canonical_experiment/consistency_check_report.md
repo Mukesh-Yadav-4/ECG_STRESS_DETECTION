@@ -1,5 +1,7 @@
 # Consistency Check & Project Alignment Report
 
+> **Legacy Protocol Note:** Performance figures in this historical verification document quoting 92.13% accuracy (or 92.36% at $\tau=0.35$) evaluate the legacy 445-window protocol using an all-baseline anchor ($B_s$ computed over all baseline windows for that subject). For the verified leak-free chronological calibration protocol ($N=10$, 295 evaluation windows, 90.17% accuracy [95% CI: 82.7, 95.9]), see `results/calibration_length/` and `docs/audit/`.
+
 **Project:** WESAD ECG Stress Detection with Chaotic Telemetry  
 **Scope:** Cross-Document Consistency Audit, Metric Contradiction Analysis, and Paper Writing Readiness  
 **Timestamp:** 2026-10-02T10:25:00+05:30  
@@ -100,7 +102,7 @@ To ensure complete clarity and academic rigor during manuscript finalization and
 The `ECG_STRESS_DETECTION` project demonstrates **exceptional scientific and technical maturity**:
 - **Data Integrity:** Zero missing values, zero duplicates, exactly 445 standardized windows across 15 subjects.
 - **Methodological Soundness:** Strict 15-fold Leave-One-Subject-Out cross-validation with zero data leakage.
-- **Signal Processing:** Zero-phase Butterworth filtering and verified Direct Form I biquad DSP ($1.87~\mu\text{s}$ execution cost).
+- **Signal Processing:** Zero-phase Butterworth filtering and verified Direct Form I biquad DSP (measured $1.476~\mu\text{s}$ execution cost, mean 251 cycles; analytical estimate $1.87~\mu\text{s}$).
 - **Embedded Engineering:** ARM Cortex-M4 bare-metal firmware compiling cleanly (11,316 bytes), running 4D hyperchaotic telemetry encryption with single-precision bit-exact host parity.
 - **Physical Validation:** Physical hardware-in-the-loop over-the-wire telemetry captured and verified over USB-UART with 0 CRC dropouts and 0.0 mV reconstruction error.
 - **Artifact Governance:** All files cryptographically hashed and cataloged under `results/verification/canonical_experiment/`.

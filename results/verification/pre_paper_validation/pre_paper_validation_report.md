@@ -1,5 +1,7 @@
 # End-to-End Pre-Paper Validation Report
 
+> **Legacy Protocol Note:** Performance figures in this historical verification document quoting 92.13% accuracy (or 92.36% at $\tau=0.35$) evaluate the legacy 445-window protocol using an all-baseline anchor ($B_s$ computed over all baseline windows for that subject). For the verified leak-free chronological calibration protocol ($N=10$, 295 evaluation windows, 90.17% accuracy [95% CI: 82.7, 95.9]), see `results/calibration_length/` and `docs/audit/`.
+
 **Project:** WESAD ECG Stress Detection with Chaotic Hardware Telemetry  
 **Target Publication:** Manuscript Submission  
 **Timestamp:** 2026-10-02T00:38:00+05:30  
@@ -275,7 +277,7 @@ The following table presents the exact bit-for-bit comparison between the canoni
 | Component | Specification / Version | Path / Executable |
 | :--- | :--- | :--- |
 | **Operating System** | Windows 11 Enterprise (Build 10.0.26200-SP0) | `cmd.exe / powershell.exe` |
-| **Python Runtime** | Python 3.14.3 (AMD64, MSVC 19.44) | `C:\Users\YASH\AppData\Local\Programs\Python\Python314\python.exe` |
+| **Python Runtime** | Python 3.14.3 (AMD64, MSVC 19.44) | Standard Local Virtual Environment (`python.exe`) |
 | **NumPy** | 2.4.3 | Installed via pip |
 | **Pandas** | 3.0.1 | Installed via pip |
 | **SciPy** | 1.17.1 | Installed via pip |

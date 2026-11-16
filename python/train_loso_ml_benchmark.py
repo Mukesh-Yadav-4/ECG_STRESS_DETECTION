@@ -309,7 +309,7 @@ def evaluate_loso(df, feature_cols):
         })
     print(pd.DataFrame(cm_rows).to_string(index=False))
     print("=" * 85)
-    print("  ★ Best Overall: Logistic Regression (92.13% Accuracy, 88.29% F1, 0.9493 AUC)")
+    print("  ★ Best Overall: Logistic Regression (92.13% Accuracy, 88.29% F1, 0.9493 AUC) (legacy all-baseline anchor)")
     print("  Full 14-column report saved to: results/ML_Model_Benchmark_LOSO.csv\n")
     
     return df_summary, predictions

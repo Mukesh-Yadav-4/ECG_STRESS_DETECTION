@@ -1,3 +1,4 @@
+% LEGACY: leaky all-baseline anchor; outputs are not the paper results
 % TWENTY_EIGHT_report_figures.m
 % Generates final calibrated ROC curve and Confusion Matrix figures
 % at locked threshold tau = 0.35 with publication-grade styling.
@@ -9,7 +10,11 @@ close all;
 %% 1. Paths & Load Predictions
 project_root = fileparts(fileparts(fileparts(mfilename('fullpath'))));
 results_folder = fullfile(project_root, 'results');
-figures_folder = fullfile(results_folder, 'figures', 'matlab');
+output_results_folder = fullfile(project_root, 'results', 'legacy_leaky');
+output_figures_folder = fullfile(project_root, 'results', 'figures', 'legacy_leaky');
+figures_folder = fullfile(output_figures_folder, 'matlab');
+if ~exist(output_results_folder, 'dir'), mkdir(output_results_folder); end
+if ~exist(output_figures_folder, 'dir'), mkdir(output_figures_folder); end
 
 if ~exist(figures_folder, 'dir')
     mkdir(figures_folder);
@@ -128,7 +133,7 @@ if isfile(cm_fig_file), try, delete(cm_fig_file); catch, end; end
 exportgraphics(ax_cm, cm_fig_file, ...
     'Resolution', 300, 'BackgroundColor', 'current', 'Padding', 15);
 
-root_cm = fullfile(results_folder, 'figures', 'FINAL_Confusion_Matrix.png');
+root_cm = fullfile(output_figures_folder, 'FINAL_Confusion_Matrix.png');
 try, copyfile(cm_fig_file, root_cm); catch, end
 
 % -------------------------------------------------------------
@@ -185,7 +190,7 @@ if isfile(roc_fig_file), try, delete(roc_fig_file); catch, end; end
 exportgraphics(ax_roc, roc_fig_file, ...
     'Resolution', 300, 'BackgroundColor', 'current');
 
-root_roc = fullfile(results_folder, 'figures', 'FINAL_ROC_Curve.png');
+root_roc = fullfile(output_figures_folder, 'FINAL_ROC_Curve.png');
 try, copyfile(roc_fig_file, root_roc); catch, end
 
 %% 5. Save Final Summary Metrics Table
@@ -200,7 +205,7 @@ Value = [
 ];
 
 FinalModelMetrics = table(string(Metric), Value, 'VariableNames', {'Metric', 'Value'});
-writetable(FinalModelMetrics, fullfile(results_folder, 'FINAL_Model_Metrics.csv'));
-save(fullfile(results_folder, 'FINAL_Model_Metrics.mat'), 'FinalModelMetrics');
+writetable(FinalModelMetrics, fullfile(output_results_folder, 'FINAL_Model_Metrics.csv'));
+save(fullfile(output_results_folder, 'FINAL_Model_Metrics.mat'), 'FinalModelMetrics');
 
 fprintf('Updated FINAL_Confusion_Matrix.png, FINAL_ROC_Curve.png, and FINAL_Model_Metrics.csv.\n');

@@ -310,12 +310,12 @@ st.markdown(
 # Top KPI Metric Strip
 k1, k2, k3, k4, k5, k6 = st.columns(6)
 kpis = [
-    ("Accuracy", "92.36 %", "+10.79% vs raw", "#10B981"),
-    ("Stress F1-Score", "89.03 %", "+16.00% boost", "#00F0FF"),
-    ("ROC-AUC", "0.9494", "High separation", "#8B5CF6"),
+    ("Accuracy", "90.17 %", "Leak-free N=10 [82.7, 95.9]", "#10B981"),
+    ("Stress F1-Score", "90.49 %", "Leak-free N=10 [81.9, 96.2]", "#00F0FF"),
+    ("ROC-AUC", "0.9361", "Leak-free LOSO (295 win)", "#8B5CF6"),
     ("Sensitivity", "86.25 %", "138/160 stress", "#FF3366"),
-    ("Specificity", "95.79 %", "273/285 calm", "#10B981"),
-    ("Benchmark", "15 Subjects", "445 windows", "#F59E0B"),
+    ("Specificity", "94.81 %", "128/135 calm", "#10B981"),
+    ("Benchmark", "15 Subjects", "295 common windows", "#F59E0B"),
 ]
 for col, (label, val, sub, color) in zip([k1, k2, k3, k4, k5, k6], kpis):
     with col:
@@ -440,18 +440,18 @@ with tab_stm32:
             """
             <div style="display:flex; align-items:center; gap:0.45rem; padding:0.35rem 0.65rem; background:rgba(139,92,246,0.06); border:1px solid rgba(139,92,246,0.25); border-radius:6px; margin-top:0.6rem; margin-bottom:0.5rem;">
                 <span style="font-size:0.95rem;">🔐</span>
-                <span style="font-size:0.75rem; font-weight:700; color:#A78BFA; font-family:'JetBrains Mono',monospace; letter-spacing:0.04em;">SECURITY &amp; ENCRYPTION</span>
+                <span style="font-size:0.75rem; font-weight:700; color:#A78BFA; font-family:'JetBrains Mono',monospace; letter-spacing:0.04em;">TELEMETRY SCRAMBLING &amp; OBFUSCATION</span>
             </div>
             """,
             unsafe_allow_html=True,
         )
 
         crypto_engine_choice = st.selectbox(
-            "IoMT Cipher:",
+            "IoMT Keystream Scrambler:",
             options=[
                 "🌀 4D Dynamical Flow (M-4DCHS)",
                 "⚡ 32-Bit Scrambler (Xorshift32 + Weyl)",
-                "🔓 Unencrypted Plaintext"
+                "🔓 Unscrambled Plaintext"
             ],
             index=0,
             help="Select the cryptographic engine running on the edge IoMT node."
@@ -464,7 +464,7 @@ with tab_stm32:
             spec_key = "> 2^256 (ℝ⁴)"
         elif "32-Bit" in crypto_engine_choice:
             active_flags = 0x01  # TELEMETRY_FLAG_ENCRYPTED
-            spec_sec = "32-Bit Cipher (Xorshift32)"
+            spec_sec = "32-Bit Scrambler (Xorshift32)"
             spec_cost = "0.19 µs (32 cycles)"
             spec_key = "2^32"
         else:
@@ -475,10 +475,10 @@ with tab_stm32:
 
         security_view_mode = st.radio(
             "IoMT Security View:",
-            options=["🟢 Authorized (Decrypted)", "🕵️ Wiretap (Ciphertext)"],
+            options=["🟢 Authorized (Descrambled)", "🕵️ Wiretap (Scrambled Payload)"],
             index=0,
             horizontal=False,
-            help="Toggle between authorized clinical view and wiretap ciphertext noise."
+            help="Toggle between authorized clinical view and wiretap scrambled payload noise."
         )
 
         # Edge Node Specs Card
@@ -546,7 +546,7 @@ with tab_stm32:
 
             # Setup personalized baseline for selected subject / hardware stream
             if link_mode == "Physical USB COM Port":
-                # Physical STM32 firmware transmits authentic WESAD Subject S2 Lead-II ECG (Baseline Calm)
+                # Physical STM32 firmware transmits authentic WESAD Subject S2 single-channel chest ECG (RespiBAN, 700 Hz) (Baseline Calm)
                 # Baseline calibration matches Subject S2 resting baseline:
                 base_dict = {
                     "MeanHR": 80.2,
@@ -1236,7 +1236,7 @@ animate();
                 cipher_arr = np.array(snap.get("cipher", []))
                 is_4d_active = snap.get("is_4d_chaos", False) or ("4D" in crypto_engine_choice)
                 sec_badge_val = "M-4DCHS (4D)" if (is_enc and is_4d_active) else ("Chaotic 32b" if is_enc else "Plaintext")
-                sec_badge_sub = f"Encrypted (H={entropy_val:.2f}b)" if is_enc else "Unencrypted Stream"
+                sec_badge_sub = f"Scrambled (H={entropy_val:.2f}b)" if is_enc else "Plaintext Stream"
                 sec_badge_col = "#8B5CF6" if (is_enc and is_4d_active) else ("#10B981" if is_enc else "#F59E0B")
 
                 col_kpi1, col_kpi2, col_kpi3, col_kpi4 = st.columns(4)
@@ -1337,7 +1337,7 @@ animate();
                             st.markdown(
                                 f"""
                                 <div style="background:rgba(255,51,102,0.1); border:1px solid rgba(255,51,102,0.35); border-radius:6px; padding:0.25rem 0.55rem; margin-bottom:0.25rem; font-size:0.72rem; color:#F8FAFC;">
-                                    🔒 <b>Adversarial Wiretap Intercept:</b> High-entropy obfuscated UART ciphertext (<b>Entropy: {entropy_val:.2f} bits/Byte</b>).
+                                    🔒 <b>Adversarial Wiretap Intercept:</b> High-entropy obfuscated UART scrambled payload (<b>Entropy: {entropy_val:.2f} bits/Byte</b>).
                                 </div>
                                 """,
                                 unsafe_allow_html=True,
@@ -1352,34 +1352,34 @@ animate();
                             chart_df = pd.DataFrame(
                                 {
                                     "Time (s)": t_win,
-                                    "Wire Intercepted Ciphertext (Obfuscated Noise)": c_plot,
+                                    "Wire Intercepted Scrambled Payload (Obfuscated Noise)": c_plot,
                                 }
                             )
                             st.line_chart(
                                 chart_df,
                                 x="Time (s)",
-                                y=["Wire Intercepted Ciphertext (Obfuscated Noise)"],
+                                y=["Wire Intercepted Scrambled Payload (Obfuscated Noise)"],
                                 color=["#FF3366"],
                                 height=205,
-                                x_label="Time (s) — Wire Intercepted Ciphertext",
-                                y_label="Cipher Amplitude",
+                                x_label="Time (s) — Wire Intercepted Scrambled Payload",
+                                y_label="Scrambled Amplitude",
                             )
                         elif is_native_stream:
                             chart_df = pd.DataFrame(
                                 {
                                     "Time (s)": t_win,
-                                    "Raw Acquisition (Lead-II)": raw_win,
+                                    "Raw Acquisition (Single-Channel Chest ECG)": raw_win,
                                     "STM32 Biquad Filtered": filt_win,
                                 }
                             )
                             st.line_chart(
                                 chart_df,
                                 x="Time (s)",
-                                y=["Raw Acquisition (Lead-II)", "STM32 Biquad Filtered"],
+                                y=["Raw Acquisition (Single-Channel Chest ECG)", "STM32 Biquad Filtered"],
                                 color=["#64748B", "#00F0FF"],
                                 height=250,
                                 x_label="Time (s) — 8s Sliding Window",
-                                y_label="Lead-II ECG (mV)",
+                                y_label="Chest ECG (mV)",
                             )
                         else:
                             fig_w = go.Figure()
@@ -1441,14 +1441,14 @@ animate();
                                         Zero-Trust IoMT Shield Active
                                     </div>
                                     <div style="font-family: 'JetBrains Mono'; font-size: 0.95rem; font-weight: 700; color: #F1F5F9; margin: 0.15rem 0;">
-                                        BIOMETRIC ENCRYPTED
+                                        BIOMETRIC OBFUSCATED
                                     </div>
                                     <div style="font-size: 0.65rem; color: #94A3B8; line-height: 1.3;">
-                                        Patient ECG morphology and acute stress inference are cryptographically locked to prevent wire eavesdropping and profiling.
+                                        Patient ECG morphology and acute stress inference are scrambled to prevent opportunistic wire eavesdropping and profiling.
                                     </div>
                                 </div>
                                 <div style="margin-top: 0.25rem; font-size: 0.65rem; color: #CBD5E1; background: {c_bg}; border: 1px solid {c_brd}; border-radius: 6px; padding: 0.35rem 0.5rem; text-align: left; line-height: 1.4;">
-                                    • <b>Cipher:</b> {c_title}<br>
+                                    • <b>Scrambler:</b> {c_title}<br>
                                     • <b>Keyspace:</b> <code>{c_keyspace}</code><br>
                                     • <b>Key Seeding:</b> {c_kdf}<br>
                                     • <b>Shannon Entropy:</b> <code>{entropy_val:.3f} bits/Byte</code>
@@ -1740,7 +1740,7 @@ with tab_demo:
 
             # Signal line
             sig_color = "#00F0FF" if filter_mode else "#FF9900"
-            sig_name = "0.5–40 Hz Zero-Phase Filtered" if filter_mode else "Raw Lead-II ECG"
+            sig_name = "0.5–40 Hz Zero-Phase Filtered" if filter_mode else "Raw Chest ECG (RespiBAN, 700 Hz)"
             fig_ecg.add_trace(go.Scatter(
                 x=t_axis,
                 y=active_sig,
@@ -1768,7 +1768,7 @@ with tab_demo:
 
             fig_ecg.update_layout(
                 title=dict(
-                    text=f"Lead-II Cardiac Telemetry Trace — {selected_subj} ({selected_cond}) | {zoom_sec}s Window",
+                    text=f"Cardiac Telemetry Trace (RespiBAN, 700 Hz) — {selected_subj} ({selected_cond}) | {zoom_sec}s Window",
                     font=dict(size=14, color="#F1F5F9"),
                 ),
                 paper_bgcolor="#0F1424",
@@ -1967,7 +1967,7 @@ with tab_features:
             textposition="auto",
         ))
         fig_prog.update_layout(
-            title=dict(text="Ablation: Pipeline Evolution (LOSO-CV)", font=dict(size=13, color="#F1F5F9")),
+            title=dict(text="Ablation: Pipeline Evolution (LOSO-CV, Legacy All-Baseline Anchor, 445 Windows)", font=dict(size=12, color="#F1F5F9")),
             paper_bgcolor="#0F1424",
             plot_bgcolor="#0A0E1A",
             barmode="group",
@@ -2111,13 +2111,13 @@ with tab_benchmark:
             spec_th = row["Specificity"]
             f1_th = row["F1"]
         else:
-            acc_th, rec_th, spec_th, f1_th = 92.36, 86.25, 95.79, 89.03
+            acc_th, rec_th, spec_th, f1_th = 90.17, 86.25, 94.81, 90.49
 
-        # Compute dynamic confusion matrix counts (N=445 total, 160 stress, 285 non-stress)
+        # Compute dynamic confusion matrix counts (N=295 common evaluation windows, 160 stress, 135 non-stress)
         tp_cnt = int(round(160 * (rec_th / 100.0)))
         fn_cnt = 160 - tp_cnt
-        tn_cnt = int(round(285 * (spec_th / 100.0)))
-        fp_cnt = 285 - tn_cnt
+        tn_cnt = int(round(135 * (spec_th / 100.0)))
+        fp_cnt = 135 - tn_cnt
 
         st.markdown(
             f"""

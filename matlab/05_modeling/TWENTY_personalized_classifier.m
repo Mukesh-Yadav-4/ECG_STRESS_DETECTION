@@ -1,3 +1,4 @@
+% LEGACY: leaky all-baseline anchor; outputs are not the paper results
 % TWENTY_personalized_classifier.m
 % Implements Leave-One-Subject-Out (LOSO) cross-validation with subject-specific
 % baseline calibration (delta_x = (x - mu_base) / mu_base) and gradient-descent
@@ -10,6 +11,8 @@ close all;
 %% 1. Setup Paths & Load Features
 project_root = fileparts(fileparts(fileparts(mfilename('fullpath'))));
 results_folder = fullfile(project_root, 'results');
+output_results_folder = fullfile(project_root, 'results', 'legacy_leaky');
+if ~exist(output_results_folder, 'dir'), mkdir(output_results_folder); end
 feature_file = fullfile(results_folder, 'WESAD_HRV_features_expanded.mat');
 
 if ~isfile(feature_file)
@@ -160,8 +163,8 @@ fprintf('F1-Score          : %6.2f %%\n', F1 * 100);
 PredictionTable = table(all_true, all_pred, all_prob, ...
     'VariableNames', {'TrueLabel', 'PredictedLabel', 'StressProbability'});
 
-writetable(PredictionTable, fullfile(results_folder, 'Personalized_Classifier_Predictions.csv'));
-save(fullfile(results_folder, 'Personalized_Classifier_Results.mat'), ...
+writetable(PredictionTable, fullfile(output_results_folder, 'Personalized_Classifier_Predictions.csv'));
+save(fullfile(output_results_folder, 'Personalized_Classifier_Results.mat'), ...
     'PredictionTable', 'TP', 'TN', 'FP', 'FN', 'accuracy', 'precision', ...
     'recall', 'specificity', 'F1', 'balanced_accuracy');
 

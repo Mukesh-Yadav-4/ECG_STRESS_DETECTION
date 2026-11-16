@@ -32,7 +32,7 @@ data = textscan(fid, '%f %f %f %f %f %f %f %f %f %f', N, ...
     'Delimiter', {' ', '\t'}, 'MultipleDelimsAsOne', true);
 fclose(fid);
 
-ecg_raw = data{3}; % Channel 1 = ECG (Lead II)
+ecg_raw = data{3}; % Channel 1 = single-channel chest ECG (RespiBAN, 700 Hz)
 t = (0:length(ecg_raw)-1) / Fs;
 
 fprintf('Loaded %d samples (%.2f s) at %d Hz from S2.\n', length(ecg_raw), duration, Fs);
@@ -66,7 +66,7 @@ figure('Name', 'WESAD S2 ECG Inspection', 'Position', [100 100 1100 700], 'Color
 subplot(3, 1, 1);
 plot(t, ecg_raw, 'Color', [0.4 0.4 0.4]);
 xlabel('Time (s)'); ylabel('Raw ADC');
-title('Raw WESAD Chest ECG (Lead II) - S2');
+title('Raw WESAD Chest ECG (RespiBAN, 700 Hz) - S2');
 grid on;
 
 subplot(3, 1, 2);

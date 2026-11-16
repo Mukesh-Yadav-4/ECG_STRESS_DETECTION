@@ -1,5 +1,7 @@
 # Canonical Experiment Manifest: WESAD ECG Stress Detection
 
+> **Legacy Protocol Note:** Performance figures in this historical verification document quoting 92.13% accuracy (or 92.36% at $\tau=0.35$) evaluate the legacy 445-window protocol using an all-baseline anchor ($B_s$ computed over all baseline windows for that subject). For the verified leak-free chronological calibration protocol ($N=10$, 295 evaluation windows, 90.17% accuracy [95% CI: 82.7, 95.9]), see `results/calibration_length/` and `docs/audit/`.
+
 **Experiment Identifier:** `EXP-WESAD-ECG-LOSO-CANONICAL-2026`  
 **Project:** Personalized Electrocardiographic and HRV Dynamics for Acute Stress Detection  
 **Status:** Canonical Reference Specification  
@@ -13,7 +15,7 @@
 The canonical research pipeline for this project is strictly defined by the following sequential stages:
 
 ```
-[1. WESAD Raw Lead-II ECG (700 Hz)]
+[1. WESAD Raw Single-Channel Chest ECG (700 Hz)]
            │
            ▼
 [2. MATLAB Signal Preprocessing & R-Peak Detection]
@@ -41,7 +43,7 @@ The canonical research pipeline for this project is strictly defined by the foll
            │
            ▼
 [6. Bare-Metal STM32 Edge IoMT Deployment & Physical HIL Telemetry]
-    - 5-stage Direct Form I Biquad IIR filter (170 MHz SYSCLK, 1.87 us/sample)
+    - 5-stage Direct Form I Biquad IIR filter (170 MHz SYSCLK, measured 1.476 us/sample, mean 251 cycles)
     - HC1 4D Coupled Hyperchaotic Encryption (M-4DCHS) with per-packet nonce perturbation
     - Verified physical HIL capture over ST-Link Virtual COM Port (350.02 Hz, 0 CRC errors, 0.0 mV error)
 ```
@@ -59,7 +61,7 @@ The canonical research pipeline for this project is strictly defined by the foll
 | **Stress Windows** | 160 Windows (35.96%) | Trier Social Stress Test (TSST: public speaking + mental arithmetic; 10–12 windows per subject) |
 | **Window Duration** | 60.0 Seconds | Standard clinical interval required for stable time-domain HRV estimation |
 | **Window Hop Step** | 60.0 Seconds | Hop step equal to window duration enforces **0.0% overlap** (zero temporal autocorrelation) |
-| **Raw ECG Sampling Rate** | 700 Hz | RespiBAN Professional single-lead Lead-II chest strap |
+| **Raw ECG Sampling Rate** | 700 Hz | RespiBAN Professional single-channel chest strap (700 Hz) |
 | **Telemetry Sampling Rate** | 350 Hz | Nominal timer interrupt rate on STM32 edge processing node |
 
 ---
@@ -68,7 +70,7 @@ The canonical research pipeline for this project is strictly defined by the foll
 
 ### 3.1 Digital Filtering
 - **Offline Extraction (MATLAB):** 4th-order zero-phase Butterworth bandpass filter (`filtfilt`) with cutoff frequencies at $0.5\text{ Hz}$ (respiratory/motion baseline wander attenuation) and $40.0\text{ Hz}$ (myoelectric noise attenuation).
-- **Online Edge Node (STM32 C Firmware):** 5-stage Direct Form I cascaded Biquad IIR filter ($4\times\text{SOS}$ Butterworth bandpass 0.5–40 Hz $+ 1\times\text{SOS}$ 50 Hz powerline notch filter, $Q=30$). Estimated execution time: $\approx 318$ CPU cycles ($\approx 1.87~\mu\text{s}$ at 170 MHz SYSCLK, consuming 0.065% of the $2.857\text{ ms}$ inter-sample budget).
+- **Online Edge Node (STM32 C Firmware):** 5-stage Direct Form I cascaded Biquad IIR filter ($4\times\text{SOS}$ Butterworth bandpass 0.5–40 Hz $+ 1\times\text{SOS}$ 50 Hz powerline notch filter, $Q=30$). Measured execution time: mean 251 CPU cycles (min 249, max 281; $1.476~\mu\text{s}$ at 170 MHz SYSCLK, consuming 0.0517% of the $2.857\text{ ms}$ inter-sample budget; analytical estimate: $\approx 318$ cycles, $1.87~\mu\text{s}$, 0.065%).
 
 ### 3.2 R-Peak Detection & Physiological Gating
 - Local noise floor is dynamically estimated via Median Absolute Deviation (MAD):

@@ -1,0 +1,8 @@
+Setting,Setting_Type,N,Model,Is_Primary_Model,Num_Evaluation_Windows,Majority_Baseline_Acc (%),Accuracy (%),Acc_CI_Low (%),Acc_CI_High (%),Balanced_Acc (%),Bal_Acc_CI_Low (%),Bal_Acc_CI_High (%),F1-Score (%),F1_CI_Low (%),F1_CI_High (%),Sensitivity (%),Sens_CI_Low (%),Sens_CI_High (%),Specificity (%),Spec_CI_Low (%),Spec_CI_High (%),ROC-AUC,ROC_AUC_CI_Low,ROC_AUC_CI_High
+N=1 (First 1 Windows),anchor_N,1,Logistic Regression,True,295,54.24,84.07,75.17,92.0,84.56,76.15,92.12,84.28,72.8,92.65,78.75,60.76,93.29,90.37,80.74,98.52,0.8894,0.7918,0.9808
+N=2 (First 2 Windows),anchor_N,2,Logistic Regression,True,295,54.24,83.39,73.81,91.75,83.99,75.14,91.8,83.39,70.54,92.41,76.88,57.41,92.9,91.11,82.96,97.78,0.905,0.8236,0.9763
+N=3 (First 3 Windows),anchor_N,3,Logistic Regression,True,295,54.24,82.37,72.95,90.97,82.94,74.03,91.09,82.43,69.92,91.59,76.25,57.32,91.88,89.63,78.52,97.78,0.8935,0.8116,0.9694
+N=5 (First 5 Windows),anchor_N,5,Logistic Regression,True,295,54.24,85.42,76.45,93.33,86.1,77.69,93.54,85.32,73.76,93.85,78.12,60.9,92.5,94.07,87.41,99.26,0.928,0.8524,0.9862
+N=10 (First 10 Windows),anchor_N,10,Logistic Regression,True,295,54.24,90.17,82.71,95.93,90.53,83.54,95.98,90.49,81.92,96.25,86.25,72.05,96.86,94.81,88.15,99.26,0.9361,0.8541,0.9909
+Control (a): No Calibration,no_calibration,0,Logistic Regression,True,295,54.24,78.64,69.02,88.05,79.5,70.24,88.51,77.89,64.09,88.55,69.38,49.99,86.67,89.63,74.81,98.52,0.8957,0.8233,0.9594
+Control (b): Leaky (All 19 Windows),leaky_all,19,Logistic Regression,True,295,54.24,89.83,81.1,96.67,90.51,82.33,96.9,89.8,78.93,96.95,82.5,65.84,95.63,98.52,96.3,100.0,0.9498,0.8828,0.9924

@@ -3,12 +3,12 @@
 **Investigation Status:** Completed  
 **Type:** Read-Only Root-Cause Analysis  
 **Evaluated Artifacts:**
-- [`python/verify_m4d_parity.py`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/python/verify_m4d_parity.py)
-- [`python/m4d_hyperchaos.py`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/python/m4d_hyperchaos.py)
-- [`embedded_stm32/src/telemetry_protocol.c`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/embedded_stm32/src/telemetry_protocol.c)
-- [`embedded_stm32/include/telemetry_protocol.h`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/embedded_stm32/include/telemetry_protocol.h)
-- [`results/verification/hc1_parity_rerun.json`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/verification/hc1_parity_rerun.json)
-- [`results/verification/hc1_parity_rerun.txt`](file:///C:/Users/YASH/Desktop/projects/RESEARCH%20PROJECTS/ECG_STRESS_DETECTION/results/verification/hc1_parity_rerun.txt)
+- [`python/verify_m4d_parity.py`](python/verify_m4d_parity.py)
+- [`python/m4d_hyperchaos.py`](python/m4d_hyperchaos.py)
+- [`embedded_stm32/src/telemetry_protocol.c`](embedded_stm32/src/telemetry_protocol.c)
+- [`embedded_stm32/include/telemetry_protocol.h`](embedded_stm32/include/telemetry_protocol.h)
+- [`results/verification/hc1_parity_rerun.json`](results/verification/hc1_parity_rerun.json)
+- [`results/verification/hc1_parity_rerun.txt`](results/verification/hc1_parity_rerun.txt)
 
 ---
 

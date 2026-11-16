@@ -31,10 +31,10 @@ The review confirms that:
   - `results/verification/hc1_strict_parity/build_command.txt` records the exact executed command:
     ```text
     C:\MinGW\bin\gcc.EXE -O2 -msse2 -mfpmath=sse -ffp-contract=off -Wall \
-      -IC:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\embedded_stm32\include \
-      C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\embedded_stm32\src\telemetry_protocol.c \
-      C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\results\verification\hc1_strict_parity\c_parity_harness.c \
-      -o C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\ECG_STRESS_DETECTION\results\verification\hc1_strict_parity\c_parity_harness.exe
+      -Iembedded_stm32\include \
+      embedded_stm32\src\telemetry_protocol.c \
+      results\verification\hc1_strict_parity\c_parity_harness.c \
+      -o results\verification\hc1_strict_parity\c_parity_harness.exe
     ```
   - `results/verification/hc1_strict_parity/parity_report.json` logs:
     `"strict_fpu_flags": ["-O2", "-msse2", "-mfpmath=sse", "-ffp-contract=off", "-Wall"]`.

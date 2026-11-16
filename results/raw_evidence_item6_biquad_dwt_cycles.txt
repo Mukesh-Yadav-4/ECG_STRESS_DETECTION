@@ -1,0 +1,28 @@
+======================================================================
+STM32G474RE 5-STAGE BIQUAD IIR DWT->CYCCNT HARDWARE MEASUREMENT REPORT
+======================================================================
+Status:                      MEASURED
+Target Hardware:             STMicroelectronics NUCLEO-G474RE (ARM Cortex-M4 @ 170 MHz)
+Measurement Method:          ARM CoreDebug DEMCR TRCENA + DWT CYCCNT (Zero software overhead)
+Clock Frequency:             170 MHz
+Filter Stages:               5 (4 Biquad Butterworth Bandpass 0.5-40Hz + 1 Biquad Notch 50Hz)
+Sampling Rate:               350 Hz (2857.14 us sampling period)
+Number of Trials:            1,000
+
+--- Prior Paper Analytical Claim (Section V-A) ---
+  Cycles Claimed:            ~318 cycles (ESTIMATED, 5 MACs/biquad, not DWT measured)
+  Execution Time Claimed:    1.87 us @ 170 MHz
+  CPU Overhead Claimed:      0.065%
+
+--- Hardware DWT Measurement Results (1,000 Trials) ---
+  Min Cycles:                249 (1.464 us @ 170 MHz)
+  Mean Cycles:               251 (1.476 us @ 170 MHz)
+  Max Cycles:                281 (1.652 us @ 170 MHz)
+  CPU Overhead @ 350 Hz:     0.0517%
+
+--- Findings & Comparison ---
+  - The real hardware execution is ~21% faster than the paper's theoretical estimate:
+    251 cycles (1.476 us) measured vs. ~318 cycles (1.87 us) estimated.
+  - The CPU overhead of the complete 5-stage Biquad cascade at 350 Hz is merely 0.0517%.
+  - Production firmware (STM32G474_HC1_Telemetry.bin) was safely restored to the MCU.
+======================================================================

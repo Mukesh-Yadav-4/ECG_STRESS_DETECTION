@@ -9,7 +9,7 @@ This document provides the definitive, step-by-step instructions for reproducing
 ```
                                 [ RAW DATA ACQUISITION ]
                         WESAD Wearable Dataset (15 Subjects)
-                        Chest RespiBAN Lead-II ECG @ 700 Hz
+                        Chest RespiBAN Single-Channel ECG @ 700 Hz
                                         │
                                         ▼ (Step 0: Python Extraction)
                         [ STANDARDIZED S*_ECG_labels.mat ]
@@ -162,7 +162,6 @@ pip install -r requirements.txt
   TWENTY_NINE_project_dashboard    % Generates the master 6-panel clinical dashboard
   ```
 * **Generated Assets:**
-  * `results/figures/FINAL_Project_Dashboard.png` (Comprehensive 6-panel board)
   * `results/figures/FIG1_Study_Protocol_Timeline.png`
   * `results/figures/FIG2_QRS_Detection_Validation.png`
   * `results/figures/FIG3_Physiological_Distributions.png`
@@ -180,7 +179,7 @@ pip install -r requirements.txt
   DEMO_stress_detection
   ```
 * **Interactive Features:**
-  * **Tab 1:** Lead-II Raw ECG telemetry segment.
+  * **Tab 1:** Single-channel chest ECG (RespiBAN, 700 Hz) telemetry segment.
   * **Tab 2:** Full 101-minute experimental protocol with color-coded stress zones.
   * **Tab 3:** 60-second window Pan-Tompkins detection telemetry with highlighted R-peaks.
   * **Tab 4:** Summary scorecard comparing baseline vs. acute stress physiology.
@@ -198,7 +197,7 @@ pip install -r requirements.txt
 * **What happens:**
   * Loads `results/WESAD_HRV_features_expanded.csv` (445 windows across 15 subjects).
   * Executes 15 iterative folds: in fold $k$, subject $k$ is held out as the test set while the remaining 14 subjects form the training set.
-  * Fits `StandardScaler` strictly on the training fold to guarantee zero data leakage.
+  * Fits `StandardScaler` strictly on the training fold to guarantee zero data leakage. Note: this script evaluates the legacy all-baseline anchor reference (92.13% on 445 windows). For the leak-free calibration protocol ($N=10$ = 90.17% [82.7, 95.9] on 295 common windows, no-calibration 78.64%), execute `python python/calibration_length_experiment.py`.
   * Trains and benchmarks 6 distinct classifier paradigms:
     1. **Logistic Regression** ($L2$ regularized, liblinear solver)
     2. **Support Vector Machine** (RBF non-linear kernel, probability calibration)
@@ -250,7 +249,7 @@ pip install -r requirements.txt
   ```
 * **Dashboard Capabilities:**
   * **Subject Selector:** Choose any of the 15 WESAD subjects ($S2 \dots S17$).
-  * **Interactive Waveform View:** Zoomable 700 Hz Lead-II ECG with detected R-peaks and RR tachogram.
+  * **Interactive Waveform View:** Zoomable 700 Hz single-channel chest ECG (RespiBAN, 700 Hz) with detected R-peaks and RR tachogram.
   * **Dynamic Threshold Slider:** Adjust $\tau \in [0.10, 0.90]$ to observe real-time sensitivity vs. specificity trade-offs.
   * **Stress Needle Gauge:** Color-coded gauge indicating instantaneous stress probability.
   * **Autonomic Radar Profile:** Displays percentage deviation of HRV metrics from resting baseline.
@@ -279,8 +278,8 @@ After running the full pipeline, verify that the following key outputs exist and
 | :--- | :--- | :--- |
 | `data/processed/S2_ECG_labels.mat` | File size $\approx 10\text{–}15\text{ MB}$, variables: `ecg`, `labels`, `Fs` | ✅ |
 | `results/WESAD_HRV_features_expanded.csv` | Exactly 445 rows (windows), 15 subjects, 8 core features | ✅ |
-| `results/figures/FINAL_Project_Dashboard.png` | High-res 6-panel graphic containing ROC (AUC = 0.9494) | ✅ |
-| `python/train_loso_ml_benchmark.py` Log | All 6 classifiers achieve $\text{ROC-AUC} \ge 0.937$ on held-out subjects | ✅ |
+| `python/train_loso_ml_benchmark.py` Log | Evaluates legacy all-baseline anchor reference (92.13% on 445 windows, all 6 classifiers $\text{ROC-AUC} \ge 0.937$) | ✅ |
+| `python/calibration_length_experiment.py` Log | Leak-free protocol: $N=10$ achieves 90.17% [82.7, 95.9] on 295 common evaluation windows (no-calibration: 78.64%) | ✅ |
 | Streamlit Local Server (`localhost:8501`) | Dashboard loads smoothly with interactive Plotly charts | ✅ |
 
 ---

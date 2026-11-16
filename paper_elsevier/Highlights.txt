@@ -1,4 +1,0 @@
-- Subject-specific baseline calibration improves 15-fold LOSO stress accuracy by +11.53 pp [95% CI: +5.07, +18.06] at N=10.
-- Pre-specified Logistic Regression reaches 90.17% accuracy and 90.49% F1-score on leak-free WESAD (295 windows).
-- Bare-metal ARM Cortex-M4 STM32 achieves 1.476 µs (251 mean cycles) 5-stage Biquad filtering per sample (0.0517% CPU load).
-- Physical HIL telemetry evaluates 10,000 continuous packets replaying flash WESAD S2 with zero CRC errors and zero packet loss.

@@ -1,3 +1,6 @@
+> [!NOTE]
+> **Legacy Protocol Note:** Performance figures in this reference document quoting 92.13% accuracy (or 92.36% at $\tau=0.35$) evaluate the legacy 445-window protocol using an all-baseline anchor ($B_s$ computed over all baseline windows for that subject). For the verified leak-free chronological calibration protocol ($N=10$, 295 evaluation windows, 90.17% accuracy [95% CI: 82.7, 95.9], no-calibration: 78.64%), see `results/calibration_length/` and `paper_package/`.
+
 # ECG_STRESS_DETECTION — Quick Reference Guide
 
 > **Purpose:** Master reference document for the entire project. Consult this file to understand the architecture, algorithms, dataset, firmware, benchmarks, and scripts without needing to re-read every individual source file.
@@ -33,7 +36,7 @@
 │   WESAD Flash ECG Data ──► 350 Hz SysTick ──► 5-Stage Direct Form I Biquad IIR  │
 │                                                            │                     │
 │                                                            ▼                     │
-│   Software CRC-16 ◄── Telemetry Scrambler/Cipher ◄── 20-Byte Frame Packer        │
+│   Software CRC-16 ◄── Telemetry Obfuscation Keystream Generator ◄── 20-Byte Frame Packer        │
 │          │            (HC1 M-4DCHS or 32b Xorshift32)                            │
 └──────────┼───────────────────────────────────────────────────────────────────────┘
            │ USB-UART (115,200 baud, 8-N-1) @ 350 Hz
@@ -47,7 +50,7 @@
 │                                                   ├──► Authorized Descrambler    │
 │                                                   │           │                  │
 │                                                   ▼           ▼                  │
-│                                           Cipher Wire     Clean ECG Trace        │
+│                                           Scrambled Wire     Clean ECG Trace        │
 │                                             Buffer            │                  │
 └───────────────────────────────────────────────┬───────────────┼──────────────────┘
                                                 │               ▼
@@ -70,7 +73,7 @@
 │                         CLINICAL & SECURITY DASHBOARD                            │
 │                              Streamlit (demo/app.py)                             │
 │                                                                                  │
-│   🟢 Authorized Clinical View: Decrypted Lead-II ECG, Stress Gauge, HRV Cards    │
+│   🟢 Authorized Clinical View: Descrambled Chest ECG, Stress Gauge, HRV Cards    │
 │   🕵️ Eavesdropper Intercept View: Wire Static (H ~ 7.998 b/B), Locked Metrics    │
 └──────────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -81,7 +84,7 @@
 
 ### 3.1 Dataset: WESAD (Wearable Stress and Affect Detection)
 * **Cohort:** 15 subjects ($S2$ through $S17$, excluding non-existent $S12$, 12 males, 3 females).
-* **Modality:** Single-lead chest ECG (modified Lead-II orientation) via RespiBAN chest strap ($f_s = 700\text{ Hz}$, downsampled to $350\text{ Hz}$ for microcontroller).
+* **Modality:** Single-lead chest ECG (single-channel chest ECG) via RespiBAN chest strap ($f_s = 700\text{ Hz}$, downsampled to $350\text{ Hz}$ for microcontroller).
 * **Phases:** Baseline resting (20 min), TSST acute cognitive stress (10 min), Amusement (10 min), Meditation (20 min).
 * **Standardized Segments:** 445 complete, non-overlapping 60-second windows (**160 Stress** vs. **285 Calm/Resting**).
 
@@ -93,7 +96,7 @@
    * Causal 5-stage Direct Form I Biquad IIR cascade at $350\text{ Hz}$:
      * Stages 1–4: Four 2nd-order sections (SOS) synthesizing 8-pole 4th-order Butterworth bandpass ($0.5 - 40\text{ Hz}$).
      * Stage 5: 2nd-order notch filter ($f_0 = 50\text{ Hz}$, $Q = 30$).
-   * State memory: 4 floats per stage; executes in $\approx 1.87\ \mu\text{s}$ per sample at 170 MHz ($\approx 4.4\ \mu\text{s}$ at 16 MHz HSI).
+   * State memory: 4 floats per stage; executes in measured mean 251 cycles ($1.476\ \mu\text{s}$, min 249, max 281) per sample at 170 MHz (analytical estimate $\approx 1.87\ \mu\text{s}$) ($\approx 4.4\ \mu\text{s}$ at 16 MHz HSI).
 
 ### 3.3 Adaptive R-Peak Detection
 * Noise floor estimation: $\text{Noise Floor} = 1.4826 \cdot \text{MAD}(|x - \text{median}(x)|)$.
@@ -161,11 +164,11 @@
 ```
 [0xAA 0x55] [Ver: 0x01] [Flags: 0x05] [Seq: 2B] [Timestamp: 4B] [Raw ECG: 4B] [Filt ECG: 4B] [CRC16: 2B]
 ```
-* **Flags:** `0x01` = Encrypted, `0x04` = 4D Hyperchaos (`0x05` = both active).
-* **Payload:** Bytes 10–17 (raw float + filtered float) encrypted in-place.
+* **Flags:** `0x01` = Obfuscated (Xorshift32), `0x04` = 4D Hyperchaos (`0x05` = both active).
+* **Payload:** Bytes 10–17 (raw float + filtered float) scrambled in-place.
 * **Checksum:** CRC-16-CCITT over bytes 2–17.
 
-### 5.3 Encryption Modes
+### 5.3 Scrambling / Obfuscation Modes
 1. **Mode 2: 4D Coupled Hyperchaotic System (HC1 M-4DCHS)**
    $$\dot{x} = a(y-x) + w, \quad \dot{y} = cx - xz + dy, \quad \dot{z} = xy - bz, \quad \dot{w} = -rx$$
    * Parameters: $a = 15.81, b = 2.76, c = 86.03, d = -9.07, r = 10.79$, step size $dt = 0.0025\text{ s}$.
@@ -234,10 +237,14 @@ ECG_STRESS_DETECTION/
 │   ├── Inc/ & Src/                            # Mirror firmware source for CubeIDE
 │   └── flash_firmware.bat                     # STM32 Programmer CLI script
 │
-├── paper/                                     # Publication Assets & Manuscript
-│   ├── Reproducible_Edge_to_Cloud_ECG_Stress_Detection_with_Embedded_Telemetry_and_Hardware_in_the_Loop_Validation_v5.pdf # Compiled Research Paper PDF
-│   ├── figures/                               # Publication vector and PNG figures
-│   └── *.pdf                                  # Compiled conference / journal preprints
+├── paper_package/                             # Self-contained camera-ready IEEE paper package
+│   ├── main.tex                               # Manuscript source (6-page IEEE format)
+│   ├── numbers.tex                            # Automated data macros
+│   ├── refs.bib                               # Complete bibtex bibliography
+│   ├── tables/                                # Generated LaTeX tables
+│   └── figures/                               # Manuscript figures
+├── paper/                                     # Publication Assets
+│   └── figures/                               # Publication vector and PNG figures
 │
 └── results/                                   # Empirical Artifacts & Benchmarks
     ├── FINAL_Model_Metrics.csv                # Calibrated logistic regression scorecard
@@ -276,7 +283,7 @@ python python/compute_lyapunov_spectrum.py
 
 ### 7.3 Streaming from Physical Hardware via Serial
 ```bash
-# Listen on COM10 @ 115200 baud, decrypt and verify CRC:
+# Listen on COM10 @ 115200 baud, descramble and verify CRC:
 python python/stm32_telemetry_receiver.py --port COM10 --baud 115200
 ```
 
@@ -304,7 +311,7 @@ flash_firmware.bat
 | **Accuracy Gain from Baseline Calibration** | **+10.56%** ($81.57\% \rightarrow 92.13\%$ at $\tau = 0.50$) / **+10.79%** ($81.57\% \rightarrow 92.36\%$ at $\tau = 0.35$) |
 | **Microcontroller** | ARM Cortex-M4 (STM32G474RE @ 16 MHz HSI / 170 MHz PLL) |
 | **Sampling Rate / Telemetry Cadence** | 350 Hz ($T_s = 2.857\text{ ms}$) |
-| **Filter Execution Time** | $1.87\ \mu\text{s}$ per sample at 170 MHz (0.065% CPU load) |
+| **Filter Execution Time** | Measured mean 251 cycles ($1.476\ \mu\text{s}$) per sample at 170 MHz (0.0517% CPU load; analytical estimate: 1.87 us, 0.065%) |
 | **Packet Size & Baud Rate** | 20 bytes @ 115,200 baud (UART 8-N-1) |
 | **Physical HIL Verification** | 5,000 packets, 0 CRC errors, 100% exact recovery |
 | **Wire Shannon Entropy** | 7.9982 bits/byte (99.98% of 8.000 limit) |

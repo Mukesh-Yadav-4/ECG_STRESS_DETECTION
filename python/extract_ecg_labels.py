@@ -7,7 +7,9 @@ from scipy.io import savemat
 # Paths (Configurable via WESAD_DIR environment variable)
 # ---------------------------------------------------------
 
-DEFAULT_WESAD_DIR = r"C:\Users\YASH\Desktop\projects\RESEARCH PROJECTS\WESAD\WESAD"
+DEFAULT_WESAD_DIR = os.path.normpath(
+    os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "..", "WESAD", "WESAD")
+)
 BASE_DIR = os.environ.get("WESAD_DIR", DEFAULT_WESAD_DIR)
 OUTPUT_DIR = os.path.join(BASE_DIR, "MATLAB_DATA")
 

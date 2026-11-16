@@ -1,3 +1,4 @@
+% LEGACY: leaky all-baseline anchor; outputs are not the paper results
 % TWENTY_NINE_project_dashboard.m
 % Master multi-panel project dashboard for WESAD ECG Stress Detection.
 % Features cosmic space-themed telemetry styling, clear non-overlapping annotations,
@@ -11,7 +12,11 @@ close all;
 matlab_root = fileparts(mfilename('fullpath'));
 project_root = fileparts(matlab_root);
 results_folder = fullfile(project_root, 'results');
-figures_folder = fullfile(results_folder, 'figures', 'matlab');
+output_results_folder = fullfile(project_root, 'results', 'legacy_leaky');
+output_figures_folder = fullfile(project_root, 'results', 'figures', 'legacy_leaky');
+figures_folder = fullfile(output_figures_folder, 'matlab');
+if ~exist(output_results_folder, 'dir'), mkdir(output_results_folder); end
+if ~exist(output_figures_folder, 'dir'), mkdir(output_figures_folder); end
 
 if ~exist(figures_folder, 'dir')
     mkdir(figures_folder);
@@ -269,10 +274,9 @@ if isfile(dashboard_file)
 end
 exportgraphics(fig, dashboard_file, 'Resolution', 220, 'BackgroundColor', 'current');
 
-% Also copy to results/figures/ for README and documentation links
-root_figures = fullfile(results_folder, 'figures');
-if exist(root_figures, 'dir')
-    try, copyfile(dashboard_file, fullfile(root_figures, 'FINAL_Project_Dashboard.png')); catch, end
+% Also copy to output_figures_folder for reference
+if exist(output_figures_folder, 'dir')
+    try, copyfile(dashboard_file, fullfile(output_figures_folder, 'FINAL_Project_Dashboard.png')); catch, end
 end
 
 close(fig);

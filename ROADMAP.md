@@ -1,7 +1,7 @@
 # Project Roadmap: WESAD ECG Telemetry & Stress Detection System
 
 > **Target Platform:** STM32G474 (ARM Cortex-M4 @ 170 MHz) + PC/Cloud Telemetry Receiver  
-> **Scientific Focus:** Autonomic Nervous System (ANS) Stress Detection using Lead-II ECG & HRV  
+> **Scientific Focus:** Autonomic Nervous System (ANS) Stress Detection using Single-Channel Chest ECG & HRV  
 > **Engineering Focus:** Real-Time Embedded DSP, Robust Binary Telemetry, and Secure IoMT Edge Node  
 > **Target Standard:** IEEE Journal / Conference Publication Quality (IEEE TBME / JBHI / Sensors)
 
@@ -53,7 +53,7 @@ flowchart LR
 ## 3. Detailed Phase Breakdown
 
 ### Phase 1: Data Acquisition & Clinical Signal Processing <kbd>COMPLETED</kbd>
-- [x] Extracted raw 700 Hz Lead-II ECG and condition labels from raw WESAD files (`extract_ecg_labels.py`).
+- [x] Extracted raw 700 Hz single-channel chest ECG (RespiBAN, 700 Hz) and condition labels from raw WESAD files (`extract_ecg_labels.py`).
 - [x] Implemented baseline wander elimination and high-frequency noise removal using a 4th-order Butterworth bandpass filter (0.5–40 Hz) and 50 Hz notch filter.
 - [x] Designed non-overlapping 60-second windows with a 60-second hop with Pan-Tompkins R-peak detection and Median Absolute Deviation (MAD) adaptive thresholding.
 - [x] Extracted **8 Core Autonomic HRV Metrics**:

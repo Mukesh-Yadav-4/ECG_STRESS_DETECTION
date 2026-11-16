@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Canonical Feature Schema for WESAD ECG Stress Detection",
-  "description": "Formal schema and physiological specifications for the canonical 445-window feature dataset derived from WESAD chest Lead-II ECG.",
+  "description": "Formal schema and physiological specifications for the canonical 445-window feature dataset derived from WESAD single-channel chest ECG.",
   "dataset_file": "results/WESAD_HRV_features_expanded.csv",
   "sha256": "0405170bb05f4b597d8ec46eea47c2fbb474144fc5f3fcfbd5027b04c70ac2a7",
   "type": "object",
