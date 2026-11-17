@@ -11,7 +11,7 @@
 [![F1-Score](https://img.shields.io/badge/F1--Score-90.49%25-success.svg?style=flat-square)]()
 [![Sensitivity](https://img.shields.io/badge/Sensitivity-86.25%25-2ea44f.svg?style=flat-square)]()
 [![Specificity](https://img.shields.io/badge/Specificity-94.81%25-blue.svg?style=flat-square)]()
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22895173.svg)](https://doi.org/10.5281/zenodo.22895173)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24223910.svg)](https://doi.org/10.5281/zenodo.24223910)
 [![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat-square)](LICENSE)
 
 > 🌐 **Interactive Research Benchmark & ECG Telemetry:** [Mukesh Yadav | Biosignal Processing & Edge IoMT Portfolio](https://mukesh-yadav-res-portfolio.vercel.app/)
@@ -425,8 +425,8 @@ ECG_STRESS_DETECTION/
   author    = {Yadav, Mukesh},
   journal   = {Zenodo},
   year      = {2026},
-  doi       = {10.5281/zenodo.22895173},
-  url       = {https://doi.org/10.5281/zenodo.22895173}
+  doi       = {10.5281/zenodo.24223910},
+  url       = {https://doi.org/10.5281/zenodo.24223910}
 }
 ```
 

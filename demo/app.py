@@ -285,7 +285,7 @@ st.markdown(
         </div>
         <div style="font-size:0.75rem; color:#94A3B8; display:flex; gap:0.75rem; align-items:center;">
             <span><b>Mukesh Yadav</b> (ECE, JSSATEN)</span>
-            <a href="https://doi.org/10.5281/zenodo.22895173" target="_blank" style="color:#00F0FF; text-decoration:none; font-weight:600; background:rgba(0,240,255,0.08); border:1px solid rgba(0,240,255,0.25); padding:2px 8px; border-radius:4px;">
+            <a href="https://doi.org/10.5281/zenodo.24223910" target="_blank" style="color:#00F0FF; text-decoration:none; font-weight:600; background:rgba(0,240,255,0.08); border:1px solid rgba(0,240,255,0.25); padding:2px 8px; border-radius:4px;">
                 Zenodo DOI ↗
             </a>
         </div>
