@@ -363,7 +363,7 @@ ECG_STRESS_DETECTION/
 ├── docs/start_dashboard.bat                        # One-click Windows launcher for web dashboard
 │
 ├── paper_package/                             # Camera-ready IEEE manuscript package
-│   ├── final_main.pdf                         # Camera-ready manuscript PDF (6-page IEEE format)
+│   ├── Yadav_2026_Leak-Free_Baseline_Calibration_ECG_Stress_WESAD.pdf # Camera-ready manuscript PDF (6-page IEEE format)
 │   └── figures/                               # Manuscript figures
 ├── paper/
 │   └── figures/                               # Publication figures (Composite testbed, Attractor, etc.)

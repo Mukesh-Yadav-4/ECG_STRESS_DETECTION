@@ -240,7 +240,7 @@ ECG_STRESS_DETECTION/
 │   └── docs/flash_firmware.bat                     # STM32 Programmer CLI script
 │
 ├── paper_package/                             # Camera-ready IEEE manuscript package
-│   ├── final_main.pdf                         # Camera-ready manuscript PDF (6-page IEEE format)
+│   ├── Yadav_2026_Leak-Free_Baseline_Calibration_ECG_Stress_WESAD.pdf # Camera-ready manuscript PDF (6-page IEEE format)
 │   └── figures/                               # Manuscript figures
 ├── paper/                                     # Publication Assets
 │   └── figures/                               # Publication vector and PNG figures
