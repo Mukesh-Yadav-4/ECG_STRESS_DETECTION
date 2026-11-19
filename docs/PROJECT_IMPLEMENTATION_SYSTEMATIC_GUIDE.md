@@ -4,10 +4,9 @@
 # Systematic Implementation Guide: End-to-End Cyber-Physical IoMT ECG Stress Detection & Lightweight Edge Telemetry Obfuscation System
 
 **Author & Developer:** Mukesh Yadav  
-**Platform Architecture:** ARM Cortex-M4 (STM32G474RE @ 16 MHz HSI) + Python 3.10+ / Streamlit Real-Time Telemetry Engine  
+**Platform Architecture:** ARM Cortex-M4 (STM32G474RE @ 170 MHz SYSCLK, 16 MHz HSI + PLL) + Python 3.10+ / Streamlit Telemetry Engine  
 **Clinical Dataset Benchmark:** WESAD (Wearable Stress and Affect Detection, N=15, 15-Fold LOSO-CV)  
-**Target Research Group / Prospective Faculty Outreach:** Prof. Noriyasu Homma & Dr. Norihiro Sugita (Tohoku University, Graduate School of Engineering & Biomedical Engineering)  
-**Verification Status:** Validated on Physical Hardware (NUCLEO-G474RE on COM10 @ 350 Hz continuous streaming)
+**Verification Status:** Validated on Physical Hardware (NUCLEO-G474RE on COM10 @ 350 Hz flash-replay streaming (no live sensor))
 
 ---
 
@@ -170,8 +169,8 @@ To evaluate generalizability to unseen patients:
 3. The model predicts the held-out subject $S_k$ using their baseline $B_{S_k}$.
 4. Predictions from all 15 folds are pooled to calculate overall benchmark metrics.
 
-### 3.4 Ground-Truth Multi-Model Benchmark Results
-The table below reflects the exact experimental results recorded in [`results/ML_Model_Benchmark_LOSO.csv`](../results/ML_Model_Benchmark_LOSO.csv) and [`results/FINAL_Model_Metrics.csv`](../results/FINAL_Model_Metrics.csv):
+### 3.4 Ground-Truth Multi-Model Benchmark Results (Legacy 445-Window All-Baseline Anchor)
+The table below reflects the historical experimental results evaluated on the legacy 445-window all-baseline anchor protocol recorded in [`results/ML_Model_Benchmark_LOSO.csv`](../results/ML_Model_Benchmark_LOSO.csv) and [`results/FINAL_Model_Metrics.csv`](../results/FINAL_Model_Metrics.csv). For the primary leak-free calibration benchmark ($N=10$, 295 evaluation windows, 90.17% [82.7, 95.9]), see `results/calibration_length/`:
 
 | Model Architecture | Hyperparameters | Accuracy | Stress F1 | ROC-AUC | Sensitivity | Specificity | PR-AUC |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |

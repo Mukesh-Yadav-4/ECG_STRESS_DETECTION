@@ -1,8 +1,12 @@
 # Project Roadmap: WESAD ECG Telemetry & Stress Detection System
 
+> **Historical planning document from an early draft; not current project status. See README.md for verified results.**
+>
+> **Legacy Protocol Note:** Performance figures in this roadmap referencing 92.13% accuracy evaluate the legacy 445-window protocol using an all-baseline anchor. For the verified leak-free chronological calibration benchmark ($N=10$, 295 evaluation windows, 90.17% accuracy [95% CI: 82.7, 95.9], no-calibration: 78.64%), see `results/calibration_length/` and `paper_package/`. Hardware obfuscation (HC1) is an experimental stream keystream generator and does not provide formal cryptographic encryption.
+
 > **Target Platform:** STM32G474 (ARM Cortex-M4 @ 170 MHz) + PC/Cloud Telemetry Receiver  
 > **Scientific Focus:** Autonomic Nervous System (ANS) Stress Detection using Single-Channel Chest ECG & HRV  
-> **Engineering Focus:** Real-Time Embedded DSP, Robust Binary Telemetry, and Secure IoMT Edge Node  
+> **Engineering Focus:** Embedded DSP, Robust Binary Telemetry, and Lightweight Telemetry Obfuscation Edge Node  
 > **Target Standard:** IEEE Journal / Conference Publication Quality (IEEE TBME / JBHI / Sensors)
 
 ---
@@ -27,8 +31,8 @@ flowchart LR
         I --> J["Interactive Streamlit Dashboard\n(Live Waveform + Stress Needle Gauge)"]
     end
 
-    subgraph Security ["Future Phase (Advisor Guided)"]
-        K["Hyperchaotic & Geometric\nEncryption Layer"]
+    subgraph Security ["Future Phase"]
+        K["Hyperchaotic Stream\nObfuscation Layer (HC1)"]
     end
     C -.-> K
     K -.-> E
@@ -46,7 +50,7 @@ flowchart LR
 | **4** | **PC Telemetry Receiver** | Non-blocking serial listener, CRC-16 validator, buffer management | <kbd>COMPLETED</kbd> |
 | **5** | **Live Streamlit Integration** | Real-time rolling strip-chart, live HRV gauges, live stress prediction | <kbd>COMPLETED</kbd> |
 | **6** | **Physical Hardware Setup** | STM32CubeIDE project config, UART DMA, AD8232 analog front-end | <kbd>NEXT STEP</kbd> |
-| **7** | **IoMT Encryption Layer** | Hyperchaotic map / geometric transformation payload encryption | <kbd>PLANNED (PHASE 2)</kbd> |
+| **7** | **IoMT Obfuscation Layer** | Hyperchaotic stream obfuscation keystream generator (HC1) | <kbd>EXPERIMENTAL</kbd> |
 
 ---
 
@@ -71,7 +75,7 @@ flowchart LR
 - [x] Implemented zero-leakage **Subject-Specific Baseline Normalization**:
   $$\Delta x = \frac{x - \mu_{\text{baseline}}}{\max(|\mu_{\text{baseline}}|, \epsilon)}$$
 - [x] Rigorously evaluated **6 Machine Learning Classifiers** across 15 subjects using 15-fold Leave-One-Subject-Out (LOSO) cross-validation:
-  - **Logistic Regression**: **92.13% Accuracy**, **88.29% F1-Score**, **97.54% Specificity** (Top overall)
+  - **Logistic Regression**: **92.13% Accuracy**, **88.29% F1-Score**, **97.54% Specificity** (Legacy all-baseline anchor reference; primary leak-free $N=10$ benchmark achieves **90.17% [82.7, 95.9]**)
   - **MLP Neural Net (32 $\rightarrow$ 16)**: **91.69% Accuracy**, **87.87% F1-Score**
   - **SVM (RBF Kernel)**: **91.46% Accuracy**, **0.9524 ROC-AUC** (Highest AUC)
   - **Random Forest**: **90.34% Accuracy**, **85.90% F1-Score**
@@ -131,7 +135,7 @@ flowchart LR
 
 ---
 
-### Phase 7: Secure IoMT Hardware Encryption <kbd>FUTURE / ADVISOR DIRECTIVE</kbd>
+### Phase 7: Lightweight Stream Obfuscation (HC1 Keystream Generator) <kbd>EXPERIMENTAL / NON-CRYPTOGRAPHIC</kbd>
 - [ ] Activate encryption once foundational pipeline is fully verified.
 - [ ] Implement hyperchaotic map and geometric transformation cipher on STM32.
 - [ ] Set `TELEMETRY_FLAG_ENCRYPTED` in frame header.

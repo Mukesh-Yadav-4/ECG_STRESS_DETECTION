@@ -1,4 +1,4 @@
-# Personalized Electrocardiographic and HRV Dynamics for Acute Stress Detection: A Leave-One-Subject-Out Benchmark and Bare-Metal Edge IoMT Implementation
+# How Much Labelled Rest is Needed? Leak-Free Baseline Calibration for Single-Lead ECG Stress Detection on WESAD
 
 [![MATLAB](https://img.shields.io/badge/MATLAB-R2022b%2B-orange.svg?style=flat-square&logo=mathworks)](https://www.mathworks.com/products/matlab.html)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg?style=flat-square&logo=python)](https://www.python.org/)
@@ -36,7 +36,7 @@
         <img src="paper/figures/FIG_Hardware_Testbed_Composite.png" width="100%" alt="Physical STM32 Hardware Testbed" />
       </a>
       <br />
-      <em><b>Figure 2(a): Physical STM32 Edge Hardware Testbed.</b> NUCLEO-G474RE (170 MHz ARM Cortex-M4) testbed streaming real-time filtered and hyperchaotically obfuscated ECG (HC1 keystream generator) over physical USB-UART (COM10 @ 115,200 baud).</em>
+      <em><b>Figure 2(a): Physical STM32 Edge Hardware Testbed.</b> NUCLEO-G474RE (170 MHz ARM Cortex-M4) testbed streaming filtered and hyperchaotically obfuscated ECG (HC1 keystream generator) replayed from on-chip flash memory using prerecorded WESAD Subject S2 recordings with no live sensor attached over physical USB-UART (COM10 @ 115,200 baud).</em>
     </td>
     <td align="center" width="50%">
       <a href="paper/figures/FIG_M4D_Attractor_3D.png" target="_blank">
@@ -55,7 +55,7 @@
         <img src="paper/figures/FIG_Dashboard_SinglePage_M4D_Descrambled.png" width="100%" alt="Authorized Monitoring View" />
       </a>
       <br />
-      <em><b>Figure 3(a): Authorized Monitoring Terminal View (Descrambled Telemetry, Illustrative Demonstration).</b> Interactive dashboard displaying real-time descrambled single-channel chest ECG (RespiBAN, 700 Hz) from prerecorded WESAD replay, model-estimated stress score, live HRV biomarker cards, and client-side Three.js WebGL (60 FPS) 3D continuous phase-space monitor.</em>
+      <em><b>Figure 3(a): Authorized Monitoring Terminal View (Descrambled Telemetry, Illustrative Demonstration).</b> Interactive dashboard displaying descrambled single-channel chest ECG (RespiBAN, 700 Hz) replayed from on-chip flash memory using prerecorded WESAD S2 with no live sensor attached, model-estimated stress score, live HRV biomarker cards, and client-side Three.js WebGL (60 FPS) 3D continuous phase-space monitor.</em>
     </td>
     <td align="center" width="50%">
       <a href="paper/figures/FIG_Dashboard_M4D_Eavesdropper.png" target="_blank">
@@ -120,10 +120,10 @@ Experiments were conducted using the benchmark **WESAD** physiological dataset (
 * **Cohort:** 15 healthy adult participants (S2--S17, excluding non-existent S12; 12 males, 3 females; age: 27.5 ± 2.4 years).
 * **Sensor Hardware:** RespiBAN Professional chest harness recording single-channel chest ECG (RespiBAN, 700 Hz) (downsampled to 350 Hz for edge parity).
 * **Standardized Protocol Phases:**
-  1. **Baseline Phase (20 min):** Neutral relaxation reading magazines.
-  2. **Trier Social Stress Test (TSST, 10 min):** Public speaking facing an evaluative panel + mental arithmetic (counting backward from 2,043 by 17 with vocal restart penalties).
-  3. **Amusement Phase (10 min):** Humorous video clips.
-  4. **Meditation Recovery (20 min):** Guided diaphragmatic breathing.
+  1. **Baseline Phase (~20 min):** Neutral relaxation reading magazines (`S2_quest.csv` lines 3–4: 7.08 to 26.32, ~19.4 min).
+  2. **Trier Social Stress Test (TSST, ~10 min):** Public speaking and mental arithmetic stress induction (`S2_quest.csv` lines 3–4: 39.55 to 50.3, ~10.6 min; detailed protocol in Schmidt et al. Section 3.3, cited in `wesad_readme.txt` line 108).
+  3. **Amusement Phase (~6.5 min):** Humorous video clips (`S2_quest.csv` lines 3–4: 81.25 to 87.47, ~6.4 min / 382 s).
+  4. **Meditation Recovery (~14 min total):** Two guided de-excitation breathing sessions, Medi 1 and Medi 2 (`wesad_readme.txt` lines 117–118; `S2_quest.csv` lines 3–4: Medi 1 = 70.19 to 77.10, ~6.9 min; Medi 2 = 93.38 to 100.15, ~6.6 min).
 * **Dataset Standardization:** Exactly **445 standardized, complete non-overlapping 60-second windows** (**160 Acute Stress windows** vs. **285 Calm / Resting baseline windows**). In the leak-free protocol, the first 10 baseline windows per subject (150 windows) serve as calibration, leaving **295 common evaluation windows** (135 calm, 160 stress).
 
 <p align="center">
@@ -221,19 +221,19 @@ To interpret the learned decision boundary in the baseline-calibrated feature sp
 
 * **Vagal Suppression (&Delta;RMSSD and &Delta;pNN50):** Dominate predictive importance (OR < 0.40), indicating rapid withdrawal of parasympathetic vagal modulation during TSST cognitive challenge.
 * **Cardiac Acceleration (&Delta;MeanHR):** Strongly elevates stress odds (OR > 2.80, &Delta;AUC = 0.065), matching sympathetic chronotropic arousal.
-* **Cohort Generalization:** The model achieves &ge; 90% stress recall in 11 of 15 subjects, and 100% recall in 8 subjects (S3, S4, S5, S8, S11, S14, S16, S17). Subject S2 exhibited blunted autonomic reactivity (&Delta;MeanHR &approx; 0 BPM), behaving as an autonomic non-responder.
+* **Cohort Generalization:** Under both the leak-free primary benchmark ($N=10$, $\tau=0.50$ on 295 evaluation windows) and the legacy all-baseline anchor reference (445 windows, $\tau=0.35$), exactly 14 of 15 subjects achieve successful stress detection (stress recall $\ge 50\%$, with 11 of 15 subjects achieving $\ge 90\%$ and 9 of 15 achieving 100% recall). In the leak-free benchmark ($N=10$), 100% recall is achieved on subjects S3, S4, S5, S6, S8, S11, S14, S16, and S17 (with S7 at 90.0% and S13 at 90.9%). In the legacy all-baseline anchor reference, 100% recall is achieved on subjects S3, S4, S5, S8, S11, S13, S14, S16, and S17 (with S6 at 90.0% and S7 at 90.0%). In both cases, Subject S2 exhibited blunted autonomic reactivity ($\Delta\text{MeanHR} \approx 0$ BPM), behaving as an idiosyncratic physiological non-responder (0/10 stress episodes detected, 0.0% recall).
 
 <p align="center">
   <img src="paper/figures/FINAL_Subject_Stress_Detection.png" width="95%" alt="Subject Stress Detection Rates" />
   <br>
-  <em><b>Figure 8: Subject-Specific Recall Breakdown.</b> 14 of 15 subjects achieve successful stress detection (=10$ calibration, 295 common evaluation windows, $\\tau=0.50$). Subject S2 represents an idiosyncratic physiological non-responder with blunted heart rate reactivity.</em>
+  <em><b>Figure 8: Subject-Specific Stress Recall Breakdown (Legacy All-Baseline Anchor Reference, 445 Windows, $\tau = 0.35$).</b> Plotted by <code>matlab/06_final_results/TWENTY_SEVEN_final_results.m</code> from <code>results/FINAL_Subject_Stress_Performance.csv</code>. Successful stress detection is defined as stress recall &ge; 50% (all 14 green bars exceed the script's 30% plot threshold, with 11 of 15 subjects achieving &ge; 90% and 9 achieving 100%). Subject S2 (coral bar) exhibited blunted heart rate reactivity and represents an idiosyncratic non-responder (0/10 stress windows detected, 0.0% recall).</em>
 </p>
 
 ---
 
 ## Physical Hardware-in-the-Loop (HIL) Telemetry Validation
 
-To prove real-world embedded feasibility, the pipeline was deployed on an **ARM Cortex-M4 microcontroller (STMicroelectronics STM32G474RE Nucleo-64 @ 170 MHz)** streaming real-time single-channel chest ECG (RespiBAN, 700 Hz) packets over a physical USB-UART serial interface (COM10 @ 115,200 baud).
+To evaluate microcontroller resource utilization, execution latency, and telemetry reliability under hardware-in-the-loop (HIL) execution, prerecorded WESAD Subject S2 ECG samples were replayed from on-chip flash memory on an **ARM Cortex-M4 microcontroller (STMicroelectronics STM32G474RE Nucleo-64 @ 170 MHz)** with no live sensor attached, streaming single-channel chest ECG packets over a physical USB-UART serial interface (COM10 @ 115,200 baud).
 
 ```plaintext
 20-BYTE WIRE TELEMETRY PACKET STRUCTURE
@@ -246,7 +246,7 @@ To prove real-world embedded feasibility, the pipeline was deployed on an **ARM 
 <p align="center">
   <img src="paper/figures/FIG_Physical_HIL_10k_Validation.png" width="95%" alt="Physical HIL 10,000 Packets Validation" />
   <br>
-  <em><b>Figure 9: Physical HIL Telemetry Validation Across 10,000 Over-the-Wire Packets.</b> (a) Monotonic sequence continuity (11,428 to 21,427, zero gaps); (b) Transmission pacing distribution (2.857 &plusmn; 0.002 ms); (c) Bit-exact signal reconstruction error (0.0 mV raw and filtered after sequence alignment); (d) Wire statistical distribution checks (H = 7.9977 b/B, &chi;&sup2; = 257.79, p = 0.4394, zero CRC errors).</em>
+  <em><b>Figure 9: Physical HIL Telemetry Validation Across 10,000 Over-the-Wire Packets.</b> Validated on prerecorded WESAD Subject S2 ECG replayed from on-chip flash memory with no live sensor attached: (a) Monotonic sequence continuity (11,428 to 21,427, zero gaps); (b) Transmission pacing distribution (2.857 &plusmn; 0.002 ms); (c) Bit-exact signal reconstruction error (0.0 mV raw and filtered after sequence alignment); (d) Wire statistical distribution checks (H = 7.9977 b/B, &chi;&sup2; = 257.79, p = 0.4394, zero CRC errors).</em>
 </p>
 
 ### Verified Physical HIL Metrics (10,000 Packets)
@@ -348,7 +348,7 @@ python python/verify_hardware_hc1_capture.py \
 # Launch the interactive telemetry dashboard
 python demo/app.py
 ```
-*Navigate to `http://127.0.0.1:8050` (or `http://localhost:8501`) to inspect real-time QRS detection, dynamic HRV cards, and 3D hyperchaotic attractor visualization.*
+*Navigate to `http://127.0.0.1:8050` (or `http://localhost:8501`) to inspect QRS detection on replayed WESAD S2 flash telemetry or simulation, dynamic HRV cards, and 3D hyperchaotic attractor visualization.*
 
 ---
 
@@ -357,27 +357,36 @@ python demo/app.py
 ```plaintext
 ECG_STRESS_DETECTION/
 ├── .gitignore                                 # Rigorous dataset, binary, and scratch exclusion rules
+├── CITATION.cff                               # Citation metadata (CFF format)
 ├── LICENSE                                    # MIT Open Source License
 ├── README.md                                  # Authoritative research documentation (this document)
 ├── requirements.txt                           # Production Python dependencies
-├── docs/flash_firmware.bat                         # ST-Link CLI flashing script for STM32G474RE
-├── docs/start_dashboard.bat                        # One-click Windows launcher for web dashboard
+│
+├── docs/                                      # Engineering guides, scripts, and audit documentation
+│   ├── flash_firmware.bat                     # ST-Link CLI flashing script for STM32G474RE
+│   ├── start_dashboard.bat                    # One-click Windows launcher for web dashboard
+│   ├── EXECUTION_GUIDE.md                     # Step-by-step reproduction and environment guide
+│   └── audit/                                 # Phase 1 & Phase 2 verification and audit reports
 │
 ├── paper_package/                             # Camera-ready IEEE manuscript package
 │   ├── Yadav_2026_Leak-Free_Baseline_Calibration_ECG_Stress_WESAD.pdf # Camera-ready manuscript PDF (6-page IEEE format)
 │   └── figures/                               # Manuscript figures
 ├── paper/
-│   └── figures/                               # Publication figures (Composite testbed, Attractor, etc.)
+│   └── figures/                               # Publication figures (Composite testbed, Attractor, Workflow, etc.)
 │
 ├── embedded_stm32/                            # Bare-Metal STM32G474RE Firmware (ARM Cortex-M4)
 │   ├── src/
 │   │   ├── main_stm32.c                       # SysTick timer, ADC emulation, UART ISR
 │   │   ├── ecg_dsp_filter.c                   # CMSIS-DSP 5-stage Biquad IIR implementation
-│   │   └── telemetry_protocol.c               # HC1 hyperchaotic obfuscation keystream generator & CRC-16 packetizer
+│   │   ├── telemetry_protocol.c               # HC1 hyperchaotic obfuscation keystream generator & CRC-16 packetizer
+│   │   ├── biquad_dwt_benchmark.c             # On-target DWT & Biquad cycle-count benchmarks
+│   │   └── wesad_test_samples.c               # Prerecorded WESAD S2 ECG replay buffer in flash
 │   ├── include/                               # Firmware headers & CMSIS configurations
+│   ├── build_and_flash.bat                    # One-click firmware build and flash script
 │   └── main_bench.c                           # Standalone cycle-count benchmark harness
 │
 ├── python/                                    # Machine Learning & Telemetry Suite
+│   ├── calibration_length_experiment.py       # Primary leak-free calibration duration benchmark (N in {1..10})
 │   ├── train_loso_ml_benchmark.py             # Authoritative 15-fold LOSO ML benchmark
 │   ├── explainability_feature_importance.py   # Permutation importance & odds ratios
 │   ├── m4d_hyperchaos.py                      # 4D hyperchaotic flow simulation & attractor engine
@@ -396,11 +405,13 @@ ECG_STRESS_DETECTION/
 │   └── sample_data/                           # Standardized ECG samples for offline demonstration
 │
 └── results/                                   # Canonical Results & Multi-Stage Verification Suite
+    ├── calibration_length/                    # Leak-free calibration duration tables (N=1..10, per-subject, ablations)
+    ├── raw_evidence_item6_biquad_dwt_cycles.json # Target execution cycle counts on STM32G474RE
     ├── FINAL_Model_Metrics.csv                # Primary validated classifier metrics
     ├── ML_Model_Benchmark_LOSO.csv            # 6-classifier comparative benchmark
     ├── WESAD_HRV_features_expanded.csv        # Canonical 445-window HRV feature dataset
     ├── figures/                               # Master export figures
-    └── verification/                          # Cryptographically Pinned Verification Framework
+    └── verification/                          # SHA-256-pinned Verification Framework
         ├── canonical_experiment/              # Experiment manifest (SHA-256), schema, canonical metrics
         ├── pre_paper_validation/              # Multi-stage reproducibility logs & metric deltas
         ├── hc1_strict_parity/                 # Host C single-precision parity build & report
@@ -421,11 +432,11 @@ ECG_STRESS_DETECTION/
 
 ### Academic Citation
 ```bibtex
-@article{yadav2026personalized,
-  title     = {Personalized Electrocardiographic and HRV Dynamics for Acute Stress Detection: A Leave-One-Subject-Out Benchmark and Bare-Metal Edge IoMT Implementation},
+@misc{yadav2026leakfree,
+  title     = {How Much Labelled Rest is Needed? Leak-Free Baseline Calibration for Single-Lead ECG Stress Detection on WESAD},
   author    = {Yadav, Mukesh},
-  journal   = {Zenodo},
   year      = {2026},
+  version   = {4.0},
   doi       = {10.5281/zenodo.24223910},
   url       = {https://doi.org/10.5281/zenodo.24223910}
 }

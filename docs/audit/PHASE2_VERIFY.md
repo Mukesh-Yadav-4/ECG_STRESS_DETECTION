@@ -1,5 +1,8 @@
 # Phase 2 Verification Report (PART A)
 
+> **Historical Audit Notice:** Historical audit of the pre-correction draft; superseded by CHANGELOG_AUDIT.md and paper_package/; 'VERIFIED' means the number matched a CSV, not that it was leak-free.
+
+
 **Document:** `PHASE2_VERIFY.md`  
 **Repository Branch:** `fix/audit`  
 **Status:** Verification Complete — All Empirical Evidence Sourced from Verifiable Runs and Hardware Measurements  

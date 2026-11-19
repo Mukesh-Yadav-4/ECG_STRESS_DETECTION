@@ -3,20 +3,21 @@ message: "If you use this benchmark, firmware, or telemetry protocol, please cit
 authors:
   - family-names: Yadav
     given-names: Mukesh
-    orcid: "https://orcid.org/0009-0000-0000-0000"
     affiliation: "Department of Electronics and Communication Engineering, JSS Academy of Technical Education, Noida, India"
-title: "Reproducible Edge-to-Cloud ECG Stress Detection with Embedded Telemetry and Hardware-in-the-Loop Validation"
-version: 1.0.0
-date-released: 2026-11-11
-url: "https://github.com/Mukesh-Yadav-4/ECG_STRESS_DETECTION"
+title: "How Much Labelled Rest is Needed? Leak-Free Baseline Calibration for Single-Lead ECG Stress Detection on WESAD"
+version: "4.0"
+doi: "10.5281/zenodo.24223910"
+url: "https://doi.org/10.5281/zenodo.24223910"
 preferred-citation:
-  type: article
+  type: generic
   authors:
     - family-names: Yadav
       given-names: Mukesh
-  title: "Reproducible Edge-to-Cloud ECG Stress Detection with Embedded Telemetry and Hardware-in-the-Loop Validation"
-  journal: "TechRxiv Preprint"
+  title: "How Much Labelled Rest is Needed? Leak-Free Baseline Calibration for Single-Lead ECG Stress Detection on WESAD"
   year: 2026
+  version: "4.0"
+  doi: "10.5281/zenodo.24223910"
+  url: "https://doi.org/10.5281/zenodo.24223910"
   keywords:
     - "Electrocardiogram"
     - "Stress Detection"

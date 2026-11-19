@@ -21,7 +21,7 @@
   * Each feature is transformed into a fractional deviation relative to the subject's resting baseline ($B_s$):
     $$X^* = \frac{X - B_s}{|B_s| + \epsilon}, \quad \text{with } \epsilon = 10^{-6}$$
   * Evaluated strictly under **15-Fold Leave-One-Subject-Out Cross-Validation (LOSO-CV)**.
-  * Boosts classification accuracy from **81.57% to 92.13% (+10.56%)** and stress F1-score from **73.03% to 88.29% (+15.26%)** at primary $\tau = 0.50$.
+  * Boosts classification accuracy from **81.57% to 92.13% (+10.56%)** and stress F1-score from **73.03% to 88.29% (+15.26%)** at primary $\tau = 0.50$ (Legacy all-baseline anchor reference; primary leak-free $N=10$ benchmark achieves **90.17% [82.7, 95.9]** vs. **78.64%** uncalibrated).
   * Exploratory threshold ($\tau = 0.35$) reaches **92.36% accuracy**:
     * **Python canonical pipeline:** 92.36% accuracy, 89.10% F1, 86.88% sensitivity, 95.44% specificity.
     * **MATLAB historical pipeline:** 92.36% accuracy, 89.03% F1, 86.25% sensitivity, 95.79% specificity.
@@ -303,12 +303,12 @@ cd embedded_stm32
 | **Cohort** | 15 WESAD subjects ($S2 - S17$) |
 | **Analysis Windows** | 445 standardized 60s windows (160 stress, 285 calm) |
 | **Validation** | Strict 15-fold Leave-One-Subject-Out (LOSO-CV) |
-| **Primary Accuracy** | **92.13%** ($\tau = 0.50$, primary) / **92.36%** ($\tau = 0.35$, exploratory) |
+| **Primary Accuracy (Legacy)** | **92.13%** ($\tau = 0.50$, primary) / **92.36%** ($\tau = 0.35$, exploratory) |
 | **Stress F1-Score** | Primary ($\tau = 0.50$): **88.29%**<br>• Python canonical ($\tau = 0.35$): **89.10%**<br>• MATLAB historical ($\tau = 0.35$): **89.03%** |
 | **ROC-AUC / PR-AUC** | **0.9493** / **0.9467** |
 | **Sensitivity / Specificity** | Primary ($\tau = 0.50$): **82.50%** / **97.54%**<br>• Python canonical ($\tau = 0.35$): **86.88%** / **95.44%**<br>• MATLAB historical ($\tau = 0.35$): **86.25%** / **95.79%** |
-| **Accuracy Gain from Baseline Calibration** | **+10.56%** ($81.57\% \rightarrow 92.13\%$ at $\tau = 0.50$) / **+10.79%** ($81.57\% \rightarrow 92.36\%$ at $\tau = 0.35$) |
-| **Microcontroller** | ARM Cortex-M4 (STM32G474RE @ 16 MHz HSI / 170 MHz PLL) |
+| **Accuracy Gain from Baseline Calibration (Legacy)** | **+10.56%** ($81.57\% \rightarrow 92.13\%$ at $\tau = 0.50$) / **+10.79%** ($81.57\% \rightarrow 92.36\%$ at $\tau = 0.35$) |
+| **Microcontroller** | STM32G474RE @ 170 MHz SYSCLK (16 MHz HSI via PLL) |
 | **Sampling Rate / Telemetry Cadence** | 350 Hz ($T_s = 2.857\text{ ms}$) |
 | **Filter Execution Time** | Measured mean 251 cycles ($1.476\ \mu\text{s}$) per sample at 170 MHz (0.0517% CPU load; analytical estimate: 1.87 us, 0.065%) |
 | **Packet Size & Baud Rate** | 20 bytes @ 115,200 baud (UART 8-N-1) |

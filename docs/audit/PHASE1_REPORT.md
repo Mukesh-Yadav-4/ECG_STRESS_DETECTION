@@ -1,4 +1,7 @@
 # Phase 1 Audit & Evidence Report: ECG Stress Detection
+
+> **Historical Audit Notice:** Historical audit of the pre-correction draft; superseded by CHANGELOG_AUDIT.md and paper_package/; 'VERIFIED' means the number matched a CSV, not that it was leak-free.
+
 **Branch:** `fix/audit`  
 **Repository:** `ECG_STRESS_DETECTION`  
 **Date:** November 13, 2026  
