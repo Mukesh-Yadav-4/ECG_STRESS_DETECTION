@@ -20,7 +20,7 @@ sys.path.append(os.path.join(PROJECT_ROOT, "python"))
 # Page Configuration & Clinical Telemetry Dark Theme
 # ==============================================================================
 st.set_page_config(
-    page_title="WESAD ECG Stress Detection | Benchmark Demo",
+    page_title="How Much Labelled Rest is Needed? Leak-Free Baseline Calibration for Single-Lead ECG Stress Detection on WESAD",
     page_icon="🫀",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -276,7 +276,7 @@ st.markdown(
             <span style="font-size:1.35rem;">🫀</span>
             <div>
                 <h1 style="font-size:1.15rem; font-weight:800; margin:0; color:#F8FAFC; letter-spacing:-0.01em; display:inline;">
-                    Reproducible Edge-to-Cloud ECG Stress Detection with Embedded Telemetry
+                    How Much Labelled Rest is Needed? Leak-Free Baseline Calibration for Single-Lead ECG Stress Detection on WESAD
                 </h1>
                 <span style="font-size:0.75rem; color:#64748B; margin-left:0.6rem;">
                     Hardware-in-the-Loop Validation &amp; 15-Fold LOSO-CV Benchmark
@@ -294,14 +294,25 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+# Visible Research Demo Banner
+st.markdown(
+    """
+    <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 6px; padding: 0.35rem 0.75rem; margin-bottom: 0.45rem; font-size: 0.75rem; color: #F59E0B; display: flex; align-items: center; gap: 0.5rem;">
+        <span>⚠️</span>
+        <span><b>Research demo, not a medical device. Data: WESAD replay or simulation.</b></span>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 # Top Benchmark Ribbon Header
 st.markdown(
     """
     <div style="display:flex; justify-content:space-between; align-items:center; margin:0.15rem 0 0.2rem 0; padding:0 0.1rem;">
         <span style="font-size:0.64rem; font-weight:700; color:#64748B; text-transform:uppercase; letter-spacing:0.07em;">
-            Clinical Validation Benchmark &bull; 15-Fold Leave-One-Subject-Out Cross-Validation (LOSO-CV)
+            Research benchmark on WESAD, 15 subjects &bull; 15-Fold Leave-One-Subject-Out Cross-Validation (LOSO-CV)
         </span>
-        <span style="font-size:0.62rem; color:#10B981; font-weight:600;">Full Heterogeneity Invariance Verified</span>
+        <span style="font-size:0.62rem; color:#10B981; font-weight:600;">Leak-free N=10, 295 windows</span>
     </div>
     """,
     unsafe_allow_html=True,
@@ -390,7 +401,7 @@ with tab_stm32:
                 horizontal=False,
             )
 
-            stm_duration = 25
+            stm_duration = 60
 
         else:
             try:
@@ -419,7 +430,7 @@ with tab_stm32:
             )
 
             baud_rate = 115200
-            stm_duration = 8
+            stm_duration = 60
             stm_subj, stm_cond = "S2", "Baseline"
             if com_port != "Virtual / Offline Port":
                 st.caption(f"Port `{com_port}` @ {baud_rate} baud")
@@ -434,7 +445,7 @@ with tab_stm32:
             st.session_state["live_stream_toast_shown"] = True
             st.toast("🫀 Live 350 Hz ECG telemetry active for Subject S17 (Resting Calm).", icon="⚡")
 
-        chart_renderer = "🟢 Hospital Monitor (Flicker-Free Native)"
+        chart_renderer = "🟢 Telemetry Monitor (Flicker-Free Native)"
 
         st.markdown(
             """
@@ -460,25 +471,22 @@ with tab_stm32:
         if "4D" in crypto_engine_choice:
             active_flags = 0x05  # TELEMETRY_FLAG_ENCRYPTED | TELEMETRY_FLAG_CHAOS_4D
             spec_sec = "4D Dynamical Flow (M-4DCHS)"
-            spec_cost = "0.48 µs (82 cycles)"
-            spec_key = "> 2^256 (ℝ⁴)"
+            spec_scrambler_overhead = "1,560 cycles (9.18 µs @ 170 MHz; from embedded_stm32/src/main_stm32.c)"
         elif "32-Bit" in crypto_engine_choice:
             active_flags = 0x01  # TELEMETRY_FLAG_ENCRYPTED
-            spec_sec = "32-Bit Scrambler (Xorshift32)"
-            spec_cost = "0.19 µs (32 cycles)"
-            spec_key = "2^32"
+            spec_sec = "32-Bit Scrambler (Xorshift32 + Weyl)"
+            spec_scrambler_overhead = "32 cycles (0.19 µs @ 170 MHz, unverified estimate)"
         else:
             active_flags = 0x00
             spec_sec = "None (Plaintext)"
-            spec_cost = "0.00 µs"
-            spec_key = "0 bits"
+            spec_scrambler_overhead = "n/a"
 
         security_view_mode = st.radio(
             "IoMT Security View:",
             options=["🟢 Authorized (Descrambled)", "🕵️ Wiretap (Scrambled Payload)"],
             index=0,
             horizontal=False,
-            help="Toggle between authorized clinical view and wiretap scrambled payload noise."
+            help="Toggle between authorized telemetry monitor view and wiretap scrambled payload noise."
         )
 
         # Edge Node Specs Card
@@ -493,8 +501,8 @@ with tab_stm32:
                 • <b>DSP:</b> 5-stage IIR (0.5–40Hz + 50Hz)<br>
                 • <b>Frame:</b> 20B Binary + CRC-16<br>
                 • <b>Security:</b> {spec_sec}<br>
-                • <b>Keyspace:</b> <code>{spec_key}</code><br>
-                • <b>Cost:</b> {spec_cost}
+                • <b>DSP Filter Cost:</b> 249/251/281 cycles (1.476 µs mean @ 170 MHz; from results/raw_evidence_item6_biquad_dwt_cycles.json)<br>
+                • <b>Scrambler Overhead:</b> {spec_scrambler_overhead}
             </div>
             """,
             unsafe_allow_html=True,
@@ -730,7 +738,7 @@ with tab_stm32:
     w: <span class="hud-val">0.00</span>
   </div>
   <div class="hud-row" id="hud-sub" style="margin-top:2px; font-size:9.5px; color:#64748B;">
-    λ₁=+0.4384, λ₂=+0.2537 | div(F)=-27.64 | D_KY = 3.024 | Keyspace &gt; 2²⁵⁶
+    λ₁=+0.4199, λ₂=+0.2639 | div(F)=-27.64 | D_KY = 3.0241 (dt=0.0025, T=500s)
   </div>
 </div>
 
@@ -947,7 +955,7 @@ function setMode(mode) {{
   
   if (mode === 'chaos') {{
     document.getElementById('hud-title').innerText = "M-4DCHS DYNAMICAL ATTRACTOR (HC1)";
-    document.getElementById('hud-sub').innerText = "λ₁=+0.4384, λ₂=+0.2537 | div(F)=-27.64 | D_KY = 3.024 | Keyspace > 2²⁵⁶";
+    document.getElementById('hud-sub').innerText = "λ₁=+0.4199, λ₂=+0.2639 | div(F)=-27.64 | D_KY = 3.0241 (dt=0.0025, T=500s)";
     document.getElementById('live-dot').style.background = "#00F0FF";
     document.getElementById('live-dot').style.boxShadow = "0 0 8px #00F0FF";
   }} else {{
@@ -1206,7 +1214,11 @@ animate();
                                 for p in pkts:
                                     telemetry_stream.add_packet(p)
 
-                hrv_res = telemetry_stream.extract_current_hrv()
+                buf_samples = len(telemetry_stream.filt_buf)
+                buf_duration = buf_samples / float(fs)
+                is_buffer_ready = (buf_samples >= telemetry_stream.buffer_len)
+                buf_pct = min(100, int((buf_samples / float(telemetry_stream.buffer_len)) * 100))
+                hrv_res = telemetry_stream.extract_current_hrv() if is_buffer_ready else None
                 snap = telemetry_stream.get_snapshot()
                 stats = snap["stats"]
                 t_arr = np.array(snap["time"])
@@ -1221,8 +1233,8 @@ animate();
                         <div style="display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg, rgba(16,185,129,0.08) 0%, rgba(15,20,36,0.9) 100%);border:1px solid rgba(16,185,129,0.3);border-radius:6px;padding:0.35rem 0.75rem;margin-bottom:0.45rem;">
                             <div style="display:flex;align-items:center;gap:0.45rem;">
                                 <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 8px #10B981;"></span>
-                                <span style="font-size:0.76rem;font-weight:700;color:#34D399;font-family:'JetBrains Mono',monospace;">LIVE HOSPITAL MONITOR ACTIVE</span>
-                                <span style="font-size:0.7rem;color:#94A3B8;">| Continuous 350 Hz hardware telemetry stream</span>
+                                <span style="font-size:0.76rem;font-weight:700;color:#34D399;font-family:'JetBrains Mono',monospace;">TELEMETRY MONITOR (REPLAY) ACTIVE</span>
+                                <span style="font-size:0.7rem;color:#94A3B8;">| Continuous 350 Hz telemetry stream (replay)</span>
                             </div>
                             <div style="font-size:0.68rem;color:#10B981;font-family:'JetBrains Mono',monospace;font-weight:600;">ACTIVE @ 350 Hz</div>
                         </div>
@@ -1314,9 +1326,9 @@ animate();
                         """
                         <div class="section-banner section-banner-cyan">
                             <div style="display:flex;align-items:center;gap:0.45rem;">
-                                <span>🫀</span> REAL-TIME PHYSIOLOGICAL SIGNAL &amp; AUTONOMIC STRESS ASSESSMENT
+                                <span>🫀</span> TELEMETRY MONITOR (REPLAY) &amp; AUTONOMIC STRESS ASSESSMENT
                             </div>
-                            <div style="font-size:0.64rem;color:#10B981;font-weight:600;">● AUTHORIZED CLINICAL RECEIVER</div>
+                            <div style="font-size:0.64rem;color:#10B981;font-weight:600;">● AUTHORIZED RECEIVER (REPLAY)</div>
                         </div>
                         """,
                         unsafe_allow_html=True
@@ -1425,8 +1437,6 @@ animate();
                     if is_eavesdropper:
                         is_4d_active = snap.get("is_4d_chaos", False) or ("4D" in crypto_engine_choice)
                         c_title = "4D Dynamical Flow (M-4DCHS)" if is_4d_active else "Xorshift32 + Weyl"
-                        c_keyspace = "&gt; 2<sup>256</sup>" if is_4d_active else "2<sup>32</sup>"
-                        c_kdf = "Biometric RR + Nonce KDF" if is_4d_active else "Nonce Linear Mixer"
                         c_accent = "#A78BFA" if is_4d_active else "#FF6688"
                         c_border = "#8B5CF6" if is_4d_active else "#FF3366"
                         c_bg = "rgba(139, 92, 246, 0.12)" if is_4d_active else "rgba(255, 51, 102, 0.1)"
@@ -1449,9 +1459,23 @@ animate();
                                 </div>
                                 <div style="margin-top: 0.25rem; font-size: 0.65rem; color: #CBD5E1; background: {c_bg}; border: 1px solid {c_brd}; border-radius: 6px; padding: 0.35rem 0.5rem; text-align: left; line-height: 1.4;">
                                     • <b>Scrambler:</b> {c_title}<br>
-                                    • <b>Keyspace:</b> <code>{c_keyspace}</code><br>
-                                    • <b>Key Seeding:</b> {c_kdf}<br>
                                     • <b>Shannon Entropy:</b> <code>{entropy_val:.3f} bits/Byte</code>
+                                </div>
+                            </div>
+                            """,
+                            unsafe_allow_html=True,
+                        )
+                    elif not is_buffer_ready:
+                        st.markdown(
+                            f"""
+                            <div class='telemetry-card' style='text-align:center;padding:1.5rem 1rem;height:250px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;align-items:center;'>
+                                <div style='font-size:1.8rem;margin-bottom:0.5rem;'>⏳</div>
+                                <div class='kpi-title' style='font-size:0.75rem;letter-spacing:0.06em;color:#F59E0B;'>BUFFER WARMING UP</div>
+                                <div style='font-size:1.15rem;font-weight:700;color:#F1F5F9;font-family:JetBrains Mono,monospace;margin:0.4rem 0;'>
+                                    {buf_duration:.1f} s / 60.0 s ({buf_pct}%)
+                                </div>
+                                <div style='font-size:0.68rem;color:#94A3B8;max-width:220px;line-height:1.3;'>
+                                    Accumulating 60 s sliding window. Stress verdict suppressed until buffer holds full 60 s.
                                 </div>
                             </div>
                             """,
@@ -1527,12 +1551,12 @@ animate();
                         st.markdown(
                             """
                             <div class="telemetry-card" style="padding: 0.45rem 0.75rem; border-left: 3px solid #10B981; background: rgba(16, 185, 129, 0.06); margin-top: 0.2rem; margin-bottom: 0.2rem;">
-                                <div class="kpi-title" style="color: #34D399; font-size: 0.65rem; margin-bottom: 0.15rem;">Cryptanalytic Defense Status</div>
+                                <div class="kpi-title" style="color: #34D399; font-size: 0.65rem; margin-bottom: 0.15rem;">Wiretap Obfuscation Telemetry</div>
                                 <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 700; color: #10B981; line-height: 1.25;">
-                                    🛡️ ZERO LEAKAGE (QRS: 0.0%)
+                                    🛡️ WIRE OBFUSCATION ACTIVE
                                 </div>
                                 <div class="kpi-sub" style="color: #94A3B8; font-size: 0.62rem; margin-top: 0.2rem;">
-                                    Flat Autocorrelation &bull; SNR &lt; -21 dB &bull; Dimension D<sub>KY</sub> = 3.024 &bull; Keyspace &gt; 2²⁵⁶
+                                    Adjacent Autocorrelation |r| = 0.0012 &bull; Dimension D<sub>KY</sub> = 3.0241
                                 </div>
                             </div>
                             """,
@@ -1540,14 +1564,14 @@ animate();
                         )
 
                 # 4. HRV Cards Strip
-                if hrv_res:
+                if is_buffer_ready and hrv_res:
                     st.markdown(
                         """
                         <div class="section-banner section-banner-green">
                             <div style="display:flex;align-items:center;gap:0.45rem;">
                                 <span>🫀</span> AUTONOMIC NERVOUS SYSTEM (ANS) BIOMARKERS (60s SLIDING WINDOW)
                             </div>
-                            <div style="font-size:0.64rem;color:#94A3B8;">Task Force Clinical Standards</div>
+                            <div style="font-size:0.64rem;color:#94A3B8;">Task Force Physiological Standards</div>
                         </div>
                         """,
                         unsafe_allow_html=True
@@ -1557,7 +1581,7 @@ animate();
                             ("Mean Heart Rate", "🔒 LOCKED", "Signal masked to noise", "#FF3366"),
                             ("RMSSD", "🔒 LOCKED", "Key required for vagal tone", "#64748B"),
                             ("SDNN", "🔒 LOCKED", "R-peaks unresolvable", "#64748B"),
-                            ("pNN50", "🔒 LOCKED", "Cryptographically shielded", "#64748B"),
+                            ("pNN50", "🔒 LOCKED", "Shielded from wire", "#64748B"),
                             ("Mean RR", "🔒 LOCKED", "Beat intervals masked", "#64748B"),
                             ("Detected Beats", "0", "0 valid QRS complexes", "#FF3366"),
                         ]
@@ -1579,6 +1603,39 @@ animate();
                                 <div class='telemetry-card' style='padding:0.35rem 0.55rem;height:62px;box-sizing:border-box;margin-bottom:0.25rem;border-left:2.5px solid {c};background:rgba(15,23,42,0.7);'>
                                     <div class='kpi-title' style='font-size:0.6rem;color:#94A3B8;letter-spacing:0.03em;'>{lbl}</div>
                                     <div class='kpi-value' style='font-size:1.05rem;font-weight:700;line-height:1.1;margin:0.05rem 0;color:{c};'>{v}</div>
+                                    <div class='kpi-sub' style='font-size:0.58rem;color:#64748B;'>{sub}</div>
+                                </div>
+                                """,
+                                unsafe_allow_html=True,
+                            )
+                elif not is_buffer_ready:
+                    st.markdown(
+                        f"""
+                        <div class="section-banner section-banner-green">
+                            <div style="display:flex;align-items:center;gap:0.45rem;">
+                                <span>⏳</span> AUTONOMIC NERVOUS SYSTEM (ANS) BIOMARKERS — WARMING UP ({buf_duration:.1f}s / 60.0s)
+                            </div>
+                            <div style="font-size:0.64rem;color:#F59E0B;">Accumulating full 60s sliding window</div>
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
+                    warm_data = [
+                        ("Mean Heart Rate", "⏳ Warming up", f"{buf_pct}% buffer filled", "#F59E0B"),
+                        ("RMSSD", "⏳ Warming up", "Requires 60s window", "#64748B"),
+                        ("SDNN", "⏳ Warming up", "Requires 60s window", "#64748B"),
+                        ("pNN50", "⏳ Warming up", "Requires 60s window", "#64748B"),
+                        ("Mean RR", "⏳ Warming up", "Requires 60s window", "#64748B"),
+                        ("Buffer Duration", f"{buf_duration:.1f} s", "Target: 60.0 s", "#00F0FF"),
+                    ]
+                    col_hrv1, col_hrv2, col_hrv3, col_hrv4, col_hrv5, col_hrv6 = st.columns(6)
+                    for col, (lbl, v, sub, c) in zip([col_hrv1, col_hrv2, col_hrv3, col_hrv4, col_hrv5, col_hrv6], warm_data):
+                        with col:
+                            st.markdown(
+                                f"""
+                                <div class='telemetry-card' style='padding:0.35rem 0.55rem;height:62px;box-sizing:border-box;margin-bottom:0.25rem;border-left:2.5px solid {c};background:rgba(15,23,42,0.7);'>
+                                    <div class='kpi-title' style='font-size:0.6rem;color:#94A3B8;letter-spacing:0.03em;'>{lbl}</div>
+                                    <div class='kpi-value' style='font-size:0.95rem;font-weight:700;line-height:1.1;margin:0.05rem 0;color:{c};'>{v}</div>
                                     <div class='kpi-sub' style='font-size:0.58rem;color:#64748B;'>{sub}</div>
                                 </div>
                                 """,
@@ -1632,10 +1689,10 @@ animate();
                         <div style="margin-top:0.35rem; line-height:1.42;">
                             • <b>Engine:</b> <span style="color:#00F0FF;font-weight:bold;">CLIENT WEBGL (60 FPS)</span> | Zero DOM re-mounting<br>
                             • <b>Dynamical Parameters (HC1):</b> a=15.81, b=2.76, c=86.03, d=-9.07, r=10.79<br>
-                            • <b>Lyapunov Spectrum:</b> λ₁ = +0.4384, λ₂ = +0.2537, λ₃ = -0.0005, λ₄ = -28.3317<br>
+                            • <b>Lyapunov Spectrum:</b> λ₁ = +0.4199, λ₂ = +0.2639, λ₃ = -0.0012, λ₄ = -28.3226 (dt = 0.0025 s, T = 500 s, IC = [1, 1, 1, 1]; from results/m4d_lyapunov_benchmark.json)<br>
                             • <b>Phase Space Dissipation:</b> div(F) = -(a+b-d) = -27.64 &lt; 0 (∑λᵢ = -27.64)<br>
-                            • <b>Attractor Dimension:</b> D<sub>KY</sub> = 3.0244 | <b>Keyspace:</b> &gt; 2<sup>256</sup> (ℝ⁴)<br>
-                            • <b>Hardware Overhead:</b> 1,560 cycles (9.18 µs @ 170 MHz) | <b>Recovery:</b> 100.00% (5,000 pkts)<br>
+                            • <b>Attractor Dimension:</b> D<sub>KY</sub> = 3.0241<br>
+                            • <b>Chaos Obfuscation Overhead:</b> 1,560 cycles (9.18 µs @ 170 MHz; RK4 + CFB-8 keystream in embedded_stm32/src/main_stm32.c) | <b>Recovery:</b> 100.00% (10,000 physical HIL pkts)<br>
                             • <b>Takens Embedding:</b> τ = 8 samples (22.9 ms), [s(t), s(t-τ), s(t-2τ)]<br>
                             • <b>Interactive Controls:</b> Left-drag rotate &bull; Scroll zoom &bull; Right-drag pan &bull; HUD toggles
                         </div>
