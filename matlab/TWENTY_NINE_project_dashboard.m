@@ -31,7 +31,7 @@ FPR = ROC.FalsePositiveRate;
 TPR = ROC.TruePositiveRate;
 AUC = trapz(FPR, TPR);
 
-% Final validated operating parameters (tau = 0.35)
+% Final validated operating parameters (tau = 0.35, legacy all-baseline anchor, 445 windows)
 accuracy = 92.36;
 precision = 92.00;
 recall = 86.25;
@@ -73,12 +73,12 @@ fig = figure('Color', c_bg, 'Position', [fig_x fig_y fig_w fig_h], ...
 t = tiledlayout(fig, 2, 3, 'TileSpacing', 'compact', 'Padding', 'compact');
 title(t, 'WESAD ECG Stress Detection Pipeline — Results Dashboard', ...
     'FontSize', 13.5, 'FontWeight', 'bold', 'Color', c_text_dark);
-subtitle(t, '15-Fold Leave-One-Subject-Out (LOSO) Cross-Validation  •  Baseline-Relative HRV  •  Operating Point: \tau = 0.35', ...
+subtitle(t, '15-Fold Leave-One-Subject-Out (LOSO) Cross-Validation  •  Legacy All-Baseline Anchor (445 Windows)  •  Operating Point: \tau = 0.35', ...
     'FontSize', 9.5, 'FontWeight', 'bold', 'Color', c_blue);
 
 %% Panel 1: Model Development Progression
 ax1 = nexttile(t);
-model_names = {'HR only', '4 features', '13 features', 'Personalized'};
+model_names = {'HR only', '4 features', '13 features', 'Personalized (Anchor)'};
 model_accuracy = [77.08; 80.90; 81.57; 92.36];
 
 b1 = bar(ax1, model_accuracy, 'BarWidth', 0.62);
@@ -91,7 +91,7 @@ b1.EdgeColor = 'none';
 
 set(ax1, 'Color', c_card_bg, 'XColor', c_text_muted, 'YColor', c_text_muted, ...
     'FontSize', 8.5, 'LineWidth', 1.0, 'Box', 'off');
-title(ax1, {'Model Development Progression', '\fontsize{8.5}\color[rgb]{0.38,0.44,0.52}Raw HR to Baseline-Relative HRV'}, ...
+title(ax1, {'Model Development Progression', '\fontsize{8.5}\color[rgb]{0.38,0.44,0.52}445 windows; last bar = legacy all-baseline anchor'}, ...
     'FontSize', 10, 'FontWeight', 'bold', 'Color', c_text_dark);
 ylabel(ax1, 'Accuracy (%)', 'FontSize', 9, 'FontWeight', 'bold', 'Color', c_text_dark);
 xticks(ax1, 1:4);
@@ -186,7 +186,7 @@ xticklabels(ax4, {'Pred Baseline', 'Pred Stress'});
 yticklabels(ax4, {'Actual Baseline', 'Actual Stress'});
 xlabel(ax4, 'Predicted Condition', 'FontSize', 9, 'FontWeight', 'bold', 'Color', c_text_dark);
 ylabel(ax4, 'Actual Condition', 'FontSize', 9, 'FontWeight', 'bold', 'Color', c_text_dark);
-title(ax4, {'LOSO Confusion Matrix (\tau = 0.35)', '\fontsize{8.5}\color[rgb]{0.38,0.44,0.52}Accuracy: 92.4% (411/445 Correct)'}, ...
+title(ax4, {'LOSO Confusion Matrix (\tau = 0.35)', '\fontsize{8.5}\color[rgb]{0.38,0.44,0.52}Legacy all-baseline anchor: 92.4% (411/445 Correct)'}, ...
     'FontSize', 10, 'FontWeight', 'bold', 'Color', c_text_dark);
 
 cb4 = colorbar(ax4);
@@ -245,11 +245,11 @@ set(ax5, 'GridColor', c_grid, 'GridAlpha', 0.8);
 %% Panel 6: Performance Scorecard (Compact Non-Clipping)
 ax6 = nexttile(t);
 axis(ax6, 'off');
-title(ax6, {'Performance Scorecard', '\fontsize{8.5}\color[rgb]{0.38,0.44,0.52}15-Fold Leave-One-Subject-Out (LOSO)'}, ...
+title(ax6, {'Performance Scorecard', '\fontsize{8.5}\color[rgb]{0.38,0.44,0.52}Legacy all-baseline anchor, 445 windows'}, ...
     'FontSize', 10, 'FontWeight', 'bold', 'Color', c_text_dark);
 
 scorecard_lines = {
-    sprintf('\\bf\\color[rgb]{0.15,0.39,0.92}● Overall Accuracy     \\color[rgb]{0.08,0.11,0.18}: %5.2f%% \\rm(411/445 Correct)', accuracy)
+    sprintf('\\bf\\color[rgb]{0.15,0.39,0.92}● Overall Accuracy     \\color[rgb]{0.08,0.11,0.18}: %5.2f%% \\rm(411/445, Legacy Anchor)', accuracy)
     sprintf('\\bf\\color[rgb]{0.86,0.15,0.27}● Stress Recall (Sens) \\color[rgb]{0.08,0.11,0.18}: %5.2f%% \\rm(138/160 Caught)', recall)
     sprintf('\\bf\\color[rgb]{0.06,0.62,0.35}● Baseline Specificity \\color[rgb]{0.08,0.11,0.18}: %5.2f%% \\rm(Only 12 False Alarms)', specificity)
     sprintf('\\bf\\color[rgb]{0.85,0.53,0.08}● Precision            \\color[rgb]{0.08,0.11,0.18}: %5.2f%% \\rm(High Trust / Few FP)', precision)
@@ -260,6 +260,7 @@ scorecard_lines = {
     '\color[rgb]{0.80,0.84,0.88}──────────────────────────────────────────'
     sprintf('\\color[rgb]{0.38,0.44,0.52}Operating Threshold (\\tau) : %.2f (Sensitivity-Tuned)', threshold)
     '\color[rgb]{0.38,0.44,0.52}Validation Protocol        : 15-Fold LOSO'
+    '\color[rgb]{0.38,0.44,0.52}Evaluation Type           : Legacy All-Baseline Anchor (445 Windows)'
     '\color[rgb]{0.38,0.44,0.52}Feature Normalization      : Baseline-Relative HRV'
 };
 

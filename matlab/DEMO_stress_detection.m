@@ -222,27 +222,27 @@ fprintf('    pNN50      : %5.1f %%   -> %5.1f %%   (Vagal Modulation Drop: natur
 
 %% 6. Validated Model Performance & Summary
 fprintf('[6/6] Leave-One-Subject-Out (LOSO) Validated Performance:\n');
-fprintf('  (Trained on 14 subjects, tested on unseen 15th subject, repeated for all 15)\n\n');
+fprintf('  (leak-free protocol, first 10 resting windows as calibration, 295 scored windows)\n\n');
 fprintf('  =========================================================================\n');
 fprintf('  METRIC                 VALUE     WHAT IT MEANS IN PLAIN ENGLISH\n');
 fprintf('  -------------------------------------------------------------------------\n');
-fprintf('  Accuracy               92.36 %%   Correct on >92 out of every 100 minutes\n');
-fprintf('  Precision              92.00 %%   When model flags stress, it is right 92%% of the time\n');
+fprintf('  Accuracy               90.17 %%   Correct on 266 out of 295 evaluation windows\n');
+fprintf('  Precision              95.17 %%   When model flags stress, it is right 95%% of the time\n');
 fprintf('  Recall / Sensitivity   86.25 %%   Catches 138 out of 160 actual stress episodes\n');
-fprintf('  Specificity            95.79 %%   Identifies calm 273/285 times (very low false alarms)\n');
-fprintf('  F1-Score               89.03 %%   Harmonic balance between precision and recall\n');
-fprintf('  Balanced Accuracy      91.02 %%   Fair score even with class imbalance\n');
-fprintf('  ROC-AUC                0.9494    Clinical/publication grade diagnostic separation\n');
+fprintf('  Specificity            94.81 %%   Identifies calm 128/135 times (only 7 false alarms)\n');
+fprintf('  F1-Score               90.49 %%   Harmonic balance between precision and recall\n');
+fprintf('  Balanced Accuracy      90.53 %%   Fair score even with class imbalance\n');
+fprintf('  ROC-AUC                0.9361    Area under ROC curve across decision thresholds\n');
 fprintf('  -------------------------------------------------------------------------\n');
-fprintf('  CONFUSION MATRIX COUNTS (Threshold tau = 0.35):\n');
-fprintf('    True Negatives  (TN): 273  (Calm correctly recognized as calm)\n');
+fprintf('  CONFUSION MATRIX COUNTS (Threshold tau = 0.50):\n');
+fprintf('    True Negatives  (TN): 128  (Calm correctly recognized as calm)\n');
 fprintf('    True Positives  (TP): 138  (Stress successfully caught)\n');
-fprintf('    False Positives (FP):  12  (False alarms)\n');
+fprintf('    False Positives (FP):   7  (False alarms)\n');
 fprintf('    False Negatives (FN):  22  (Missed stress episodes)\n');
 fprintf('  =========================================================================\n\n');
 fprintf('  CORE TAKEAWAY:\n');
 fprintf('  Subject-specific baseline normalization enables a simple, interpretable model\n');
-fprintf('  to detect psychological stress with >92%% accuracy without overfitting.\n\n');
+fprintf('  to detect psychological stress with 90.17%% accuracy.\n\n');
 
 fprintf('====================================================\n');
 fprintf('            Demonstration Completed\n');
